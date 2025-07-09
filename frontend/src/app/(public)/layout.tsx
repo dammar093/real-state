@@ -1,4 +1,4 @@
-import Container from "@/components/layout/container/Container";
+import Container from "@/components/layout/container/container";
 import Header from "@/components/layout/header/header";
 import { ReactNode } from "react";
 

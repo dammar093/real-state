@@ -1,0 +1,3 @@
+.parent:hover .child{
+    color: var(--primary-color) !important;
+  }
