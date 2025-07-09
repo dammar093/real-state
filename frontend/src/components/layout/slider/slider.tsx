@@ -76,7 +76,7 @@ const Slider = () => {
 
       {/* Back Arrow */}
       <div
-        className="hidden md:flex items-center justify-center text-gray-600 text-2xl cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white p-2 rounded-full absolute left-2 z-10 transition-all"
+        className="hidden md:flex items-center justify-center text-gray-600 text-2xl cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white p-2 rounded-full absolute left-2 z-20 transition-all"
         onClick={handleBackward}
       >
         <MdOutlineArrowBackIos />
@@ -84,7 +84,7 @@ const Slider = () => {
 
       {/* Forward Arrow */}
       <div
-        className="hidden md:flex items-center justify-center text-gray-600 text-2xl cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white p-2 rounded-full absolute right-2 z-10 transition-all"
+        className="hidden md:flex items-center justify-center text-gray-600 text-2xl cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white p-2 rounded-full absolute right-2 z-20 transition-all"
         onClick={handleForward}
       >
         <MdOutlineArrowForwardIos />
