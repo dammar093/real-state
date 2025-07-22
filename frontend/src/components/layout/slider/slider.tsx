@@ -6,6 +6,7 @@ import {
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
 import style from "./slider.module.css";
+import Search from "@/components/ui/search";
 
 const Slider = () => {
   const [index, setIndex] = useState(0);
@@ -53,7 +54,7 @@ const Slider = () => {
 
   return (
     <section
-      className={`w-full h-[400px] md:h-[400px] flex items-center relative  rounded overflow-hidden ${style.slider}`}
+      className={`w-full mt-3  aspect-video flex items-center relative  rounded overflow-hidden ${style.slider}`}
     >
       {/* Slider Track */}
       <div
@@ -63,12 +64,12 @@ const Slider = () => {
         {sliderItems.map((item) => (
           <div key={item.id} className="min-w-full h-full flex-shrink-0">
             <Image
-              width={100}
-              height={100}
+              width={1080}
+              height={720}
               className="w-full h-full object-cover"
               src={item.image}
-              alt="slider image"
               loading="lazy"
+              alt="slider image"
             />
           </div>
         ))}
@@ -89,10 +90,15 @@ const Slider = () => {
       >
         <MdOutlineArrowForwardIos />
       </div>
-      <div className="absolute left-[10%] z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2">
-          <div className="text-white font-semibold text-3xl md:text-4xl lg:text-5xl">
-            <h1>Comfortable stays made simple book your perfect room today.</h1>
+      <div className="absolute left-0 top-0 right-0 bottom-0 z-10 w-full h-full flex items-center justify-center">
+        <div className=" w-full px-4 mx-auto flex flex-col gap-4 md:gap-6 ">
+          <div>
+            <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-bold text-white w-full bg-red">
+              Comfortable stays made simple. Book your perfect room today.
+            </h1>
+          </div>
+          <div>
+            <Search />
           </div>
         </div>
       </div>

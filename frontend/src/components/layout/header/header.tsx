@@ -8,7 +8,7 @@ import logo from "../../../../public/assests/logo.png";
 
 const Header = () => {
   return (
-    <header className="w-full shadow-lg flex justify-center items-center h-[60px]">
+    <header className="w-full shadow-lg bg-white flex justify-center items-center h-[60px] sticky top-0 z-100 ">
       <Container>
         <nav className="w-full flex justify-between items-center">
           <div>
