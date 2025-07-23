@@ -5,14 +5,14 @@ import Image from "next/image";
 import { FaRegUser } from "react-icons/fa";
 import style from "./header.module.css";
 import logo from "../../../../public/assests/logo.png";
-import { FaRegHeart } from "react-icons/fa6";
+import { IoIosHeartEmpty } from "react-icons/io";
 
 const Header = () => {
   return (
     <header className="shadow-lg sticky z-[1080] top-0 bg-white w-full">
       <Container>
-        <div>
-          <nav className="flex justify-between items-center">
+        <div className="relative">
+          <nav className="flex justify-between items-center gap-4">
             <div>
               <Link className="d-block" href="/">
                 <div className="h-22 w-auto">
@@ -27,31 +27,71 @@ const Header = () => {
                 </div>
               </Link>
             </div>
-            <div className="flex items-center gap-4 md:gap-6">
-              <ul className="flex items-center md:gap-4 lg:gap-5">
+            <div>
+              <ul className="flex items-center gap-4 md:gap-5 lg:gap-6">
                 <li>
                   <span className="text-[var(--black-color)] hover:text-[var(--primary-color)] bg-transparent cursor-pointer">
-                    <FaRegHeart size={30} />
+                    <IoIosHeartEmpty size={30} />
                   </span>
                 </li>
                 <li>
                   <Link
-                    className="text-[var(--black-color)] hover:text-[var(--primary-color)]"
+                    className="text-[var(--black-color)] hover:text-[var(--primary-color)] font-medium"
                     href="/register"
                   >
-                    Become Host
+                    <span> Become Host</span>
                   </Link>
                 </li>
-              </ul>
-              <div>
-                <div
-                  className={`w-[40px] h-[40px] border-[1px] border[var(--black-color)] hover:border-[var(--primary-color)] rounded-full flex items-center justify-center cursor-pointer ${style.parent}`}
+                <li
+                  className={`${style.profile} h-22 justify-center flex items-center`}
                 >
-                  <FaRegUser
-                    className={`text-2xl text-[var(--black-color)] ${style.child}`}
-                  />
-                </div>
-              </div>
+                  <div
+                    className={`w-[40px] h-[40px] border-[1px] border[var(--black-color)] hover:border-[var(--primary-color)] rounded-full flex items-center justify-center cursor-pointer ${style.parent}`}
+                  >
+                    <FaRegUser
+                      className={`text-2xl text-[var(--black-color)] ${style.child}`}
+                    />
+                    <div
+                      className={`${style.dropdown} absolute top-[90px] right-0  h-fit p-4  w-[150px] bg-white rounded-lg shadow-lg`}
+                    >
+                      <ul>
+                        <li>
+                          <Link
+                            href={"/profile"}
+                            className=" hover:text-[var(--primary-color)] capitalize font-medium"
+                          >
+                            Profile
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href={"/booking"}
+                            className=" hover:text-[var(--primary-color)] capitalize font-medium"
+                          >
+                            Booking
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href={"/sign-up"}
+                            className=" hover:text-[var(--primary-color)] capitalize font-medium"
+                          >
+                            Sign up
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            href={"/sign-in"}
+                            className=" hover:text-[var(--primary-color)] capitalize font-medium"
+                          >
+                            Sign in
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </li>
+              </ul>
             </div>
           </nav>
         </div>
