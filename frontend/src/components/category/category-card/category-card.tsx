@@ -27,7 +27,9 @@ const CategoryCard: React.FC<CategoryProps> = ({ id, name, image }) => {
             className={`absolute w-full h-full flex items-center  justify-center bg-opacity-5 ${styles["caregory-overlay"]} overflow-hidden`}
           >
             <div className="boderder-white border-2 border-white p-4 rounded-lg h-full w-full flex items-center justify-center">
-              <h3 className="text-lg font-semibold text-white">{name}</h3>
+              <h3 className="text-lg font-semibold text-white capitalize">
+                {name}
+              </h3>
             </div>
           </div>
         </div>

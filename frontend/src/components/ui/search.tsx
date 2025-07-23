@@ -23,7 +23,7 @@ const Search = () => {
           <Input placeholder="Search..." className="pr-23" />
           <Button
             type="submit"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2 "
+            className="absolute right-2 top-1/2 transform -translate-y-1/2  px-3 py-2"
           >
             Search
           </Button>

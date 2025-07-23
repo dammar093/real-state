@@ -19,7 +19,7 @@ const Button = ({
     <>
       <button
         type={type}
-        className={`bg-[var(--primary-color)] text-white px-4 py-2 rounded-full cursor-pointer ${className}`}
+        className={`bg-[var(--primary-color)] text-white rounded-full cursor-pointer ${className}`}
         onClick={onClick}
         disabled={loading}
       >
