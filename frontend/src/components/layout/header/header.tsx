@@ -14,7 +14,7 @@ const Header = () => {
           <nav className="flex justify-between items-center">
             <div>
               <Link className="d-block" href="/">
-                <div className="h-25 w-auto">
+                <div className="h-22 w-auto">
                   <Image
                     width={1080}
                     height={720}
@@ -29,26 +29,17 @@ const Header = () => {
             <div className="flex items-center gap-4 md:gap-6">
               <ul className="flex items-center md:gap-4 lg:gap-5">
                 <li>
-                  <Link
-                    href=""
-                    className="text-[var(--black-color)] hover:text-[var(--primary-color)] "
-                  >
-                    Home
-                  </Link>
-                </li>
-
-                <li>
-                  <Link
-                    className="text-[var(--black-color)] hover:text-[var(--primary-color)]"
-                    href="/booking"
-                  >
-                    Booking
-                  </Link>
-                </li>
-                <li>
                   <span className="text-[var(--black-color)] hover:text-[var(--primary-color)] bg-transparent cursor-pointer">
                     Wisthlist
                   </span>
+                </li>
+                <li>
+                  <Link
+                    className="text-[var(--black-color)] hover:text-[var(--primary-color)]"
+                    href="/register"
+                  >
+                    Become Host
+                  </Link>
                 </li>
               </ul>
               <div>
