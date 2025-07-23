@@ -20,7 +20,7 @@ const SliderLayout: FC<CardSliderProps> = ({ link, title, children }) => {
               href={link}
               className="text-[var(--primary-color)] text-3xl md:text-2xl lg:text-3xl font-semibold capitalize"
             >
-              <div className="flex gap-2 items-center">
+              <div className="flex  items-center">
                 <span>{title}</span>
                 <span>
                   <MdOutlineNavigateNext />
