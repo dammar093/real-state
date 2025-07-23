@@ -8,19 +8,20 @@ import logo from "../../../../public/assests/logo.png";
 
 const Header = () => {
   return (
-    <header className="w-full shadow-lg bg-white flex justify-center items-center h-[60px] sticky top-0 z-100 ">
+    <header className="shadow-lg sticky z-[1080] top-0 bg-white w-full">
       <Container>
-        <div>
-          <nav className="w-full flex justify-between items-center">
+        <div className="h-[70px]">
+          <nav className="flex justify-between items-center">
             <div>
-              <Link href="/">
-                <div>
+              <Link className="d-block" href="/">
+                <div className="h-[70px] w-auto">
                   <Image
-                    width={100}
-                    height={100}
+                    width={1080}
+                    height={720}
                     src={logo}
                     alt="real state logo"
                     loading="lazy"
+                    className="h-full w-full"
                   />
                 </div>
               </Link>
@@ -35,26 +36,24 @@ const Header = () => {
                     Home
                   </Link>
                 </li>
+
                 <li>
                   <Link
                     className="text-[var(--black-color)] hover:text-[var(--primary-color)]"
-                    href=""
-                  >
-                    Wisthlist
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="text-[var(--black-color)] hover:text-[var(--primary-color)]"
-                    href=""
+                    href="/booking"
                   >
                     Booking
                   </Link>
                 </li>
+                <li>
+                  <span className="text-[var(--black-color)] hover:text-[var(--primary-color)] bg-transparent cursor-pointer">
+                    Wisthlist
+                  </span>
+                </li>
               </ul>
               <div>
                 <div
-                  className={`w-[50px] h-[50px] border-[1px] border[var(--black-color)] hover:border-[var(--primary-color)] rounded-full flex items-center justify-center cursor-pointer ${style.parent}`}
+                  className={`w-[40px] h-[40px] border-[1px] border[var(--black-color)] hover:border-[var(--primary-color)] rounded-full flex items-center justify-center cursor-pointer ${style.parent}`}
                 >
                   <FaRegUser
                     className={`text-2xl text-[var(--black-color)] ${style.child}`}
