@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import styles from "./category.module.css";
+import styles from "./caregory.module.css";
 
 interface CategoryProps {
   id: number;
@@ -12,7 +12,7 @@ interface CategoryProps {
 const CategoryCard: React.FC<CategoryProps> = ({ id, name, image }) => {
   return (
     <div className="w-full">
-      <Link href="" className="d-block">
+      <Link href={`/categories/${name}`} className="d-block">
         <div
           className={`aspect-square relative  ${styles["category-card"]} overflow-hidden rounded-lg`}
         >

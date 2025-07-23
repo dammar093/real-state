@@ -1,7 +1,8 @@
-.category-card{
+.category-card {
   transition: all 0.3s ease-in-out;
 }
-.caregory-overlay{
+
+.caregory-overlay {
   background: rgba(0, 0, 0, 0.6);
   top: 0;
   left: 0;
@@ -9,12 +10,15 @@
   transition: all 0.3s ease-in-out;
   padding: 10px;
 }
-.category-card:hover .caregory-overlay{
+
+.category-card:hover .caregory-overlay {
   display: flex;
 }
-.img{
+
+.img {
   transition: all 0.3s ease-in-out;
 }
-.category-card:hover .img{
+
+.category-card:hover .img {
   transform: scale(1.2);
 }

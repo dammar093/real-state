@@ -1,11 +1,11 @@
 import React from "react";
-import CategoryCard from "../category/category-card/category-card";
 import SliderLayout from "../slider-layout/slider-layout";
+import CategoryCard from "../category/category-card";
 
 const CardSlider = () => {
   return (
     <>
-      <SliderLayout title="Explore Property Types" link="category">
+      <SliderLayout title="Explore Property Types" link="/categories">
         <CategoryCard
           image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
           id={1}

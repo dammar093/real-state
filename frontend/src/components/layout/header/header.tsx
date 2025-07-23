@@ -13,7 +13,7 @@ const Header = () => {
         <div>
           <nav className="w-full flex justify-between items-center">
             <div>
-              <Link href="">
+              <Link href="/">
                 <div>
                   <Image
                     width={100}
