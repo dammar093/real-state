@@ -10,11 +10,11 @@ const Header = () => {
   return (
     <header className="shadow-lg sticky z-[1080] top-0 bg-white w-full">
       <Container>
-        <div className="h-[70px]">
+        <div>
           <nav className="flex justify-between items-center">
             <div>
               <Link className="d-block" href="/">
-                <div className="h-[70px] w-auto">
+                <div className="h-25 w-auto">
                   <Image
                     width={1080}
                     height={720}
