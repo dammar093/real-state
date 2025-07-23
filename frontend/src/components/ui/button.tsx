@@ -5,6 +5,7 @@ interface ButtonProps {
   className?: string;
   children: React.ReactNode;
   loading?: boolean;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
@@ -14,6 +15,7 @@ const Button = ({
   children,
   loading,
   onClick,
+  disabled,
 }: ButtonProps) => {
   return (
     <>
@@ -21,7 +23,7 @@ const Button = ({
         type={type}
         className={`bg-[var(--primary-color)] text-white rounded-full cursor-pointer ${className}`}
         onClick={onClick}
-        disabled={loading}
+        disabled={loading || disabled}
       >
         {loading ? "Loading..." : children}
       </button>

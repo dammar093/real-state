@@ -94,7 +94,7 @@ const Slider = () => {
         <div className=" w-full px-4 mx-auto flex flex-col gap-4 md:gap-6 ">
           <div>
             <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-bold text-white w-full bg-red">
-              Comfortable stays made simple. Book your perfect room today.
+              Book your perfect room today.
             </h1>
           </div>
           <div>

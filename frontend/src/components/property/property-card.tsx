@@ -59,21 +59,21 @@ const PropertyCrad: React.FC<PropertyCradProps> = ({
           </div>
           <div>
             <div>
-              <h3 className="text-md md:text-lg font-medium text-gray-700">
+              <h3 className="text-md md:text-lg font-medium text-gray-800">
                 <span className="capitalize">{category} </span>in{" "}
                 <span className="capitalize">Kathmandu</span>
               </h3>
             </div>
             <div className="flex items-center gap-1">
               <div className="text-gray-600 font-normal text-sm">
-                NPR. 1200 for 2 nihgts
+                Rs. 1200 for 2 nihgts
               </div>
               <div>
                 <LuDot className="text-gray-600" size={10} />
               </div>
               <div className="flex gap-1 items-center">
                 <GoStarFill size={10} className="text-slate-600" />
-                <span className="text-gray-60s0 text-sm">5.0</span>
+                <span className="text-gray-600 text-sm">5.0</span>
               </div>
             </div>
           </div>

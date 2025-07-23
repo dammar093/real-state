@@ -5,6 +5,7 @@ import Image from "next/image";
 import { FaRegUser } from "react-icons/fa";
 import style from "./header.module.css";
 import logo from "../../../../public/assests/logo.png";
+import { FaRegHeart } from "react-icons/fa6";
 
 const Header = () => {
   return (
@@ -30,7 +31,7 @@ const Header = () => {
               <ul className="flex items-center md:gap-4 lg:gap-5">
                 <li>
                   <span className="text-[var(--black-color)] hover:text-[var(--primary-color)] bg-transparent cursor-pointer">
-                    Wisthlist
+                    <FaRegHeart size={30} />
                   </span>
                 </li>
                 <li>

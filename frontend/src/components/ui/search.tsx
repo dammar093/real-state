@@ -1,13 +1,14 @@
 import React from "react";
 import Button from "./button";
 import Input from "./input";
+import { FiSearch } from "react-icons/fi";
 
 const Search = () => {
   return (
-    <div className="w-[60%] mx-auto ">
+    <div className="w-full md:w-[60%] mx-auto ">
       <form action="">
         <div className="flex items-center border border-gray-300  p-1 px-2 rounded-full shadow-sm bg-white/50 relative">
-          <select
+          {/* <select
             name="location"
             id=""
             className="border-none outline-none bg-transparent text-[var(--primary-color)]  font-medium mr-2"
@@ -19,13 +20,13 @@ const Search = () => {
           </select>
           <span className="text-[var(--primary-color)] font-medium mr-2">
             |
-          </span>
+          </span> */}
           <Input placeholder="Search..." className="pr-23" />
           <Button
             type="submit"
-            className="absolute right-2 top-1/2 transform -translate-y-1/2  px-3 py-2"
+            className="absolute flex items-center justify-center right-2 top-1/2 transform -translate-y-1/2 w-[40px] h-[40px] rounded-full"
           >
-            Search
+            <FiSearch size={20} />
           </Button>
         </div>
       </form>

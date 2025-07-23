@@ -38,6 +38,48 @@ const CardSlider = ({
           category={category}
           badgeTitle="For rent"
         />
+        <PropertyCard
+          image="https://images.pexels.com/photos/135620/pexels-photo-135620.jpeg"
+          id={4}
+          category={category}
+          badgeTitle="For rent"
+        />
+        <PropertyCard
+          image="https://images.pexels.com/photos/135620/pexels-photo-135620.jpeg"
+          id={4}
+          category={category}
+          badgeTitle="For rent"
+        />
+        <PropertyCard
+          image="https://images.pexels.com/photos/135620/pexels-photo-135620.jpeg"
+          id={4}
+          category={category}
+          badgeTitle="For rent"
+        />
+        <PropertyCard
+          image="https://images.pexels.com/photos/135620/pexels-photo-135620.jpeg"
+          id={4}
+          category={category}
+          badgeTitle="For rent"
+        />
+        <PropertyCard
+          image="https://images.pexels.com/photos/135620/pexels-photo-135620.jpeg"
+          id={4}
+          category={category}
+          badgeTitle="For rent"
+        />
+        <PropertyCard
+          image="https://images.pexels.com/photos/135620/pexels-photo-135620.jpeg"
+          id={4}
+          category={category}
+          badgeTitle="For rent"
+        />
+        <PropertyCard
+          image="https://images.pexels.com/photos/135620/pexels-photo-135620.jpeg"
+          id={4}
+          category={category}
+          badgeTitle="For rent"
+        />
       </SliderLayout>
     </>
   );
