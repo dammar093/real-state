@@ -52,7 +52,7 @@ const Header = () => {
                       className={`text-2xl text-[var(--black-color)] ${style.child}`}
                     />
                     <div
-                      className={`${style.dropdown} absolute top-[90px] right-0  h-fit p-4  w-[150px] bg-white rounded-lg shadow-lg`}
+                      className={`${style.dropdown} absolute top-[89px] right-0  h-fit p-4  w-[150px] bg-white rounded-lg shadow-lg`}
                     >
                       <ul>
                         <li>

@@ -13,7 +13,7 @@ interface PropertyCradProps {
   badgeTitle: string;
 }
 
-const PropertyCrad: React.FC<PropertyCradProps> = ({
+const PropertyCard: React.FC<PropertyCradProps> = ({
   id,
   category,
   image,
@@ -25,10 +25,7 @@ const PropertyCrad: React.FC<PropertyCradProps> = ({
         <div
           className={`aspect-square relative  ${styles["category-card"]} overflow-hidden rounded-lg`}
         >
-          <Link
-            href={"href={`/properties/rooms/1`}"}
-            className="block h-full w-full"
-          >
+          <Link href={`/properties/rooms/1`} className="block h-full w-full">
             <Image
               src={image}
               alt={category}
@@ -87,4 +84,4 @@ const PropertyCrad: React.FC<PropertyCradProps> = ({
   );
 };
 
-export default PropertyCrad;
+export default PropertyCard;
