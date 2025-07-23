@@ -1,24 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import styles from "./caregory.module.css";
+import styles from "./property.module.css";
 
-interface CategoryProps {
+interface PropertyCradProps {
   id: number;
-  name: string;
+  category: string;
   image: string;
 }
 
-const CategoryCard: React.FC<CategoryProps> = ({ id, name, image }) => {
+const PropertyCrad: React.FC<PropertyCradProps> = ({ id, category, image }) => {
   return (
     <div className="w-full">
-      <Link href={`/categories/${name}`} className="d-block">
+      <Link href={`/properties/rooms/1`} className="d-block">
         <div
           className={`aspect-square relative  ${styles["category-card"]} overflow-hidden rounded-lg`}
         >
           <Image
             src={image}
-            alt={name}
+            alt={category}
             width={1080}
             height={720}
             className={`w-full h-full object-cover  ${styles.img}`}
@@ -28,7 +28,7 @@ const CategoryCard: React.FC<CategoryProps> = ({ id, name, image }) => {
           >
             <div className="boderder-white border-2 border-white p-4 rounded-lg h-full w-full flex items-center justify-center">
               <h3 className="text-lg font-semibold text-white capitalize">
-                {name}
+                {category}
               </h3>
             </div>
           </div>
@@ -38,4 +38,4 @@ const CategoryCard: React.FC<CategoryProps> = ({ id, name, image }) => {
   );
 };
 
-export default CategoryCard;
+export default PropertyCrad;

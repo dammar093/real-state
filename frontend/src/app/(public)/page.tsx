@@ -6,7 +6,26 @@ const Home = () => {
   return (
     <div className="w-full flex flex-col gap-10">
       <Slider />
-      <CardSlider />
+      <CardSlider
+        title="Explore Rooms"
+        link="/properties/rooms"
+        category="rooms"
+      />
+      <CardSlider
+        title="Explore Vilas"
+        link="/properties/vilas"
+        category="vilas"
+      />
+      <CardSlider
+        title="Explore Houses"
+        link="/properties/houses"
+        category="houses"
+      />
+      <CardSlider
+        title="Explore flats"
+        link="/properties/flats"
+        category="flats"
+      />
     </div>
   );
 };

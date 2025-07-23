@@ -1,30 +1,38 @@
 import React from "react";
 import SliderLayout from "../slider-layout/slider-layout";
-import CategoryCard from "../category/category-card";
+import PropertyCard from "../property/property-card";
 
-const CardSlider = () => {
+const CardSlider = ({
+  title,
+  link,
+  category,
+}: {
+  title: string;
+  link: string;
+  category: string;
+}) => {
   return (
     <>
-      <SliderLayout title="Explore Property Types" link="/categories">
-        <CategoryCard
+      <SliderLayout title={title} link={link}>
+        <PropertyCard
           image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
           id={1}
-          name="Rooms"
+          category={category}
         />
-        <CategoryCard
+        <PropertyCard
           image="https://images.pexels.com/photos/6032283/pexels-photo-6032283.jpeg"
           id={2}
-          name="Flats"
+          category={category}
         />
-        <CategoryCard
+        <PropertyCard
           image="https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg"
           id={3}
-          name="Houses"
+          category={category}
         />
-        <CategoryCard
+        <PropertyCard
           image="https://images.pexels.com/photos/135620/pexels-photo-135620.jpeg"
           id={4}
-          name="Shops"
+          category={category}
         />
       </SliderLayout>
     </>
