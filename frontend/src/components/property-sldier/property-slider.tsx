@@ -5,6 +5,7 @@ import {
   MdOutlineArrowBackIos,
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
+import Button from "../ui/button";
 
 const PropertySlider = () => {
   const [index, setIndex] = useState(0);
@@ -86,20 +87,20 @@ const PropertySlider = () => {
       </div>
 
       {/* Back Arrow */}
-      <div
-        className="hidden md:flex items-center justify-center text-white text-2xl cursor-pointer bg-[var(--primary-color)]  p-2 rounded-full absolute top-1/2 left-2 z-20 transition-all"
+      <Button
+        className="hidden md:flex items-center justify-center text-white text-2xl  p-2 rounded-full absolute top-1/2 left-2 z-20 transition-all"
         onClick={handleBackward}
       >
         <MdOutlineArrowBackIos />
-      </div>
+      </Button>
 
       {/* Forward Arrow */}
-      <div
-        className="hidden md:flex items-center justify-center text-white text-2xl cursor-pointer bg-[var(--primary-color)]  p-2 top-1/2 rounded-full absolute right-2 z-20 transition-all"
+      <Button
+        className="hidden md:flex items-center justify-center text-white text-2xl p-2 top-1/2 rounded-full absolute right-2 z-20 transition-all"
         onClick={handleForward}
       >
         <MdOutlineArrowForwardIos />
-      </div>
+      </Button>
     </section>
   );
 };
