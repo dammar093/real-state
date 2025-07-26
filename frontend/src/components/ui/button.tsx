@@ -21,7 +21,7 @@ const Button = ({
     <>
       <button
         type={type}
-        className={`bg-[var(--primary-color)] text-white rounded-full cursor-pointer ${className}`}
+        className={` text-white rounded-full cursor-pointer ${className} button`}
         onClick={onClick}
         disabled={loading || disabled}
       >

@@ -9,7 +9,7 @@ const Owner = () => {
       <div>
         <div className="">
           <div className="flex items-center gap-2">
-            <Link href="" className="block w-fit">
+            <Link href="/users/1" className="block w-fit">
               <Profile />
             </Link>
             <div>

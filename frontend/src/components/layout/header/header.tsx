@@ -36,7 +36,7 @@ const Header = () => {
                 </li>
                 <li>
                   <Link
-                    className="text-[var(--black-color)] hover:text-[var(--primary-color)] font-medium"
+                    className="text-[var(--black-color)] hover:text-[var(--primary-color)] font-medium button py-1.5 px-3 rounded-md"
                     href="/register"
                   >
                     <span> Become Host</span>

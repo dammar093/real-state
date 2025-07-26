@@ -7,6 +7,7 @@ import {
 } from "react-icons/md";
 import style from "./slider.module.css";
 import Search from "@/components/ui/search";
+import Button from "@/components/ui/button";
 
 const Slider = () => {
   const [index, setIndex] = useState(0);
@@ -76,20 +77,20 @@ const Slider = () => {
       </div>
 
       {/* Back Arrow */}
-      <div
-        className="hidden md:flex items-center justify-center text-gray-600 text-2xl cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white p-2 rounded-full absolute left-2 z-20 transition-all"
+      <Button
+        className="hidden md:flex items-center justify-center text-gray-600 text-2xl cursor-pointer  p-2 rounded-full absolute left-2 z-20 transition-all"
         onClick={handleBackward}
       >
         <MdOutlineArrowBackIos />
-      </div>
+      </Button>
 
       {/* Forward Arrow */}
-      <div
-        className="hidden md:flex items-center justify-center text-gray-600 text-2xl cursor-pointer bg-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white p-2 rounded-full absolute right-2 z-20 transition-all"
+      <Button
+        className="hidden md:flex items-center justify-center text-gray-600 text-2xl cursor-pointer  p-2 rounded-full absolute right-2 z-20 transition-all"
         onClick={handleForward}
       >
         <MdOutlineArrowForwardIos />
-      </div>
+      </Button>
       <div className="absolute left-0 top-0 right-0 bottom-0 z-10 w-full h-full flex items-center justify-center">
         <div className=" w-full px-4 mx-auto flex flex-col gap-4 md:gap-6 ">
           <div>
