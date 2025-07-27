@@ -1,15 +1,26 @@
 import Image from "next/image";
-import React from "react";
+import React, { FC } from "react";
+import user from "../../../public/assests/user.png";
 
-const Profile = () => {
+interface ProfileProps {
+  img?: string;
+  className?: string;
+  onClick?: () => void;
+}
+const Profile: FC<ProfileProps> = ({ img, className, onClick }) => {
   return (
-    <div className="border w-[80px] h-[80px] rounded-full border-[var(--primary-color)] flex justify-center items-center overflow-hidden">
+    <div
+      className={`border rounded-full border-[var(--primary-color)] flex justify-center items-center overflow-hidden ${className}`}
+      tabIndex={0}
+      role="button"
+      onClick={onClick}
+    >
       <Image
-        src="https://images.pexels.com/photos/8090123/pexels-photo-8090123.jpeg"
+        src={img ? img : user}
         width={1080}
         height={720}
         alt="sdfsd"
-        className="w-full h-full object-cover"
+        className={`w-full h-full object-cover`}
       />
     </div>
   );

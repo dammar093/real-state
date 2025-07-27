@@ -11,7 +11,7 @@ const Owner = () => {
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-2">
             <Link href="/users/1" className="block w-fit">
-              <Profile />
+              <Profile className="h-20 w-20" />
             </Link>
             <div>
               <h4 className="text-slate-700 fw-medium capitalize text-[18px]">
