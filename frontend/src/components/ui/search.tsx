@@ -5,9 +5,13 @@ import { FiSearch } from "react-icons/fi";
 
 const Search = () => {
   return (
-    <div className="w-full md:w-[60%] mx-auto ">
+    <div className="w-full md:w-1/2 mx-auto">
       <form action="">
-        <div className="flex items-center border border-gray-300  p-1 px-2 rounded-full shadow-sm bg-white/50 relative">
+        <div
+          className="flex items-center border border-gray-300  md:py-1 px-1 md:px-2 rounded-full shadow-sm bg-white/50 relative"
+          role="input"
+          tabIndex={0}
+        >
           {/* <select
             name="location"
             id=""
@@ -21,10 +25,10 @@ const Search = () => {
           <span className="text-[var(--primary-color)] font-medium mr-2">
             |
           </span> */}
-          <Input placeholder="Search..." className="pr-23" />
+          <Input placeholder="Search..." className="pr-11 md:pr-23" />
           <Button
             type="submit"
-            className="absolute flex items-center justify-center right-2 top-1/2 transform -translate-y-1/2 w-[40px] h-[40px] rounded-full"
+            className="absolute flex items-center justify-center right-2 top-1/2 transform -translate-y-1/2 w-[30px] h-[30px] md:w-[40px] md:h-[40px] rounded-full"
           >
             <FiSearch size={20} />
           </Button>

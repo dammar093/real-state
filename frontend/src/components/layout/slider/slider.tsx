@@ -99,8 +99,7 @@ const Slider = () => {
               Book your perfect room today.
             </h1>
           </div>
-          <div className="flex flex-col items-center gap-3">
-            <Search />
+          <div className="mx-auto w-fit">
             <Link
               className="text-[var(--black-color)] hover:text-[var(--primary-color)] font-medium button py-2 px-3 rounded-full"
               href="/become-host"

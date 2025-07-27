@@ -14,6 +14,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import Button from "@/components/ui/button";
+import Search from "@/components/ui/search";
 
 const Header = () => {
   const { isSignedIn, userId, sessionId } = useAuth();
@@ -23,20 +24,25 @@ const Header = () => {
       <div className="relative">
         <Container>
           <div>
-            <nav className="flex justify-between items-center gap-4">
+            <nav className="flex justify-between items-center">
               <div>
                 <Link className="d-block" href="/">
-                  <div className="h-22 w-auto">
-                    <Image
-                      width={1080}
-                      height={720}
-                      src={logo}
-                      alt="real state logo"
-                      loading="lazy"
-                      className="h-full w-full"
-                    />
+                  <div>
+                    <div className="w-16 h-16 md:h-22 md:w-22">
+                      <Image
+                        width={1080}
+                        height={720}
+                        src={logo}
+                        alt="real state logo"
+                        loading="lazy"
+                        className="h-full w-full"
+                      />
+                    </div>
                   </div>
                 </Link>
+              </div>
+              <div className="flex-1">
+                <Search />
               </div>
               <div>
                 <ul className="flex items-center gap-3 md:gap-4 lg:gap-5">
