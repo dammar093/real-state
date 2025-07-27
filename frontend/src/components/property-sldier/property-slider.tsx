@@ -55,7 +55,7 @@ const PropertySlider = () => {
       {/* Mobile: Swipeable slider */}
       <div className="flex md:hidden overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide">
         {sliderItems.map((item) => (
-          <div key={item.id} className="min-w-full h-full snap-center shrink-0">
+          <div key={item.id} className="min-w-full h-full snap-center shrink-1">
             <Image
               width={1080}
               height={720}
