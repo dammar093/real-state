@@ -8,6 +8,7 @@ import {
 import style from "./slider.module.css";
 import Search from "@/components/ui/search";
 import Button from "@/components/ui/button";
+import Link from "next/link";
 
 const Slider = () => {
   const [index, setIndex] = useState(0);
@@ -98,8 +99,14 @@ const Slider = () => {
               Book your perfect room today.
             </h1>
           </div>
-          <div>
+          <div className="flex flex-col items-center gap-3">
             <Search />
+            <Link
+              className="text-[var(--black-color)] hover:text-[var(--primary-color)] font-medium button py-2 px-3 rounded-full"
+              href="/become-host"
+            >
+              <span> Become Host</span>
+            </Link>
           </div>
         </div>
       </div>

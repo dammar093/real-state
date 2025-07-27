@@ -5,15 +5,13 @@ import user from "../../../public/assests/user.png";
 interface ProfileProps {
   img?: string;
   className?: string;
-  onClick?: () => void;
 }
-const Profile: FC<ProfileProps> = ({ img, className, onClick }) => {
+const Profile: FC<ProfileProps> = ({ img, className }) => {
   return (
     <div
       className={`border rounded-full border-[var(--primary-color)] flex justify-center items-center overflow-hidden ${className}`}
       tabIndex={0}
       role="button"
-      onClick={onClick}
     >
       <Image
         src={img ? img : user}
