@@ -4,13 +4,15 @@ import authRouter from "./routes/auth/auth.route";
 
 const PORT = process.env.PORT || 8000;
 
-
-// === base route ===
+// === Base Route ===
 app.get("/", (req: Request, res: Response) => {
+  res.send(`Server is running on PORT:: ${PORT}`);
+});
 
-  res.send(`Server is running on PORT:: ${PORT}`)
-})
-app.use("/api/v1", authRouter)
+// === API Routes ===
+app.use("/api/v1", authRouter);
+
+// === Start Server ===
 app.listen(PORT, () => {
-  console.log(`Server is running 🌸 on PORT:: ${PORT}`);
+  console.log(`✅ Server is running on port ${PORT}`);
 });

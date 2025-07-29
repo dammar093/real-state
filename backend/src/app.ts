@@ -1,35 +1,47 @@
-import express, { Express, urlencoded } from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import cors from "cors";
+import connectDb, { db } from "./config/db";
 
-// === dotenv configuration ===
+// === Load env variables ===
 dotenv.config();
 
 const app: Express = express();
 
 // === Security Middlewares ===
-app.use(helmet()); // Adds security-related HTTP headers
-app.use(
-  cors({
-    origin: process.env.FRONTEND_URL, // e.g., http://localhost:3000
-    credentials: true, // If you want to allow cookies/auth headers
-  })
-);
-// === Rate Limiting ===
-const limiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 15 minutes
-  max: 15, // Limit each IP to 100 requests per windowMs
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false,  // Disable the `X-RateLimit-*` headers
-});
-app.use(limiter); // Apply rate limiting to all requests
+app.use(helmet());
 
-// === JSON Parsing Middleware ===
-app.use(express.json()); // Parses incoming JSON requests
-// == URL Encoded Parsing Middleware==
+app.use(cors({
+  origin: process.env.FRONTEND_URL, // like http://localhost:3000
+  credentials: true,
+}));
+
+// === Rate Limiter ===
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 15,
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(limiter);
+
+// === Body Parsers ===
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// === Connect to DB ===
+connectDb().catch((error) => {
+  console.error("DB connection failed:", error);
+  process.exit(1);
+});
+
+// Optional: Graceful shutdown
+process.on("SIGINT", async () => {
+  await db.$disconnect();
+  process.exit(0);
+});
 
 export const router = express.Router();
 export default app;
