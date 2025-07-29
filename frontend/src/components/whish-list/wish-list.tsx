@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
-import { IoIosHeartEmpty } from "react-icons/io";
+import { AiOutlineHeart } from "react-icons/ai";
 import Button from "../ui/button";
 
 const WhishList = () => {
@@ -16,12 +16,12 @@ const WhishList = () => {
         className="text-[var(--black-color)] hover:text-[var(--primary-color)] bg-transparent cursor-pointer"
         onClick={() => setShowWishList((prev) => !prev)}
       >
-        <IoIosHeartEmpty size={30} />
+        <AiOutlineHeart size={25} title="Whishlist" />
       </span>
       {showWishlist && (
         <div className="bg-white shadow-2xl border border-gray-500/50 h-[400] absolute w-[300px] top-22.5 right-0 p-4 rounded-md">
           <div className="flex flex-col gap-3">
-            <h2 className="text-[18px] font-semibold text-slate-800">
+            <h2 className="text-[17px] font-semibold text-slate-800 text-center">
               Your Wish Lists
             </h2>
             {false ? (

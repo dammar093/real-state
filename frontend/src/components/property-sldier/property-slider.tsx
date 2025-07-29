@@ -48,7 +48,7 @@ const PropertySlider = () => {
       setIndex((prev) => (prev + 1) % sliderItems.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [sliderItems.length]);
 
   return (
     <section className="w-full mt-3 aspect-video relative rounded overflow-hidden">

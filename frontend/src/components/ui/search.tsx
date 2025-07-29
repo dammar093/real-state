@@ -25,7 +25,10 @@ const Search = () => {
           <span className="text-[var(--primary-color)] font-medium mr-2">
             |
           </span> */}
-          <Input placeholder="Search..." className="pr-11 md:pr-23" />
+          <Input
+            placeholder="Search..."
+            className="pr-11 md:pr-23 placeholder:-text-[12px] md:placeholder:text-[16px]"
+          />
           <Button
             type="submit"
             className="absolute flex items-center justify-center right-2 top-1/2 transform -translate-y-1/2 w-[30px] h-[30px] md:w-[40px] md:h-[40px] rounded-full"

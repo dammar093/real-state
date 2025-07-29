@@ -5,26 +5,16 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "../../../../public/assests/logo.png";
 import WhishList from "@/components/whish-list/wish-list";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  useAuth,
-  UserButton,
-} from "@clerk/nextjs";
-import Button from "@/components/ui/button";
 import Search from "@/components/ui/search";
+import { IoBookOutline } from "react-icons/io5";
 
 const Header = () => {
-  const { isSignedIn, userId, sessionId } = useAuth();
-
   return (
     <header className="shadow-lg sticky z-[1080] top-0 bg-white w-full">
       <div className="relative">
         <Container>
           <div>
-            <nav className="flex justify-between items-center">
+            <nav className="flex justify-between items-center gap-1">
               <div>
                 <Link className="d-block" href="/">
                   <div>
@@ -45,25 +35,28 @@ const Header = () => {
                 <Search />
               </div>
               <div>
-                <ul className="flex items-center gap-3 md:gap-4 lg:gap-5">
+                <ul className="flex items-center gap-1 md:gap-4 lg:gap-5">
+                  <li>
+                    <Link
+                      href={"/booking"}
+                      className="text-gray-800 hover:text-[var(--primary-color)] font-medium"
+                    >
+                      <span className=" md:hidden">
+                        <IoBookOutline size={25} title="Booking" />
+                      </span>
+                      <span className="hidden md:block">Booking</span>
+                    </Link>
+                  </li>
                   <li>
                     <WhishList />
                   </li>
                   <li>
-                    <SignedOut>
-                      <SignInButton>
-                        <Button className="px-3 py-1 cursor-pointer">
-                          {" "}
-                          Sign In
-                        </Button>
-                      </SignInButton>
-                      {/* <SignUpButton>
-                        <Button className="px-3 py-1">Sign Up</Button>
-                      </SignUpButton> */}
-                    </SignedOut>
-                    <SignedIn>
-                      <UserButton />
-                    </SignedIn>
+                    <Link
+                      href={"/sign-in"}
+                      className="px-3 py-2 button rounded-full capitalize"
+                    >
+                      Sign in
+                    </Link>
                   </li>
                 </ul>
               </div>

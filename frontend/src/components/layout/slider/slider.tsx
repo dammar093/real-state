@@ -6,13 +6,11 @@ import {
   MdOutlineArrowForwardIos,
 } from "react-icons/md";
 import style from "./slider.module.css";
-import Search from "@/components/ui/search";
 import Button from "@/components/ui/button";
 import Link from "next/link";
 
 const Slider = () => {
   const [index, setIndex] = useState(0);
-
   const sliderItems = [
     {
       id: 1,

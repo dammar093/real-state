@@ -11,6 +11,7 @@ interface InputProps {
   required?: boolean;
   autoComplete?: string;
   autoFocus?: boolean;
+  label?: string;
 }
 
 const Input = ({
@@ -25,10 +26,18 @@ const Input = ({
   required,
   autoComplete,
   autoFocus,
+  label,
 }: InputProps) => {
   return (
-    <>
-      {" "}
+    <div className="flex flex-col gap-1">
+      {label && (
+        <label
+          className="text-[14px] font-semibold text-gray-700 capitalize"
+          htmlFor={label?.split(" ")[0]}
+        >
+          {label}
+        </label>
+      )}
       <input
         type={type}
         placeholder={placeholder}
@@ -40,9 +49,10 @@ const Input = ({
         required={required}
         autoComplete={autoComplete}
         autoFocus={autoFocus}
-        className={`w-full p-2 border-none outline-none border-gray-300 rounded focus:outline-none focus:border-blue-500 placeholder:text-[var(--primary-color)] ${className}`}
+        id={label?.split(" ")[0]}
+        className={`w-full p-2 border-gray-300 rounded focus:outline-none focus:border-blue-500 placeholder:text-[var(--primary-color)] ${className}`}
       />
-    </>
+    </div>
   );
 };
 
