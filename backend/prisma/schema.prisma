@@ -45,6 +45,8 @@ model Users {
   otp        String?
   otpExpires DateTime?
   services   Services[]
+  isActive   Boolean      @default(false)
+  role       Role         @default(USER)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @default(now()) @updatedAt
 }
@@ -53,8 +55,6 @@ model UsersDetail {
   id          Int      @id @default(autoincrement())
   phoneNumber String?
   address     String?
-  role        Role     @default(USER)
-  isActive    Boolean  @default(false)
   userId      Int      @unique // FK to Users — One-to-one relation (1 detail per user)
   user        Users    @relation(fields: [userId], references: [id])
   profile     Images? // Optional profile image
