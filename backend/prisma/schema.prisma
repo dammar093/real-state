@@ -99,7 +99,6 @@ model Images {
   property      Properties?   @relation(fields: [propertyId], references: [id])
   userDetailId  Int?          @unique  // FK to UsersDetail — image can be profile picture for a user detail
   profilePic    UsersDetail?  @relation(fields: [userDetailId], references: [id])
-
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @default(now()) @updatedAt
 }
@@ -124,7 +123,6 @@ model Booking {
   checkout      DateTime?
   status        Status     @default(PENDING)    // Booking status ENUM
   payment       Payment[] // 1 booking can have multiple payments (e.g., split payments)
-
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @default(now()) @updatedAt
 }
@@ -137,7 +135,6 @@ model Reviews {
   property      Properties  @relation(fields: [propertyId], references: [id])  // Relation: each review belongs to one property
   userId        Int           // FK to Users — who wrote the review
   user          Users       @relation(fields: [userId], references: [id])   // Relation: each review is written by one user
-
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @default(now()) @updatedAt
 }
