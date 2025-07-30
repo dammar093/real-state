@@ -44,11 +44,11 @@ model Users {
 }
 
 model UsersDetail {
-  id          Int      @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   phoneNumber String?
   address     String?
-  userId      Int      @unique
-  user        Users    @relation(fields: [userId], references: [id])
+  userId      Int           @unique
+  user        Users         @relation(fields: [userId], references: [id])
   profile     Images?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @default(now()) @updatedAt
@@ -57,7 +57,7 @@ model UsersDetail {
 
 
 model Properties {
-  id          Int       @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   title       String
   price       Int
   location    String
@@ -65,54 +65,54 @@ model Properties {
   services    String?
   map         String
   userId      Int 
-  user        Users     @relation(fields: [userId], references: [id])
+  user        Users         @relation(fields: [userId], references: [id])
   images      Images[]
   wId         Int
-  wishList    WishList @relation(fields: [wId],references: [id])
+  wishList    WishList      @relation(fields: [wId],references: [id])
   bId         Int
-  booking     Booking @relation(fields: [bId],references: [id])
+  booking     Booking       @relation(fields: [bId],references: [id])
   review      Reviews[]
   category    Category?
   type        Types
-  isHotel     Boolean @default(false)
+  isHotel     Boolean       @default(false)
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @default(now()) @updatedAt
 }
 
 model Category{
-  id       Int         @id @default(autoincrement())
-  name      String
-  pId       Int @unique
-  property  Properties @relation(fields: [pId],references: [id])
+  id          Int           @id @default(autoincrement())
+  name        String
+  pId         Int           @unique
+  property    Properties    @relation(fields: [pId],references: [id])
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @default(now()) @updatedAt
 }
 
 
 model Images {
-  id       Int         @id @default(autoincrement())
-  image    String      // Cloudinary public image URL
-  pId      Int 
-  userId   Int 
-  property Properties? @relation(fields: [pId], references: [id])
-  uId      Int @unique
-  profilePic UsersDetail @relation(fields: [uId],references: [id])
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @default(now()) @updatedAt
+  id          Int              @id @default(autoincrement())
+  image       String      // Cloudinary public image URL
+  pId         Int 
+  userId      Int 
+  property    Properties?      @relation(fields: [pId], references: [id])
+  uId         Int              @unique
+  profilePic  UsersDetail      @relation(fields: [uId],references: [id])
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @default(now()) @updatedAt
 }
 
 model WishList {
-  id        Int @id @default(autoincrement())
-  pId       Int
-  propties  Properties[]
-  userId    Int
-  user      Users  @relation(fields: [userId],references: [id])
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @default(now()) @updatedAt
+  id          Int             @id @default(autoincrement())
+  pId         Int
+  propties    Properties[]
+  userId      Int
+  user        Users           @relation(fields: [userId],references: [id])
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @default(now()) @updatedAt
 }
 
 model Booking{
-  id          Int          @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   pId         Int
   properties  Properties[]
   userId      Int
@@ -138,10 +138,12 @@ model Reviews{
 }
 
 model Payment{
-  id      Int       @id  @default(autoincrement())
-  status  Status    @default(PENDING)
-  userId  Int
-  user    Users     @relation(fields: [userId],references: [id])
-  bId     Int 
-  booking Booking  @relation(fields: [bId],references: [id])      
+  id          Int        @id  @default(autoincrement())
+  status      Status     @default(PENDING)
+  userId      Int
+  user        Users      @relation(fields: [userId],references: [id])
+  bId         Int 
+  booking     Booking    @relation(fields: [bId],references: [id]) 
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @default(now()) @updatedAt     
 }
