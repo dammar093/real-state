@@ -5,6 +5,7 @@ import authController from "../../controllers/auth/auth.controller";
 authRouter.post("/register", authController.asyncHandler(authController.registerUser.bind(authController)));
 authRouter.post("/login", authController.asyncHandler(authController.loginUser.bind(authController)));
 authRouter.post("/verify-otp", authController.asyncHandler(authController.verifyOTP.bind(authController)))
+authRouter.post("/send-otp", authController.asyncHandler(authController.sendOtp.bind(authController)))
 authRouter.post("/forgot-password", authController.asyncHandler(authController.forgotPassword.bind(authController)))
 
 export default authRouter;
