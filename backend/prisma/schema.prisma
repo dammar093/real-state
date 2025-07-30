@@ -22,7 +22,7 @@ enum Types {
 enum Status {
   SUCCESS
   PENDING
-  CANCELLED 
+  CANCELLED
 }
 
 enum PaymentMethods {
@@ -32,122 +32,144 @@ enum PaymentMethods {
 }
 
 model Users {
-  id          Int           @id @default(autoincrement())
-  fullName    String
-  email       String        @unique
-  password    String
-  properties  Properties[]  // 1 user can have many properties
-  userDetail  UsersDetail?  // 1 user can have 1 detail profile
-  whishList   WishList[]    // 1 user can save many properties to wishlist
-  booking     Booking[]     // 1 user can book many properties
-  reviews     Reviews[]     // 1 user can write many reviews
-  payment     Payment[]     // 1 user can make many payments
-  otp         String?
-  otpExpires  DateTime?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @default(now()) @updatedAt
+  id         Int          @id @default(autoincrement())
+  fullName   String
+  email      String       @unique
+  password   String
+  properties Properties[]
+  userDetail UsersDetail?
+  whishList  WishList[]
+  booking    Booking[]
+  reviews    Reviews[]
+  payment    Payment[]
+  otp        String?
+  otpExpires DateTime?
+  services   Services[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now()) @updatedAt
 }
 
 model UsersDetail {
-  id            Int           @id @default(autoincrement())
-  phoneNumber   String?
-  address       String?
-  role          Role          @default(USER)
-  isActive      Boolean       @default(false)
-  userId        Int           @unique  // FK to Users — One-to-one relation (1 detail per user)
-  user          Users         @relation(fields: [userId], references: [id])
-  profile       Images?       // Optional profile image
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @default(now()) @updatedAt
+  id          Int      @id @default(autoincrement())
+  phoneNumber String?
+  address     String?
+  role        Role     @default(USER)
+  isActive    Boolean  @default(false)
+  userId      Int      @unique // FK to Users — One-to-one relation (1 detail per user)
+  user        Users    @relation(fields: [userId], references: [id])
+  profile     Images? // Optional profile image
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now()) @updatedAt
 }
 
 model Properties {
-  id            Int           @id @default(autoincrement())
-  title         String
-  price         Int
-  location      String
-  description   String
-  services      String?
-  map           String
-  userId        Int           // FK to Users — One property belongs to one user
-  user          Users         @relation(fields: [userId], references: [id])
-  images        Images[]      // 1 property can have many images
-  wishLists     WishList[]    // 1 property can be saved in many wishlists
-  bookings      Booking[]     // 1 property can be booked many times
-  review        Reviews[]     // 1 property can have many reviews
-  categoryId    Int           // required FK
-  category      Category      @relation(fields: [categoryId], references: [id])
-  type          Types          // ENUM: RENT or SELL
-  isHotel       Boolean       @default(false)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @default(now()) @updatedAt
+  id          Int               @id @default(autoincrement())
+  title       String
+  price       Int
+  location    String
+  description String
+  map         String
+  userId      Int
+  user        Users             @relation(fields: [userId], references: [id])
+  images      Images[]
+  wishLists   WishList[]
+  bookings    Booking[]
+  review      Reviews[]
+  categoryId  Int
+  category    Category          @relation(fields: [categoryId], references: [id])
+  services    PropertyService[] // many-to-many
+  type        Types
+  isHotel     Boolean           @default(false)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @default(now()) @updatedAt
 }
 
 model Category {
-  id          Int           @id @default(autoincrement())
-  name        String
-  properties  Properties[]   // Back-reference: One category can be used for many properties
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @default(now()) @updatedAt
+  id         Int          @id @default(autoincrement())
+  name       String
+  properties Properties[] // Back-reference: One category can be used for many properties
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now()) @updatedAt
 }
 
-
 model Images {
-  id            Int           @id @default(autoincrement())
-  image         String        // Cloudinary URL
-  propertyId    Int?           // FK to Properties — image can belong to a property
-  property      Properties?   @relation(fields: [propertyId], references: [id])
-  userDetailId  Int?          @unique  // FK to UsersDetail — image can be profile picture for a user detail
-  profilePic    UsersDetail?  @relation(fields: [userDetailId], references: [id])
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @default(now()) @updatedAt
+  id           Int          @id @default(autoincrement())
+  image        String
+  propertyId   Int?
+  property     Properties?  @relation(fields: [propertyId], references: [id])
+  userDetailId Int?         @unique
+  profilePic   UsersDetail? @relation(fields: [userDetailId], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @default(now()) @updatedAt
 }
 
 model WishList {
-  id            Int        @id @default(autoincrement())  // FK to Properties — wishlist is for one property
-  propertyId    Int
-  property      Properties @relation(fields: [propertyId], references: [id])  // FK to Users — one user owns the wishlist entry
-  userId        Int
-  user          Users      @relation(fields: [userId], references: [id]) // 1 user has multiple wishlist
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @default(now()) @updatedAt
+  id         Int        @id @default(autoincrement()) // FK to Properties — wishlist is for one property
+  propertyId Int
+  property   Properties @relation(fields: [propertyId], references: [id]) // FK to Users — one user owns the wishlist entry
+  userId     Int
+  user       Users      @relation(fields: [userId], references: [id]) // 1 user has multiple wishlist
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @default(now()) @updatedAt
 }
 
 model Booking {
-  id            Int        @id @default(autoincrement())   // FK to Properties — booking for one property
-  propertyId    Int
-  property      Properties @relation(fields: [propertyId], references: [id])
-  userId        Int         // FK to Users — who booked
-  user          Users      @relation(fields: [userId], references: [id])
-  checkIn       DateTime?
-  checkout      DateTime?
-  status        Status     @default(PENDING)    // Booking status ENUM
-  payment       Payment[] // 1 booking can have multiple payments (e.g., split payments)
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @default(now()) @updatedAt
+  id         Int        @id @default(autoincrement()) // FK to Properties — booking for one property
+  propertyId Int
+  property   Properties @relation(fields: [propertyId], references: [id])
+  userId     Int // FK to Users — who booked
+  user       Users      @relation(fields: [userId], references: [id])
+  checkIn    DateTime?
+  checkout   DateTime?
+  status     Status     @default(PENDING) // Booking status ENUM
+  payment    Payment[] // 1 booking can have multiple payments (e.g., split payments)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @default(now()) @updatedAt
 }
 
 model Reviews {
-  id            Int         @id @default(autoincrement())
-  rating        Float
-  message       String
-  propertyId    Int        // FK to Properties — review for one property
-  property      Properties  @relation(fields: [propertyId], references: [id])  // Relation: each review belongs to one property
-  userId        Int           // FK to Users — who wrote the review
-  user          Users       @relation(fields: [userId], references: [id])   // Relation: each review is written by one user
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @default(now()) @updatedAt
+  id         Int        @id @default(autoincrement())
+  rating     Float
+  message    String
+  propertyId Int // FK to Properties — review for one property
+  property   Properties @relation(fields: [propertyId], references: [id]) // Relation: each review belongs to one property
+  userId     Int // FK to Users — who wrote the review
+  user       Users      @relation(fields: [userId], references: [id]) // Relation: each review is written by one user
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @default(now()) @updatedAt
 }
 
 model Payment {
-  id              Int              @id @default(autoincrement())
-  status          Status           @default(PENDING)
-  paymentAmount   Float
-  paymentMethod   PaymentMethods
-  userId          Int                // FK to Users — who paid
-  user            Users            @relation(fields: [userId], references: [id])
-  bookingId       Int                // FK to Booking — payment for a booking
-  booking         Booking          @relation(fields: [bookingId], references: [id])
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @default(now()) @updatedAt     
+  id            Int            @id @default(autoincrement())
+  status        Status         @default(PENDING)
+  paymentAmount Float
+  paymentMethod PaymentMethods
+  userId        Int // FK to Users — who paid
+  user          Users          @relation(fields: [userId], references: [id])
+  bookingId     Int // FK to Booking — payment for a booking
+  booking       Booking        @relation(fields: [bookingId], references: [id])
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+}
+
+model Services {
+  id         Int               @id @default(autoincrement())
+  name       String
+  image      String // store cloudinary URL directly
+  userId     Int // uploaded by super admin
+  user       Users             @relation(fields: [userId], references: [id])
+  properties PropertyService[] // many-to-many relation
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @default(now()) @updatedAt
+}
+
+model PropertyService {
+  id         Int @id @default(autoincrement())
+  propertyId Int
+  serviceId  Int
+
+  property Properties @relation(fields: [propertyId], references: [id])
+  service  Services   @relation(fields: [serviceId], references: [id])
+
+  @@unique([propertyId, serviceId]) // prevent duplicates
 }
