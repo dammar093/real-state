@@ -22,7 +22,7 @@ enum Types {
 enum Status {
   SUCCESS
   PENDING
-  CANCLLED 
+  CANCELLED 
 }
 
 enum PaymentMethods {
