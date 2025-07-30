@@ -23,14 +23,23 @@ class AuthController extends AsyncHanler {
       }
       const existUser = await db.users.findUnique({
         where: {
-          email
+          email,
+          isVerified: true
         }
       });
 
       if (existUser) {
         throw new ApiError(400, "This email already exist")
       }
-
+      const notValidUser = await db.users.findFirst({
+        where: {
+          email,
+          isVerified: false
+        }
+      })
+      if (notValidUser) {
+        throw new ApiError(400, "Not valid email plased validate it")
+      }
       const user = await db.users.create({
         data: {
           fullName: fullName,
