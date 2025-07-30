@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
@@ -13,15 +7,141 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 enum Role {
   SUPER_ADMIN
   ADMIN
   USER
 }
 
+enum Types {
+  SELL
+  RENT
+}
+
+enum Status {
+  SUCCESS
+  PENDING
+  CANCLLED 
+}
+
 model Users {
-  id       Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-  role     Role    @default(USER)
+  id          Int           @id @default(autoincrement())
+  fullName    String
+  email       String        @unique
+  password    String
+  role        Role          @default(USER)
+  isActive    Boolean       @default(false)
+  properties  Properties[]
+  userDetail  UsersDetail?
+  whishList   WishList[]
+  booking     Booking[]
+  reviews     Reviews[]
+  payment     Payment[]
+  otp         String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+}
+
+model UsersDetail {
+  id          Int      @id @default(autoincrement())
+  phoneNumber String?
+  address     String?
+  userId      Int      @unique
+  user        Users    @relation(fields: [userId], references: [id])
+  profile     Images?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+}
+
+
+
+model Properties {
+  id          Int       @id @default(autoincrement())
+  title       String
+  price       Int
+  location    String
+  description String
+  services    String?
+  map         String
+  userId      Int 
+  user        Users     @relation(fields: [userId], references: [id])
+  images      Images[]
+  wId         Int
+  wishList    WishList @relation(fields: [wId],references: [id])
+  bId         Int
+  booking     Booking @relation(fields: [bId],references: [id])
+  review      Reviews[]
+  category    Category?
+  type        Types
+  isHotel     Boolean @default(false)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+}
+
+model Category{
+  id       Int         @id @default(autoincrement())
+  name      String
+  pId       Int @unique
+  property  Properties @relation(fields: [pId],references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+}
+
+
+model Images {
+  id       Int         @id @default(autoincrement())
+  image    String      // Cloudinary public image URL
+  pId      Int 
+  userId   Int 
+  property Properties? @relation(fields: [pId], references: [id])
+  uId      Int @unique
+  profilePic UsersDetail @relation(fields: [uId],references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+}
+
+model WishList {
+  id        Int @id @default(autoincrement())
+  pId       Int
+  propties  Properties[]
+  userId    Int
+  user      Users  @relation(fields: [userId],references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+}
+
+model Booking{
+  id          Int          @id @default(autoincrement())
+  pId         Int
+  properties  Properties[]
+  userId      Int
+  user        Users         @relation(fields: [userId],references: [id])
+  checkIn     DateTime?
+  checkout    DateTime?
+  status      Status        @default(PENDING)
+  payment     Payment[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+}
+
+model Reviews{
+  id          Int             @id @default(autoincrement())
+  rating      Float
+  message     String
+  pId         Int
+  property    Properties      @relation(fields: [pId],references: [id])
+  userId      Int
+  user        Users           @relation(fields: [userId],references: [id])
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @default(now()) @updatedAt
+}
+
+model Payment{
+  id      Int       @id  @default(autoincrement())
+  status  Status    @default(PENDING)
+  userId  Int
+  user    Users     @relation(fields: [userId],references: [id])
+  bId     Int 
+  booking Booking  @relation(fields: [bId],references: [id])      
 }

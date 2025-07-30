@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
+import AsyncHanler from "../../utils/asyncHandler";
 
-class AuthController {
+class AuthController extends AsyncHanler {
   //method for createuser
   async registerUser(req: Request, res: Response): Promise<void> {
     try {
-
+      console.log(req?.body)
     } catch (error) {
 
     }
