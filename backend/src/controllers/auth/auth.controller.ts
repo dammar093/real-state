@@ -6,6 +6,8 @@ import hash from "../../utils/hash";
 import ApiError from "../../utils/errorHandler";
 import createJwt from "../../utils/createJwt";
 import ApiResponse from "../../utils/apiRespons";
+import { sendOtpEmail } from "../../utils/sendEmail";
+import generateOTP from "../../utils/generateOtp";
 
 class AuthController extends AsyncHanler {
   private userTypes: string[] = ["USER", "ADMIN", "SUPER_ADMIN"]
@@ -19,6 +21,16 @@ class AuthController extends AsyncHanler {
       if (!this.userTypes.includes(role)) {
         throw new ApiError(400, "Role must be USER or ADMIN");
       }
+      const existUser = await db.users.findUnique({
+        where: {
+          email: email
+        }
+      });
+
+      if (existUser) {
+        throw new ApiError(400, "This email already exist")
+      }
+
       const user = await db.users.create({
         data: {
           fullName: fullName,
@@ -31,8 +43,9 @@ class AuthController extends AsyncHanler {
         throw new ApiError(500, "Failed to creat user")
       }
       user.password = ""
-      const token = createJwt.createJWT(user?.fullName, user?.fullName, user?.role);
-      return res.cookie("token", token).send(new ApiResponse(201, user, "User created successfully"))
+      await sendOtpEmail(user?.email, user?.password, generateOTP())
+      // const token = createJwt.createJWT(user?.fullName, user?.fullName, user?.role);
+      return res.send(new ApiResponse(201, user, "User created successfully"))
     } catch (error) {
       throw new ApiError(500, "Failed to create user")
     }

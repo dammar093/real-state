@@ -1,8 +1,9 @@
 import ApiError from "./errorHandler";
 
 class Validation {
-  private emailRegex = /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
-  private passwordRegex = /^(?=.*[A-Za-z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/;
+  private emailRegex = /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com)$/;
+  private passwordRegex = /^(?=.*[A-Z])(?=.*[A-Za-z])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).+$/;
+
 
   public emailValidation(email: string): void {
     if (!email?.trim()) {
@@ -17,7 +18,7 @@ class Validation {
     if (!fullName?.trim()) {
       throw new ApiError(400, "Full name is required");
     }
-    if (fullName.trim().length < 2) {
+    if (fullName.trim().length <= 3) {
       throw new ApiError(400, "Full name must be at least 2 characters long");
     }
   }
@@ -30,7 +31,7 @@ class Validation {
       throw new ApiError(400, "Password must be at least 8 characters long");
     }
     if (!this.passwordRegex.test(password)) {
-      throw new ApiError(400, "Password must contain at least one letter and one special character");
+      throw new ApiError(400, "Password must contain at least one uppercase, one letter and one special character");
     }
   }
 }
