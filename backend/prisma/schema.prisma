@@ -138,12 +138,13 @@ model Reviews{
 }
 
 model Payment{
-  id          Int        @id  @default(autoincrement())
-  status      Status     @default(PENDING)
-  userId      Int
-  user        Users      @relation(fields: [userId],references: [id])
-  bId         Int 
-  booking     Booking    @relation(fields: [bId],references: [id]) 
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @default(now()) @updatedAt     
+  id                  Int        @id  @default(autoincrement())
+  status              Status     @default(PENDING)
+  paymentAmount        Float
+  userId              Int
+  user                Users      @relation(fields: [userId],references: [id])
+  bId                 Int 
+  booking             Booking    @relation(fields: [bId],references: [id]) 
+  createdAt           DateTime   @default(now())
+  updatedAt           DateTime   @default(now()) @updatedAt     
 }
