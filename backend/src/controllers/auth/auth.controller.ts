@@ -43,9 +43,9 @@ class AuthController extends AsyncHanler {
         throw new ApiError(500, "Failed to creat user")
       }
       user.password = ""
-      await sendOtpEmail(user?.email, user?.password, generateOTP())
+      await sendOtpEmail(user?.email, user?.fullName, generateOTP())
       // const token = createJwt.createJWT(user?.fullName, user?.fullName, user?.role);
-      return res.send(new ApiResponse(201, user, "User created successfully"))
+      return res.status(201).send(new ApiResponse(201, user, "User created successfully"))
     } catch (error) {
       throw new ApiError(500, "Failed to create user")
     }
