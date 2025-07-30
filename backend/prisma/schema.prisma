@@ -25,6 +25,12 @@ enum Status {
   CANCLLED 
 }
 
+enum PaymentMethods {
+  ESEWA
+  KHALTI
+  CASH
+}
+
 model Users {
   id          Int           @id @default(autoincrement())
   fullName    String
@@ -140,7 +146,8 @@ model Reviews{
 model Payment{
   id                  Int        @id  @default(autoincrement())
   status              Status     @default(PENDING)
-  paymentAmount        Float
+  paymentAmount       Float
+  paymentMethod       PaymentMethods
   userId              Int
   user                Users      @relation(fields: [userId],references: [id])
   bId                 Int 
