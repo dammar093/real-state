@@ -1,12 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import ApiError from "./errorHandler";
+import ApiError from "../utils/errorHandler";
 import { db } from "../config/db";
 
+enum Role {
+  SUPER_ADMIN,
+  ADMIN,
+  User
+}
 interface JwtPayload {
   id: number;
   email?: string;
-  role?: string;
+  role?: Role;
   iat?: number;
   exp?: number;
 }
@@ -14,7 +19,6 @@ interface JwtPayload {
 class TokenService {
   public createJWT(id: number, name: string, email: string, role: string): string {
     const payload = { id, name, email, role };
-
     return jwt.sign(payload, process.env.JWT_SECRET!, {
       expiresIn: 10 * 24 * 60 * 60
     });
@@ -37,7 +41,7 @@ class TokenService {
       }
 
       const user = await db.users.findUnique({
-        where: { id: decodedToken.id },
+        where: { id: decodedToken?.id },
       });
 
       if (!user) {
@@ -45,6 +49,7 @@ class TokenService {
       }
 
       req.user = user; // Ensure you've extended Express.Request as shown earlier
+
       next();
     } catch (error) {
       if (error instanceof jwt.TokenExpiredError) {

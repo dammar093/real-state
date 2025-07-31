@@ -5,7 +5,7 @@ import validtion from "../../utils/validtion";
 import { db } from "../../config/db";
 import hash from "../../utils/hash";
 import ApiError from "../../utils/errorHandler";
-import createJwt from "../../utils/createJwt";
+import createJwt from "../../middlwares/createJwt";
 import ApiResponse from "../../utils/apiRespons";
 import { sendOtpEmail } from "../../utils/sendEmail";
 import generateOTP from "../../utils/generateOtp";

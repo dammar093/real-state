@@ -1,6 +1,6 @@
 import { Router } from "express";
 import authController from "../../controllers/auth/auth.controller";
-import createJwt from "../../utils/createJwt";
+import createJwt from "../../middlwares/createJwt";
 
 // Use the asyncHandler from AuthController (inherited)
 const authRouter = Router()
