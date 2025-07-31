@@ -97,6 +97,22 @@ class UserController extends AsyncHandler {
       throw new ApiError(500, "Failed to fetch user")
     }
   }
+  // delete user
+  public async deleteUserById(req: Request, res: Response): Promise<void> {
+    const { id } = req?.params
+    try {
+      const user = db.users.update({
+        where: {
+          id: parseInt(id)
+        },
+        data: {
+
+        }
+      })
+    } catch (error) {
+
+    }
+  }
 
 }
 

@@ -47,6 +47,8 @@ model Users {
   services   Services[]
   isVerified   Boolean    @default(false)
   role       Role         @default(USER)
+  status     Boolean      @default(true)
+  isDelete   Boolean      @default(false)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @default(now()) @updatedAt
 }
@@ -79,7 +81,7 @@ model Properties {
   category    Category          @relation(fields: [categoryId], references: [id])
   services    PropertyService[] // many-to-many
   type        Types
-  status      Boolean           @default(false)
+  status      Boolean           @default(true)
   isDelete    Boolean           @default(false)
   isHotel     Boolean           @default(false)
   createdAt   DateTime          @default(now())
@@ -114,7 +116,6 @@ model WishList {
   property   Properties @relation(fields: [propertyId], references: [id]) // FK to Users — one user owns the wishlist entry
   userId     Int
   user       Users      @relation(fields: [userId], references: [id]) // 1 user has multiple wishlist
-  status     Boolean    @default(false)
   isDelete   Boolean    @default(false)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @default(now()) @updatedAt
@@ -143,6 +144,7 @@ model Reviews {
   property   Properties @relation(fields: [propertyId], references: [id]) // Relation: each review belongs to one property
   userId     Int // FK to Users — who wrote the review
   user       Users      @relation(fields: [userId], references: [id]) // Relation: each review is written by one user
+  status     Boolean    @default(true)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @default(now()) @updatedAt
 }
@@ -166,7 +168,7 @@ model Services {
   image      String // store cloudinary URL directly
   userId     Int // uploaded by super admin
   user       Users             @relation(fields: [userId], references: [id])
-  status     Boolean           @default(false)
+  status     Boolean           @default(true)
   isDelete   Boolean           @default(false)
   properties PropertyService[] // many-to-many relation
   createdAt  DateTime          @default(now())
@@ -177,10 +179,9 @@ model PropertyService {
   id         Int @id @default(autoincrement())
   propertyId Int
   serviceId  Int
-
   property Properties          @relation(fields: [propertyId], references: [id])
   service  Services            @relation(fields: [serviceId], references: [id])
-  status   Boolean             @default(false)
+  status   Boolean             @default(true)
   isDelete Boolean             @default(false)
   @@unique([propertyId, serviceId]) // prevent duplicates
   createdAt  DateTime          @default(now())
