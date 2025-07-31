@@ -105,7 +105,10 @@ class AuthController extends AsyncHanler {
       });
 
       const token = createJwt.createJWT(user?.fullName, user?.fullName, user?.role);
-      return res.status(200).json(new ApiResponse(200, { token }, "User verified successfull"));
+      return res.status(200).cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+      }).json(new ApiResponse(200, { token }, "User verified successfull"));
     } catch (error: any) {
       console.log(error.message)
       throw new ApiError(500, "Something went wrong")
