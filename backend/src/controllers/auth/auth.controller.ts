@@ -266,7 +266,10 @@ class AuthController extends AsyncHanler {
 
     try {
 
-      return res.status(200).cookie("token", "sfds").json(new ApiResponse(200, "Logout successfully"))
+      return res.status(200).clearCookie("token", {
+        secure: true,
+        httpOnly: true
+      }).json(new ApiResponse(200, "Logout successfully"))
     } catch (error) {
       throw new ApiError(500, "Failed to logout")
     }
