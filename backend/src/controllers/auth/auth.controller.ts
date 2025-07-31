@@ -1,3 +1,4 @@
+import bycryptjs from "bcryptjs"
 import { Request, Response } from "express";
 import AsyncHanler from "../../utils/asyncHandler";
 import validtion from "../../utils/validtion";
@@ -61,17 +62,52 @@ class AuthController extends AsyncHanler {
   }
 
   //method for authenticate user
-  async loginUser(req: Request, res: Response): Promise<void> {
+  async loginUser(req: Request, res: Response): Promise<Response> {
+    const { email, password } = req.body;
+    validtion.emailValidation(email)
+    validtion.passwordValidation(password)
     try {
-      // Your logic here
-      res.status(201).json({ message: "User created successfully" });
+      const notVerifiedUser = await db.users.findFirst({
+        where: {
+          email,
+          isVerified: false
+        }
+      })
+      if (notVerifiedUser) {
+        throw new ApiError(401, "Please verified your email")
+      }
+      const user = await db.users.findFirst({
+        where: {
+          email,
+          isVerified: true
+        }
+      })
+      if (!user?.password) {
+        throw new ApiError(400, "Invalid email or password")
+      }
+      const isMatch = await bycryptjs.compare(password, user?.password)
+      if (!isMatch) {
+        throw new ApiError(400, "Invalid email or password")
+      }
+      if (!user) {
+        throw new ApiError(401, "Invalid email or password");
+      }
+      const token = createJwt.createJWT(user?.fullName, user?.email, user?.role);
+      if (!token) {
+        throw new ApiError(500, "fialed to create token");
+      }
+      return res.status(200).cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+      }).json(new ApiResponse(200, token, "User logged in successfully"));
     } catch (error) {
-      res.status(500).json({ error: "Internal Server Error" });
+      throw new ApiError(500, "Fialed to loging")
     }
   }
   //method for verify otp
   async verifyOTP(req: Request, res: Response): Promise<Response> {
     const { email, otp } = req.body
+    validtion.emailValidation(email)
     try {
       const user = await db.users.findFirst({
         where: {
@@ -105,6 +141,9 @@ class AuthController extends AsyncHanler {
       });
 
       const token = createJwt.createJWT(user?.fullName, user?.fullName, user?.role);
+      if (!token) {
+        throw new ApiError(500, "fialed to create token");
+      }
       return res.status(200).cookie("token", token, {
         httpOnly: true,
         secure: true,
@@ -116,6 +155,7 @@ class AuthController extends AsyncHanler {
   }
   async sendOtp(req: Request, res: Response): Promise<Response> {
     const { email } = req.body;
+    validtion.emailValidation(email)
     try {
       const user = await db.users.findFirst({
         where: {
@@ -145,13 +185,42 @@ class AuthController extends AsyncHanler {
     }
   }
   //method for forgot passwrod
-  async forgotPassword(req: Request, res: Response): Promise<void> {
+  async forgotPassword(req: Request, res: Response): Promise<Response> {
+    const { email, otp, password } = req.body
+    validtion.emailValidation(email)
+    validtion.passwordValidation(password)
     try {
-
+      const existUser = await db.users.findFirst({
+        where: {
+          email: email
+        }
+      })
+      if (!existUser) {
+        throw new ApiError(400, "This is not exist");
+      }
+      const validOTP = await db.users.findFirst({
+        where: {
+          otp: otp
+        }
+      })
+      if (!validOTP) {
+        throw new ApiError(400, "Invalid OTP")
+      }
+      await db.users.update({
+        where: {
+          id: validOTP?.id
+        },
+        data: {
+          password
+        }
+      })
+      return res.json(new ApiResponse(200, "Password updated successfukky"))
     } catch (error) {
-
+      throw new ApiError(500, "Failed to update password")
     }
   }
+
+  // method for change password
 }
 
 export default new AuthController();
