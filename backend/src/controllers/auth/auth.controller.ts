@@ -244,7 +244,8 @@ class AuthController extends AsyncHanler {
           id: validOTP?.id
         },
         data: {
-          password: hash.hashPassword(password)
+          password: hash.hashPassword(password),
+          otp: ""
         }
       })
       updatedUser.password = ""
