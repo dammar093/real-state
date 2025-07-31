@@ -7,7 +7,7 @@ authRouter.post("/login", authController.asyncHandler(authController.loginUser.b
 authRouter.post("/verify-otp", authController.asyncHandler(authController.verifyOTP.bind(authController)))
 authRouter.post("/send-otp", authController.asyncHandler(authController.sendOtp.bind(authController)))
 authRouter.post("/forgot-password", authController.asyncHandler(authController.forgotPassword.bind(authController)))
-authRouter.post("/update-password", authController.asyncHandler(authController.updatePassword.bind(authController)))
+authRouter.patch("/update-password", authController.asyncHandler(authController.updatePassword.bind(authController)))
 authRouter.get("/logout", authController.asyncHandler(authController.logoutUser.bind(authController)))
 
 export default authRouter;
