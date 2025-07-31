@@ -209,7 +209,7 @@ class AuthController extends AsyncHanler {
       })
       sendOtpEmail(updatedUser?.email, updatedUser?.fullName, updatedUser?.otp);
       updatedUser.password = ""
-      return res.json(new ApiResponse(200, updatedUser, "OTP sent successfully"))
+      return res.status(200).json(new ApiResponse(200, updatedUser, "OTP sent successfully"))
     } catch (error) {
       throw new ApiError(500, "Failed to send OTP")
     }
@@ -252,11 +252,26 @@ class AuthController extends AsyncHanler {
       if (!token) {
         throw new ApiError(500, "Failed to create token")
       }
-      return res.json(new ApiResponse(200, token, "Password updated successfully"))
+      return res.status(200).cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+      }).json(new ApiResponse(200, token, "Password updated successfully"))
     } catch (error) {
       throw new ApiError(500, "Failed to update password")
     }
   }
+
+  // method for logout
+  async logoutUser(req: Request, res: Response): Promise<Response> {
+
+    try {
+
+      return res.status(200).cookie("token", "sfds").json(new ApiResponse(200, "Logout successfully"))
+    } catch (error) {
+      throw new ApiError(500, "Failed to logout")
+    }
+  }
+
 }
 
 export default new AuthController();
