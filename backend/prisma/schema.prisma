@@ -79,6 +79,8 @@ model Properties {
   category    Category          @relation(fields: [categoryId], references: [id])
   services    PropertyService[] // many-to-many
   type        Types
+  status      Boolean           @default(false)
+  isDelete    Boolean           @default(false)
   isHotel     Boolean           @default(false)
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @default(now()) @updatedAt
@@ -88,8 +90,11 @@ model Category {
   id         Int          @id @default(autoincrement())
   name       String
   properties Properties[] // Back-reference: One category can be used for many properties
+  isActive   Boolean      @default(false)
+  isDelete   Boolean      @default(false)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @default(now()) @updatedAt
+
 }
 
 model Images {
@@ -109,6 +114,8 @@ model WishList {
   property   Properties @relation(fields: [propertyId], references: [id]) // FK to Users — one user owns the wishlist entry
   userId     Int
   user       Users      @relation(fields: [userId], references: [id]) // 1 user has multiple wishlist
+  status     Boolean    @default(false)
+  isDelete   Boolean    @default(false)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @default(now()) @updatedAt
 }
@@ -122,6 +129,7 @@ model Booking {
   checkIn    DateTime?
   checkout   DateTime?
   status     Status     @default(PENDING) // Booking status ENUM
+  isDelete   Boolean    @default(false)
   payment    Payment[] // 1 booking can have multiple payments (e.g., split payments)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @default(now()) @updatedAt
@@ -158,6 +166,8 @@ model Services {
   image      String // store cloudinary URL directly
   userId     Int // uploaded by super admin
   user       Users             @relation(fields: [userId], references: [id])
+  status     Boolean           @default(false)
+  isDelete   Boolean           @default(false)
   properties PropertyService[] // many-to-many relation
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @default(now()) @updatedAt
@@ -168,9 +178,10 @@ model PropertyService {
   propertyId Int
   serviceId  Int
 
-  property Properties @relation(fields: [propertyId], references: [id])
-  service  Services   @relation(fields: [serviceId], references: [id])
-
+  property Properties          @relation(fields: [propertyId], references: [id])
+  service  Services            @relation(fields: [serviceId], references: [id])
+  status   Boolean             @default(false)
+  isDelete Boolean             @default(false)
   @@unique([propertyId, serviceId]) // prevent duplicates
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @default(now()) @updatedAt

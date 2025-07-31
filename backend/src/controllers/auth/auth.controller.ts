@@ -92,7 +92,7 @@ class AuthController extends AsyncHanler {
       if (!user) {
         throw new ApiError(401, "Invalid email or password");
       }
-      const token = createJwt.createJWT(user?.fullName, user?.email, user?.role);
+      const token = createJwt.createJWT(user?.id, user?.fullName, user?.email, user?.role);
       if (!token) {
         throw new ApiError(500, "fialed to create token");
       }
@@ -140,7 +140,7 @@ class AuthController extends AsyncHanler {
         }
       });
 
-      const token = createJwt.createJWT(user?.fullName, user?.fullName, user?.role);
+      const token = createJwt.createJWT(user?.id, user?.fullName, user?.fullName, user?.role);
       if (!token) {
         throw new ApiError(500, "fialed to create token");
       }
@@ -249,7 +249,7 @@ class AuthController extends AsyncHanler {
         }
       })
       updatedUser.password = ""
-      const token = createJwt.createJWT(updatedUser?.fullName, updatedUser?.email, updatedUser?.role);
+      const token = createJwt.createJWT(updatedUser?.id, updatedUser?.fullName, updatedUser?.email, updatedUser?.role);
       if (!token) {
         throw new ApiError(500, "Failed to create token")
       }
