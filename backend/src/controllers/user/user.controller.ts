@@ -13,12 +13,10 @@ class UserController extends AsyncHandler {
       const take = parseInt(limit as string, 10) || 10;
       const currentPage = parseInt(page as string, 10) || 1;
       const skip = (currentPage - 1) * take;
-
-
-
       const users = await db.users.findMany({
         where: {
-          role: "ADMIN"
+          role: "ADMIN",
+          isDelete: false
         },
         skip,
         take,
@@ -29,7 +27,6 @@ class UserController extends AsyncHandler {
           role: true,
           isVerified: true,
           createdAt: true,
-          updatedAt: true,
           userDetail: {
             select: {
               id: true,
@@ -37,7 +34,6 @@ class UserController extends AsyncHandler {
               phoneNumber: true,
               profile: true,
               createdAt: true,
-              updatedAt: true,
             },
           },
         },
@@ -66,9 +62,12 @@ class UserController extends AsyncHandler {
   public async getUserById(req: Request, res: Response): Promise<Response> {
     const { id } = req.params
     try {
-      const user = await db.users.findUnique({
+      const user = await db.users.findFirst({
         where: {
-          id: parseInt(id)
+          AND: [
+            { id: parseInt(id) },
+            { isDelete: false }
+          ]
         },
         select: {
           id: true,
@@ -76,15 +75,13 @@ class UserController extends AsyncHandler {
           email: true,
           role: true,
           createdAt: true,
-          updatedAt: true,
           userDetail: {
             select: {
               id: true,
               address: true,
               phoneNumber: true,
               profile: true,
-              createdAt: true,
-              updatedAt: true
+              createdAt: true
             }
           }
         }
@@ -98,19 +95,51 @@ class UserController extends AsyncHandler {
     }
   }
   // delete user
-  public async deleteUserById(req: Request, res: Response): Promise<void> {
-    const { id } = req?.params
+  public async deleteUserById(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
     try {
-      const user = db.users.update({
+      const existingUser = await db.users.findFirst({
+        where: {
+          id: parseInt(id),
+          isDelete: true
+        }
+      });
+
+      if (existingUser) {
+        throw new ApiError(404, "User not found or already deleted");
+      }
+
+      const user = await db.users.update({
         where: {
           id: parseInt(id)
         },
         data: {
-
+          isDelete: true
+        },
+        select: {
+          id: true,
+          email: true,
+          fullName: true,
+          role: true,
+          createdAt: true,
+          userDetail: {
+            select: {
+              id: true,
+              profile: true,
+              address: true,
+              phoneNumber: true,
+              createdAt: true
+            }
+          }
         }
-      })
-    } catch (error) {
+      });
 
+      return res
+        .status(200)
+        .json(new ApiResponse(200, user, "User deleted successfully"));
+    } catch (error) {
+      throw new ApiError(500, "Failed to delete user");
     }
   }
 
