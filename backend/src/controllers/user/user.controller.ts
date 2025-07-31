@@ -5,6 +5,7 @@ import { db } from "../../config/db";
 import ApiResponse from "../../utils/apiRespons";
 
 class UserController extends AsyncHandler {
+
   public async getUser(req: Request, res: Response): Promise<Response> {
     const { limit = "10", page = "1" } = req.query;
 
@@ -13,7 +14,12 @@ class UserController extends AsyncHandler {
       const currentPage = parseInt(page as string, 10) || 1;
       const skip = (currentPage - 1) * take;
 
+
+
       const users = await db.users.findMany({
+        where: {
+          role: "ADMIN"
+        },
         skip,
         take,
         select: {
@@ -36,9 +42,11 @@ class UserController extends AsyncHandler {
           },
         },
       });
-
-      const totalUsers = await db.users.count();
-
+      const totalUsers = await db.users.count({
+        where: {
+          role: "ADMIN"
+        }
+      });
       return res.status(200).json(
         new ApiResponse(200, {
           users,
@@ -53,8 +61,8 @@ class UserController extends AsyncHandler {
     } catch (error) {
       throw new ApiError(500, "Failed to get users");
     }
-
   }
+
 }
 
 
