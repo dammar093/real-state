@@ -43,5 +43,4 @@ process.on("SIGINT", async () => {
   process.exit(0);
 });
 
-export const router = express.Router();
-export default app;
+export default app

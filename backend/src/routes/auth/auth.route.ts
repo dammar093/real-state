@@ -1,8 +1,9 @@
-import { router as authRouter } from "../../app";
+import { Router } from "express";
 import authController from "../../controllers/auth/auth.controller";
 import createJwt from "../../utils/createJwt";
 
 // Use the asyncHandler from AuthController (inherited)
+const authRouter = Router()
 authRouter.post("/register", authController.asyncHandler(authController.registerUser.bind(authController)));
 authRouter.post("/login", authController.asyncHandler(authController.loginUser.bind(authController)));
 authRouter.post("/verify-otp", authController.asyncHandler(authController.verifyOTP.bind(authController)))
