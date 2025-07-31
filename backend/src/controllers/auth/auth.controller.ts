@@ -160,7 +160,7 @@ class AuthController extends AsyncHanler {
       const user = await db.users.findFirst({
         where: {
           email,
-          isVerified: false
+          isVerified: true
         }
       })
 
@@ -186,7 +186,38 @@ class AuthController extends AsyncHanler {
   }
   //method for forgot passwrod
   async forgotPassword(req: Request, res: Response): Promise<Response> {
-    const { email, otp, password } = req.body
+    const { email } = req.body
+    validtion.emailValidation(email)
+    try {
+      const existUser = await db.users.findFirst({
+        where: {
+          email: email
+        }
+      })
+      if (!existUser) {
+        throw new ApiError(400, "This email is not exist");
+      }
+
+      const updatedUser = await db.users.update({
+        where: {
+          id: existUser?.id
+        },
+        data: {
+          otp: generateOTP(),
+          otpExpires: new Date(existUser.otpExpires)
+        }
+      })
+      sendOtpEmail(updatedUser?.email, updatedUser?.fullName, updatedUser?.otp);
+      updatedUser.password = ""
+      return res.json(new ApiResponse(200, updatedUser, "OTP sent successfully"))
+    } catch (error) {
+      throw new ApiError(500, "Failed to send OTP")
+    }
+  }
+
+  // method for change password
+  async updatePassword(req: Request, res: Response): Promise<Response> {
+    const { email, password, otp } = req.body
     validtion.emailValidation(email)
     validtion.passwordValidation(password)
     try {
@@ -196,31 +227,36 @@ class AuthController extends AsyncHanler {
         }
       })
       if (!existUser) {
-        throw new ApiError(400, "This is not exist");
+        throw new ApiError(400, "This email is not exist");
       }
+
       const validOTP = await db.users.findFirst({
         where: {
-          otp: otp
+          otp
         }
       })
       if (!validOTP) {
         throw new ApiError(400, "Invalid OTP")
       }
-      await db.users.update({
+
+      const updatedUser = await db.users.update({
         where: {
           id: validOTP?.id
         },
         data: {
-          password
+          password: hash.hashPassword(password)
         }
       })
-      return res.json(new ApiResponse(200, "Password updated successfukky"))
+      updatedUser.password = ""
+      const token = createJwt.createJWT(updatedUser?.fullName, updatedUser?.email, updatedUser?.role);
+      if (!token) {
+        throw new ApiError(500, "Failed to create token")
+      }
+      return res.json(new ApiResponse(200, token, "Password updated successfully"))
     } catch (error) {
       throw new ApiError(500, "Failed to update password")
     }
   }
-
-  // method for change password
 }
 
 export default new AuthController();
