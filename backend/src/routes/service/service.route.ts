@@ -14,15 +14,14 @@ serviceRouter.post(
 );
 serviceRouter.get("/", serviceController.asyncHandler(serviceController.getServices.bind(serviceController))
 );
-serviceRouter.patch("/:id", createJwt.verifyJWT,
-  requireRole("SUPER_ADMIN"),
-  uploadServiceImage.single("image"),
-  serviceController.asyncHandler(serviceController.getServices.bind(serviceController))
+serviceRouter.patch("/:id", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), uploadServiceImage.single("image"),
+  serviceController.asyncHandler(serviceController.updateService.bind(serviceController))
 );
-serviceRouter.patch("/:id/status", createJwt.verifyJWT,
-  requireRole("SUPER_ADMIN"),
-  uploadServiceImage.single("image"),
-  serviceController.asyncHandler(serviceController.getServices.bind(serviceController))
+serviceRouter.patch("/status/:id", createJwt.verifyJWT, requireRole("SUPER_ADMIN"),
+  serviceController.asyncHandler(serviceController.updateServiceStatus.bind(serviceController))
+);
+serviceRouter.delete("/:id", createJwt.verifyJWT, requireRole("SUPER_ADMIN"),
+  serviceController.asyncHandler(serviceController.deleteService.bind(serviceController))
 );
 
 export default serviceRouter

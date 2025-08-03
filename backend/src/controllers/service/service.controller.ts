@@ -243,6 +243,7 @@ class ServiceController extends AsyncHandler {
   // update status
   async updateServiceStatus(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;
+    console.log(req.body)
     const { status } = req.body;
 
     try {

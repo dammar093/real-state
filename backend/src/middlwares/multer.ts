@@ -27,8 +27,6 @@ const storage = multer.diskStorage({
     cb(null, uniqueName);
   },
 });
-
-console.log("dssddsfss")
 export const uploadServiceImage = multer({
   storage,
   fileFilter,
