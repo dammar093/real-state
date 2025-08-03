@@ -122,6 +122,45 @@ class ServiceController extends AsyncHandler {
       throw new ApiError(500, "Internal server error: " + error.message);
     }
   }
+  //delete service
+  async deleteService(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
+    try {
+      const serviceId = parseInt(id, 10);
+
+      if (isNaN(serviceId)) {
+        throw new ApiError(400, "Invalid service ID");
+      }
+
+      // Check if service exists and is not already deleted
+      const existingService = await db.services.findFirst({
+        where: {
+          id: serviceId,
+          isDelete: false,
+        },
+      });
+
+      if (!existingService) {
+        throw new ApiError(404, "Service not found or already deleted");
+      }
+
+      // Soft delete the service
+      const deletedService = await db.services.update({
+        where: { id: serviceId },
+        data: {
+          isDelete: true,
+        },
+      });
+
+      return res.status(200).json(
+        new ApiResponse(200, deletedService, "Service deleted successfully")
+      );
+    } catch (error: any) {
+      console.error(error);
+      throw new ApiError(500, "Failed to delete service: " + error.message);
+    }
+  }
 
 
 }

@@ -9,14 +9,14 @@ serviceRouter.post(
   "/",
   createJwt.verifyJWT,
   requireRole("SUPER_ADMIN"),
-  uploadServiceImage.single("image"), // this makes req.file available
+  uploadServiceImage.single("image"),
   serviceController.asyncHandler(serviceController.createService.bind(serviceController))
 );
 serviceRouter.get(
   "/",
   createJwt.verifyJWT,
   requireRole("SUPER_ADMIN"),
-  uploadServiceImage.single("image"), // this makes req.file available
+  uploadServiceImage.single("image"),
   serviceController.asyncHandler(serviceController.getServices.bind(serviceController))
 );
 export default serviceRouter
