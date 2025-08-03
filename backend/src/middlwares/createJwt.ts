@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import ApiError from "../utils/errorHandler";
 import { db } from "../config/db";
 
-enum Role {
+export enum Role {
   SUPER_ADMIN,
   ADMIN,
   User

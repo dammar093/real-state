@@ -42,10 +42,10 @@ model Users {
   booking    Booking[]
   reviews    Reviews[]
   payment    Payment[]
-  otp        String 
+  otp        String
   otpExpires DateTime     @default(now())
   services   Services[]
-  isVerified   Boolean    @default(false)
+  isVerified Boolean      @default(false)
   role       Role         @default(USER)
   status     Boolean      @default(true)
   isDelete   Boolean      @default(false)
@@ -96,12 +96,13 @@ model Category {
   isDelete   Boolean      @default(false)
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @default(now()) @updatedAt
-
 }
 
 model Images {
   id           Int          @id @default(autoincrement())
   image        String
+  serviceId    Int?         @unique
+  service      Services?    @relation(fields: [serviceId], references: [id])
   propertyId   Int?
   property     Properties?  @relation(fields: [propertyId], references: [id])
   userDetailId Int?         @unique
@@ -165,7 +166,7 @@ model Payment {
 model Services {
   id         Int               @id @default(autoincrement())
   name       String
-  image      String // store cloudinary URL directly
+  image      Images? // optional relation
   userId     Int // uploaded by super admin
   user       Users             @relation(fields: [userId], references: [id])
   status     Boolean           @default(true)
@@ -176,14 +177,15 @@ model Services {
 }
 
 model PropertyService {
-  id         Int @id @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   propertyId Int
   serviceId  Int
-  property Properties          @relation(fields: [propertyId], references: [id])
-  service  Services            @relation(fields: [serviceId], references: [id])
-  status   Boolean             @default(true)
-  isDelete Boolean             @default(false)
+  property   Properties @relation(fields: [propertyId], references: [id])
+  service    Services   @relation(fields: [serviceId], references: [id])
+  status     Boolean    @default(true)
+  isDelete   Boolean    @default(false)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @default(now()) @updatedAt
+
   @@unique([propertyId, serviceId]) // prevent duplicates
-  createdAt  DateTime          @default(now())
-  updatedAt  DateTime          @default(now()) @updatedAt
 }

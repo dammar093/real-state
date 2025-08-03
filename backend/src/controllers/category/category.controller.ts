@@ -13,6 +13,18 @@ class CategoryController extends AsyncHandler {
       throw new ApiError(400, "Service name is required");
     }
     try {
+      const existCategory = await db.category.findFirst({
+        where: {
+          name: {
+            equals: name,
+            mode: "insensitive",
+          },
+          isDelete: false,
+        },
+      })
+      if (existCategory) {
+        throw new ApiError(400, "Category already exist")
+      }
       const cateory = await db.category.create({
         data: {
           name

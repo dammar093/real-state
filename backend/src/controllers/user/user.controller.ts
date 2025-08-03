@@ -3,20 +3,35 @@ import AsyncHandler from "../../utils/asyncHandler";
 import ApiError from "../../utils/errorHandler";
 import { db } from "../../config/db";
 import ApiResponse from "../../utils/apiRespons";
+import { Role } from "../../../generated/prisma";
 
 class UserController extends AsyncHandler {
   // get user
   public async getUser(req: Request, res: Response): Promise<Response> {
-    const { limit = "10", page = "1" } = req.query;
+    const {
+      limit = "10",
+      page = "1",
+      name = "",
+      email = "",
+      role = "ADMIN",
+    } = req.query;
 
     try {
       const take = parseInt(limit as string, 10) || 10;
       const currentPage = parseInt(page as string, 10) || 1;
       const skip = (currentPage - 1) * take;
+
       const users = await db.users.findMany({
         where: {
-          role: "ADMIN",
-          isDelete: false
+          isDelete: false,
+          fullName: {
+            contains: name as string,
+            mode: "insensitive",
+          },
+          email: {
+            contains: email as string,
+            mode: "insensitive",
+          },
         },
         skip,
         take,
@@ -38,26 +53,42 @@ class UserController extends AsyncHandler {
           },
         },
       });
+
       const totalUsers = await db.users.count({
         where: {
-          role: "ADMIN"
-        }
-      });
-      return res.status(200).json(
-        new ApiResponse(200, {
-          users,
-          pagination: {
-            totalUsers,
-            totalPages: Math.ceil(totalUsers / take),
-            currentPage,
-            limit: take,
+          isDelete: false,
+          fullName: {
+            contains: name as string,
+            mode: "insensitive",
           },
-        }, "Users fetched successfully")
+          email: {
+            contains: email as string,
+            mode: "insensitive",
+          },
+        },
+      });
+
+      return res.status(200).json(
+        new ApiResponse(
+          200,
+          {
+            users,
+            pagination: {
+              totalUsers,
+              totalPages: Math.ceil(totalUsers / take),
+              currentPage,
+              limit: take,
+            },
+          },
+          "Users fetched successfully"
+        )
       );
     } catch (error) {
+      console.error("Error fetching users:", error);
       throw new ApiError(500, "Failed to get users");
     }
   }
+
   //getUserById
   public async getUserById(req: Request, res: Response): Promise<Response> {
     const { id } = req.params
