@@ -12,11 +12,17 @@ serviceRouter.post(
   uploadServiceImage.single("image"),
   serviceController.asyncHandler(serviceController.createService.bind(serviceController))
 );
-serviceRouter.get(
-  "/",
-  createJwt.verifyJWT,
+serviceRouter.get("/", serviceController.asyncHandler(serviceController.getServices.bind(serviceController))
+);
+serviceRouter.patch("/:id", createJwt.verifyJWT,
   requireRole("SUPER_ADMIN"),
   uploadServiceImage.single("image"),
   serviceController.asyncHandler(serviceController.getServices.bind(serviceController))
 );
+serviceRouter.patch("/:id/status", createJwt.verifyJWT,
+  requireRole("SUPER_ADMIN"),
+  uploadServiceImage.single("image"),
+  serviceController.asyncHandler(serviceController.getServices.bind(serviceController))
+);
+
 export default serviceRouter

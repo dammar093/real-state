@@ -161,7 +161,121 @@ class ServiceController extends AsyncHandler {
       throw new ApiError(500, "Failed to delete service: " + error.message);
     }
   }
+  // edit service
+  async updateService(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const { name } = req.body;
+    const imageFile = req.file;
 
+    try {
+      const serviceId = parseInt(id);
+      if (isNaN(serviceId)) {
+        throw new ApiError(400, "Invalid service ID");
+      }
+
+      if (!name || name.trim().length < 2) {
+        throw new ApiError(400, "Service name must be at least 2 characters");
+      }
+
+      // Check if service exists
+      const service = await db.services.findUnique({
+        where: { id: serviceId },
+        include: { image: true },
+      });
+
+      if (!service || service.isDelete) {
+        throw new ApiError(404, "Service not found");
+      }
+
+      let imageUrl = service.image?.image;
+
+      // If a new image is provided, upload and update image
+      if (imageFile) {
+        const imageUrl = await uploadImage(imageFile.path);
+        if (!imageUrl) {
+          throw new ApiError(500, "Failed to upload image");
+        }
+        if (service.image) {
+          // Update existing image
+          await db.images.update({
+            where: { id: service.image.id },
+            data: { image: imageUrl },
+          });
+        } else {
+          // Create new image entry and connect to service
+          const newImage = await db.images.create({
+            data: {
+              image: imageUrl,
+              serviceId: serviceId,
+            },
+          });
+
+          await db.services.update({
+            where: { id: serviceId },
+            data: {
+              image: {
+                connect: { id: newImage.id },
+              },
+            },
+          });
+        }
+      }
+
+      // Update service name
+      const updatedService = await db.services.update({
+        where: { id: serviceId },
+        data: {
+          name: name.trim(),
+        },
+        include: {
+          image: true,
+        },
+      });
+
+      return res
+        .status(200)
+        .json(new ApiResponse(200, updatedService, "Service updated successfully"));
+    } catch (error: any) {
+      console.error("Update Service Error:", error);
+      throw new ApiError(500, "Failed to update service: " + error.message);
+    }
+  }
+  // update status
+  async updateServiceStatus(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+      const serviceId = parseInt(id);
+      if (isNaN(serviceId)) {
+        throw new ApiError(400, "Invalid service ID");
+      }
+
+      if (typeof status !== "boolean") {
+        throw new ApiError(400, "Status must be a boolean");
+      }
+
+      const service = await db.services.findUnique({
+        where: { id: serviceId },
+      });
+
+      if (!service || service.isDelete) {
+        throw new ApiError(404, "Service not found");
+      }
+
+      const updated = await db.services.update({
+        where: { id: serviceId },
+        data: { status },
+      });
+
+      return res
+        .status(200)
+        .json(new ApiResponse(200, updated, "Service status updated successfully"));
+    } catch (error: any) {
+      console.error("Update Status Error:", error);
+      throw new ApiError(500, "Failed to update service status: " + error.message);
+    }
+  }
 
 }
 export default new ServiceController()
