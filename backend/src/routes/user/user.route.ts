@@ -4,8 +4,8 @@ import createJwt from "../../middlwares/createJwt";
 import { requireRole } from "../../middlwares/requireRole";
 
 const userRouter = Router()
-userRouter.get("/users", userController.asyncHandler(userController.getUser.bind(userController)));
-userRouter.get("/users/:id", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), userController.asyncHandler(userController.getUserById.bind(userController)));
-userRouter.delete("/users/:id", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), userController.asyncHandler(userController.deleteUserById.bind(userController)));
+userRouter.get("/", userController.asyncHandler(userController.getUser.bind(userController)));
+userRouter.get("/:id", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), userController.asyncHandler(userController.getUserById.bind(userController)));
+userRouter.delete("/:id", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), userController.asyncHandler(userController.deleteUserById.bind(userController)));
 
 export default userRouter;

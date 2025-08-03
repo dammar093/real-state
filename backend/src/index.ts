@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import app from "./app";
 import authRouter from "./routes/auth/auth.route";
 import userRouter from "./routes/user/user.route";
+import categoryRouter from "./routes/category/category.route";
 
 const PORT = process.env.PORT || 8000;
 
@@ -12,7 +13,9 @@ app.get("/", (req: Request, res: Response) => {
 
 // === API Routes ===
 app.use("/api/v1", authRouter);
-app.use("/api/v1", userRouter);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/categories", categoryRouter);
+app.use("/api/v1/categories", categoryRouter);
 // === Start Server ===
 app.listen(PORT, () => {
   console.log(`✅ Server is running on port ${PORT}`);
