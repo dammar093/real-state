@@ -34,7 +34,7 @@ class CategoryController extends AsyncHandler {
         throw new ApiError(404, "Category not found")
       }
 
-      return res.status(200).json(new ApiResponse(200, cateory, "Category created successfully"));
+      return res.status(201).json(new ApiResponse(20, cateory, "Category created successfully"));
     } catch (error) {
       throw new ApiError(500, "Failed to create category");
     }

@@ -33,7 +33,7 @@ class ServiceController extends AsyncHandler {
       }
 
       // Upload image to cloud/local storage
-      const imageUrl = await uploadImage(imageFile.path); // Make sure this returns a string
+      const imageUrl = await uploadImage(imageFile.path);
 
       // Create image record first
       const savedImage = await db.images.create({
@@ -65,7 +65,61 @@ class ServiceController extends AsyncHandler {
       );
     } catch (error: any) {
       console.error(error);
-      throw new ApiError(500, "Failed to create service: " + error.message);
+      throw new ApiError(500, "Failed to create service");
+    }
+  }
+  //get all services 
+  async getServices(req: Request, res: Response): Promise<Response> {
+    try {
+      const { page = 1, limit = 10, search = "" } = req.query;
+
+      const currentPage = parseInt(page as string, 10) || 1;
+      const pageSize = parseInt(limit as string, 10) || 10;
+      const skip = (currentPage - 1) * pageSize;
+
+      const [services, total] = await Promise.all([
+        db.services.findMany({
+          where: {
+            isDelete: false,
+            name: {
+              contains: search as string,
+              mode: "insensitive",
+            },
+          },
+          skip,
+          take: pageSize,
+          orderBy: {
+            createdAt: "desc",
+          },
+          include: {
+            image: true,
+          },
+        }),
+        db.services.count({
+          where: {
+            isDelete: false,
+            name: {
+              contains: search as string,
+              mode: "insensitive",
+            },
+          },
+        }),
+      ]);
+
+      return res.status(200).json(
+        new ApiResponse(200, {
+          services,
+          pagination: {
+            total,
+            page: currentPage,
+            limit: pageSize,
+            totalPages: Math.ceil(total / pageSize),
+          },
+        }, "Services fetched successfully")
+      );
+    } catch (error: any) {
+      console.error(error);
+      throw new ApiError(500, "Internal server error: " + error.message);
     }
   }
 
