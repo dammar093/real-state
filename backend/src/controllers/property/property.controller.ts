@@ -11,7 +11,6 @@ class PropertyController extends AsyncHandler {
   async createProperty(req: Request, res: Response): Promise<Response> {
     try {
       const { user } = req as any;
-
       if (user.role !== "ADMIN" && user.role !== "SUPER_ADMIN") {
         throw new ApiError(403, "Access denied");
       }
@@ -25,35 +24,47 @@ class PropertyController extends AsyncHandler {
         categoryId,
         serviceIds,
         type,
+        duration,
+        durationType,
         isHotel,
       } = req.body;
-
       const files = req.files as Express.Multer.File[];
-
       if (!files || files.length === 0) {
         throw new ApiError(400, "At least one property image is required");
       }
+      // console.log(req.body)
+      // Validate required fields
+      if (!title || !price || !location || !categoryId || !type || !duration || !durationType || !description || !map) {
+        throw new ApiError(400, "Missing required fields");
+      }
 
-      // Create property first
+      // Ensure serviceIds is an array
+      let serviceData = undefined;
+      if (serviceIds && Array.isArray(serviceIds)) {
+        serviceData = {
+          create: serviceIds.map((sid: string | number) => ({
+            serviceId: Number(sid),
+          })),
+        };
+      }
+
+      // Create the property
       const property = await db.properties.create({
         data: {
           title,
-          price: +price,
+          price: Number(price),
           location,
           description,
           map,
-          categoryId: +categoryId,
+          categoryId: Number(categoryId),
           type,
-          isHotel: isHotel === "true" || isHotel === true,
+          duration: parseInt(duration),
+          durationType,
+          isHotel: isHotel === "true" || isHotel === true, // if coming from form-data
           userId: user.id,
-          services: {
-            create: serviceIds.map((sid: number) => ({
-              serviceId: sid,
-            })),
-          },
+          ...(serviceData && { services: serviceData }),
         },
       });
-
       // Upload and link all images
       const uploadedImages = await Promise.all(
         files.map(async (file) => {
@@ -66,24 +77,32 @@ class PropertyController extends AsyncHandler {
           });
         })
       );
-
-      // Final response
-      const fullProperty = await db.properties.findUnique({
-        where: { id: property.id },
+      const updatedProperty = await db.properties.findUnique({
+        where: {
+          id: property?.id,
+        },
         include: {
-          images: true,
+          images: true, // 👈 includes related images
           services: {
-            include: { service: true },
+            include: {
+              service: true, // if you also want service details
+            },
           },
-          category: true,
+          category: true, // optional: include category if needed
+          user: {
+            select: {
+              id: true,
+              fullName: true,
+              email: true,
+            },
+          },
         },
       });
 
       return res
         .status(201)
-        .json(
-          new ApiResponse(201, fullProperty, "Property created successfully")
-        );
+        .json(new ApiResponse(201, updatedProperty, "Property created successfully"));
+
     } catch (error) {
       console.error(error);
       throw new ApiError(500, "Internal server error");
@@ -91,11 +110,12 @@ class PropertyController extends AsyncHandler {
   }
 
 
+
   // Edit property - No image update
   async editProperty(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
-      const { title, price, location, description, map, categoryId, serviceIds, type, isHotel } = req.body;
+      const { title, price, location, description, map, duration, categoryId, serviceIds, type, isHotel, durationType } = req.body;
 
       const existing = await db.properties.findFirst({ where: { id: +id, isDelete: false } });
       if (!existing) throw new ApiError(404, "Property not found");
@@ -111,6 +131,8 @@ class PropertyController extends AsyncHandler {
           categoryId,
           type,
           isHotel,
+          duration,
+          durationType,
           services: {
             deleteMany: {}, // clear old services
             create: serviceIds.map((sid: number) => ({
@@ -174,6 +196,7 @@ class PropertyController extends AsyncHandler {
       const properties = await db.properties.findMany({
         where: {
           isDelete: false,
+          status: true,
           OR: [
             { location: { contains: String(search), mode: "insensitive" } },
             { title: { contains: String(search), mode: "insensitive" } },

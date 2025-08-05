@@ -10,5 +10,6 @@ propertyRouter.post("/", createJwt.verifyJWT, requireRole("ADMIN"), uploadServic
 propertyRouter.get("/", propertyController.asyncHandler(propertyController.getAllProperty.bind(propertyController)));
 propertyRouter.delete("/:id", createJwt.verifyJWT, requireRole("ADMIN"), propertyController.asyncHandler(propertyController.deleteProperty.bind(propertyController)));
 propertyRouter.patch("/:id", createJwt.verifyJWT, requireRole("ADMIN"), propertyController.asyncHandler(propertyController.editProperty.bind(propertyController)));
+propertyRouter.patch("/status/:id", createJwt.verifyJWT, requireRole("ADMIN"), propertyController.asyncHandler(propertyController.updatePropertyStatus.bind(propertyController)));
 
 export default propertyRouter;

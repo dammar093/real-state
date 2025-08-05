@@ -30,6 +30,13 @@ enum PaymentMethods {
   KHALTI
   CASH
 }
+enum DuratinType {
+  NIGHT
+  DAY
+  MONTH
+  YEAR
+  LIFE_TIME
+}
 
 model Users {
   id         Int          @id @default(autoincrement())
@@ -85,6 +92,8 @@ model Properties {
   isDelete    Boolean           @default(false)
   isHotel     Boolean           @default(false)
   createdAt   DateTime          @default(now())
+  duration    Int
+  durationType DuratinType
   updatedAt   DateTime          @default(now()) @updatedAt
 }
 
