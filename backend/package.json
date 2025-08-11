@@ -31,12 +31,16 @@
     "multer": "^2.0.2",
     "nodemailer": "^7.0.5",
     "otp-generator": "^4.0.1",
-    "prisma": "^6.13.0"
+    "prisma": "^6.13.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "@types/ejs": "^3.1.5",
     "@types/nodemailer": "^6.4.17",
     "@types/otp-generator": "^4.0.2",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
     "concurrently": "^9.2.0",
     "nodemon": "^3.1.10"
   }
