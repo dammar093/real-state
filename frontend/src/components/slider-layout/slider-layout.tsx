@@ -93,10 +93,10 @@ const SliderLayout: FC<CardSliderProps> = ({ link, title, children }) => {
     grid 
     gap-4 
     grid-cols-1        /* default small screens: 1 item */
-    sm:grid-cols-1     /* small screens */
-    md:grid-cols-2     /* medium screens */
-    lg:grid-cols-4     /* large screens */
-    xl:grid-cols-6     /* extra-large screens */
+    sm:grid-cols-2     /* small screens */
+    md:grid-cols-4    /* medium screens */
+    lg:grid-cols-6    /* large screens */
+    xl:grid-cols-8    /* extra-large screens */
     flex-nowrap
   "
       >
