@@ -3,7 +3,7 @@ import createAPI from "./axiosConfig";
 export const api = createAPI();
 
 // === Auth API ===
-export async function loginUser(data: any) {
+export async function loginUser(data: { email: string; password: string }) {
   try {
     const response = await api.post("/auth/login", data);
     console.log(response.data.data);

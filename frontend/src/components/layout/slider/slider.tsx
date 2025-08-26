@@ -50,7 +50,7 @@ const Slider = () => {
     }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [index, sliderItems.length]);
 
   return (
     <section

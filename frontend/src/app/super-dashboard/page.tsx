@@ -5,12 +5,10 @@ import { FaUsers } from "react-icons/fa";
 import { GiMeepleGroup } from "react-icons/gi";
 import { FaSackDollar } from "react-icons/fa6";
 import { MdMapsHomeWork } from "react-icons/md";
-import useCategories from "@/hooks/useCategories";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
 
 const Dashboard = () => {
-  const { categories } = useCategories();
   const { total } = useSelector((state: RootState) => state.category);
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-10">

@@ -25,7 +25,10 @@ const PropertyCard: React.FC<PropertyCradProps> = ({
         <div
           className={`aspect-square relative  ${styles["category-card"]} overflow-hidden rounded-lg`}
         >
-          <Link href={`/properties/rooms/1`} className="block h-full w-full">
+          <Link
+            href={`/properties/rooms/${id}`}
+            className="block h-full w-full"
+          >
             <Image
               src={image}
               alt={category}

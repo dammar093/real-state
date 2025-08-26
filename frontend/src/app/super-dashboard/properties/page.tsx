@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Table from "@/components/table/table";
 import useProperties from "@/hooks/useProperties";
 import Input from "@/components/ui/input";
@@ -7,9 +7,8 @@ import Loader from "@/components/loader/loader";
 import Button from "@/components/ui/button";
 import { FaEye, FaTrash } from "react-icons/fa";
 import Link from "next/link";
-import { title } from "process";
-import { profile } from "console";
 import Image from "next/image";
+import { Property } from "@/types/property";
 
 const Properties = () => {
   const {
@@ -40,7 +39,7 @@ const Properties = () => {
   const columns = [
     {
       title: "Image",
-      selector: (row: any) => (
+      selector: (row: Property) => (
         <div className="aspect-video">
           <Image
             src={row?.images ? row?.images[0].image : ""}
@@ -52,20 +51,20 @@ const Properties = () => {
         </div>
       ),
     },
-    { title: "Title", selector: (row: any) => row.title },
-    { title: "Price", selector: (row: any) => `Rs.${row.price}` },
-    { title: "Location", selector: (row: any) => row.location },
-    { title: "Type", selector: (row: any) => row.type },
+    { title: "Title", selector: (row: Property) => row.title },
+    { title: "Price", selector: (row: Property) => `Rs.${row.price}` },
+    { title: "Location", selector: (row: Property) => row.location },
+    { title: "Type", selector: (row: Property) => row.type },
     {
       title: "Category",
-      selector: (row: any) => (
+      selector: (row: Property) => (
         <span className="capitalize">{row.category?.name || "-"}</span>
       ),
     },
-    { title: "User", selector: (row: any) => row.user?.fullName || "-" },
+    { title: "User", selector: (row: Property) => row.user?.fullName || "-" },
     {
       title: "Actions",
-      selector: (row: any) => (
+      selector: (row: Property) => (
         <div className="flex gap-2">
           <Link
             href={`/properties/${row.id}`}

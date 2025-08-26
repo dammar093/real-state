@@ -18,7 +18,7 @@ export function useAuth() {
       return;
     }
     setUser(decoded);
-  }, []);
+  }, [router, user]);
 
   return user;
 }

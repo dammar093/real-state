@@ -12,7 +12,6 @@ import {
   setSort,
   setLimit,
 } from "@/redux/feature/propertySlice";
-import axios from "axios";
 import { getProperties } from "@/api/property/property";
 
 const useProperties = () => {
@@ -25,9 +24,7 @@ const useProperties = () => {
       try {
         dispatch(setLoading(true));
         dispatch(setError(null));
-
         const data = await getProperties({ page, limit, search, sort });
-        console.log("data", data);
         dispatch(setProperties(data?.data?.properties));
         dispatch(setTotal(data?.data?.pagination?.total));
         dispatch(setPage(data?.data?.pagination?.page));
