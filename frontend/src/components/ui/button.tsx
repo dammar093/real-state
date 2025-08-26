@@ -21,7 +21,7 @@ const Button = ({
     <>
       <button
         type={type}
-        className={` text-white rounded-full cursor-pointer ${className} button whitespace-nowrap`}
+        className={` text-white rounded-full cursor-pointer ${className} bg-[var(--primary-color)] whitespace-nowrap`}
         onClick={onClick}
         disabled={loading || disabled}
       >
