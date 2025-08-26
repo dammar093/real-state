@@ -7,6 +7,9 @@ import Loader from "@/components/loader/loader";
 import Button from "@/components/ui/button";
 import { FaEye, FaTrash } from "react-icons/fa";
 import Link from "next/link";
+import { title } from "process";
+import { profile } from "console";
+import Image from "next/image";
 
 const Properties = () => {
   const {
@@ -35,6 +38,20 @@ const Properties = () => {
 
   // Table columns
   const columns = [
+    {
+      title: "Image",
+      selector: (row: any) => (
+        <div className="aspect-video">
+          <Image
+            src={row?.images ? row?.images[0].image : ""}
+            alt={row?.title}
+            width={1080}
+            height={720}
+            className="w-full h-full object-contain"
+          />
+        </div>
+      ),
+    },
     { title: "Title", selector: (row: any) => row.title },
     { title: "Price", selector: (row: any) => `Rs.${row.price}` },
     { title: "Location", selector: (row: any) => row.location },
