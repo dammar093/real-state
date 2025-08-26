@@ -1,13 +1,15 @@
 "use client";
+import { useAuth } from "@/hooks/useAuth";
 import { redirect } from "next/navigation";
 import React, { useEffect } from "react";
 
 const Dashboard = () => {
+  const user = useAuth();
   useEffect(() => {
-    if (true) {
+    if (user?.role !== "admin") {
       redirect("/sign-in");
     }
-  }, []);
+  }, [user]);
   return <div>Dashboard</div>;
 };
 

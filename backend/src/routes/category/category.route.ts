@@ -63,7 +63,7 @@ categoryRouter.post("/", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), catego
  *       403:
  *         description: Forbidden
  */
-categoryRouter.get("/", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), categoryController.asyncHandler(categoryController.getAllCategory.bind(categoryController)));
+categoryRouter.get("/", categoryController.asyncHandler(categoryController.getAllCategory.bind(categoryController)));
 
 /**
  * @openapi
@@ -131,5 +131,6 @@ categoryRouter.delete("/:id", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), c
  *         description: Category not found
  */
 categoryRouter.patch("/:id", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), categoryController.asyncHandler(categoryController.editCategory.bind(categoryController)));
+categoryRouter.patch("/:id/toggle", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), categoryController.asyncHandler(categoryController.toggleCategoryStatus.bind(categoryController)));
 
 export default categoryRouter;

@@ -27,7 +27,7 @@ class CategoryController extends AsyncHandler {
       }
       const cateory = await db.category.create({
         data: {
-          name
+          name,
         }
       });
       if (!cateory) {
@@ -125,6 +125,21 @@ class CategoryController extends AsyncHandler {
       return res.status(200).json(new ApiResponse(200, category, "Category deleted successfully"));
     } catch (error) {
       throw new ApiError(500, "Failed to delete category");
+    }
+  }
+  async toggleCategoryStatus(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const { isActive } = req.body;
+
+    try {
+      const category = await db.category.update({
+        where: { id: parseInt(id) },
+        data: { isActive: isActive },
+      });
+      return res.status(200).json(new ApiResponse(200, category, "Category status toggled successfully"));
+    } catch (error) {
+      console.error("Failed to toggle category status", error);
+      throw new ApiError(500, "Failed to toggle category status");
     }
   }
 

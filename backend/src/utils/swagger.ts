@@ -37,7 +37,7 @@ const swaggerDefinition = {
         enum: ["ESEWA", "KHALTI", "CASH"],
         description: "Payment methods"
       },
-      DuratinType: {
+      DurationType: {
         type: "string",
         enum: ["NIGHT", "DAY", "MONTH", "YEAR", "LIFE_TIME"],
         description: "Duration types for properties"
