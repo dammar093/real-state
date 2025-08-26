@@ -11,6 +11,11 @@ interface PropertyCradProps {
   category: string;
   image: string;
   badgeTitle: string;
+  title: string;
+  location: string;
+  price: number;
+  duration: number;
+  durationType: string;
 }
 
 const PropertyCard: React.FC<PropertyCradProps> = ({
@@ -18,6 +23,11 @@ const PropertyCard: React.FC<PropertyCradProps> = ({
   category,
   image,
   badgeTitle,
+  title,
+  location,
+  price,
+  duration,
+  durationType,
 }) => {
   return (
     <div className="w-full">
@@ -31,7 +41,7 @@ const PropertyCard: React.FC<PropertyCradProps> = ({
           >
             <Image
               src={image}
-              alt={category}
+              alt={title}
               width={1080}
               height={720}
               className={`w-full h-full object-cover  ${styles.img}`}
@@ -66,12 +76,15 @@ const PropertyCard: React.FC<PropertyCradProps> = ({
           <div>
             <h3 className="text-md md:text-lg font-medium text-gray-800">
               <span className="capitalize">{category} </span>in{" "}
-              <span className="capitalize">Kathmandu</span>
+              <span className="capitalize">{location}</span>
             </h3>
           </div>
           <div className="flex items-center gap-1">
-            <div className="text-gray-600 font-normal text-sm">
-              Rs. 1200 for 2 nihgts
+            <div className="text-gray-600 font-normal text-sm ">
+              Rs.{price} for {duration}{" "}
+              <span className="capitalize">
+                {durationType.toLocaleLowerCase()}
+              </span>
             </div>
             <div>
               <LuDot className="text-gray-600" size={10} />

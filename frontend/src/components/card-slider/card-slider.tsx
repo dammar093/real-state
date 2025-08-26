@@ -74,6 +74,11 @@ const CardSlider = ({
           image={property.images[0]?.image || "/placeholder.jpg"}
           category={property.category?.name || category}
           badgeTitle={property.type === "SELL" ? "For Sale" : "For Rent"}
+          title={property?.title || "No Title"}
+          location={property?.location || "Unknown Location"}
+          price={property?.price || 0}
+          duration={property?.duration || 0}
+          durationType={property?.durationType || "N/A"}
         />
       ))}
     </SliderLayout>
