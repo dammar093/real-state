@@ -44,96 +44,55 @@ const UserPropeties = () => {
               id={1}
               category={"sdfds"}
               badgeTitle="For Sell"
+              title="Cozy Room in Shared Apartment"
+              location="New York, NY"
+              price={800}
+              duration={1}
+              durationType="month"
             />
             <PropertyCard
               image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
               id={1}
               category={"sdfds"}
               badgeTitle="For Sell"
+              title="Cozy Room in Shared Apartment"
+              location="New York, NY"
+              price={800}
+              duration={1}
+              durationType="month"
             />
             <PropertyCard
               image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
               id={1}
               category={"sdfds"}
               badgeTitle="For Sell"
+              title="Cozy Room in Shared Apartment"
+              location="New York, NY"
+              price={800}
+              duration={1}
+              durationType="month"
             />
             <PropertyCard
               image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
               id={1}
               category={"sdfds"}
               badgeTitle="For Sell"
+              title="Cozy Room in Shared Apartment"
+              location="New York, NY"
+              price={800}
+              duration={1}
+              durationType="month"
             />
             <PropertyCard
               image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
               id={1}
               category={"sdfds"}
               badgeTitle="For Sell"
-            />
-            <PropertyCard
-              image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
-              id={1}
-              category={"sdfds"}
-              badgeTitle="For Sell"
-            />
-            <PropertyCard
-              image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
-              id={1}
-              category={"sdfds"}
-              badgeTitle="For Sell"
-            />
-            <PropertyCard
-              image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
-              id={1}
-              category={"sdfds"}
-              badgeTitle="For Sell"
-            />
-            <PropertyCard
-              image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
-              id={1}
-              category={"sdfds"}
-              badgeTitle="For Sell"
-            />
-            <PropertyCard
-              image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
-              id={1}
-              category={"sdfds"}
-              badgeTitle="For Sell"
-            />
-            <PropertyCard
-              image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
-              id={1}
-              category={"sdfds"}
-              badgeTitle="For Sell"
-            />
-            <PropertyCard
-              image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
-              id={1}
-              category={"sdfds"}
-              badgeTitle="For Sell"
-            />
-            <PropertyCard
-              image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
-              id={1}
-              category={"sdfds"}
-              badgeTitle="For Sell"
-            />
-            <PropertyCard
-              image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
-              id={1}
-              category={"sdfds"}
-              badgeTitle="For Sell"
-            />
-            <PropertyCard
-              image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
-              id={1}
-              category={"sdfds"}
-              badgeTitle="For Sell"
-            />
-            <PropertyCard
-              image="https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg"
-              id={1}
-              category={"sdfds"}
-              badgeTitle="For Sell"
+              title="Cozy Room in Shared Apartment"
+              location="New York, NY"
+              price={800}
+              duration={1}
+              durationType="month"
             />
           </ProducsLayout>
         </div>

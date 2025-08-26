@@ -11,60 +11,78 @@ const Properties = () => {
           id={2}
           category={"rooms"}
           badgeTitle="For rent"
+          title="Cozy Room in Shared Apartment"
+          location="New York, NY"
+          price={800}
+          duration={1}
+          durationType="month"
         />
         <PropertyCard
           image="https://images.pexels.com/photos/6032283/pexels-photo-6032283.jpeg"
           id={2}
           category={"rooms"}
           badgeTitle="For rent"
+          title="Cozy Room in Shared Apartment"
+          location="New York, NY"
+          price={800}
+          duration={1}
+          durationType="month"
         />
         <PropertyCard
           image="https://images.pexels.com/photos/6032283/pexels-photo-6032283.jpeg"
           id={2}
           category={"rooms"}
           badgeTitle="For rent"
+          title="Cozy Room in Shared Apartment"
+          location="New York, NY"
+          price={800}
+          duration={1}
+          durationType="month"
+        />
+
+        <PropertyCard
+          image="https://images.pexels.com/photos/6032283/pexels-photo-6032283.jpeg"
+          id={2}
+          category={"rooms"}
+          badgeTitle="For rent"
+          title="Cozy Room in Shared Apartment"
+          location="New York, NY"
+          price={800}
+          duration={1}
+          durationType="month"
         />
         <PropertyCard
           image="https://images.pexels.com/photos/6032283/pexels-photo-6032283.jpeg"
           id={2}
           category={"rooms"}
           badgeTitle="For rent"
+          title="Cozy Room in Shared Apartment"
+          location="New York, NY"
+          price={800}
+          duration={1}
+          durationType="month"
         />
         <PropertyCard
           image="https://images.pexels.com/photos/6032283/pexels-photo-6032283.jpeg"
           id={2}
           category={"rooms"}
           badgeTitle="For rent"
+          title="Cozy Room in Shared Apartment"
+          location="New York, NY"
+          price={800}
+          duration={1}
+          durationType="month"
         />
         <PropertyCard
           image="https://images.pexels.com/photos/6032283/pexels-photo-6032283.jpeg"
           id={2}
           category={"rooms"}
           badgeTitle="For rent"
-        />
-        <PropertyCard
-          image="https://images.pexels.com/photos/6032283/pexels-photo-6032283.jpeg"
-          id={2}
-          category={"rooms"}
-          badgeTitle="For rent"
-        />
-        <PropertyCard
-          image="https://images.pexels.com/photos/6032283/pexels-photo-6032283.jpeg"
-          id={2}
-          category={"rooms"}
-          badgeTitle="For rent"
-        />
-        <PropertyCard
-          image="https://images.pexels.com/photos/6032283/pexels-photo-6032283.jpeg"
-          id={2}
-          category={"rooms"}
-          badgeTitle="For rent"
-        />
-        <PropertyCard
-          image="https://images.pexels.com/photos/6032283/pexels-photo-6032283.jpeg"
-          id={2}
-          category={"rooms"}
-          badgeTitle="For rent"
+          title="Cozy Room in Shared Apartment"
+          location="New York, NY"
+          price={800}
+          duration={1}
+          durationType="month"
         />
       </div>
     </>
