@@ -5,9 +5,12 @@ import { persistReducer, persistStore } from "redux-persist";
 
 import authReducer from "../feature/authSlice"; // your auth slice
 import categoryReducer from "../feature/categorySlice";
+import propertyReducer from "../feature/propertySlice";
+
 const rootReducer = combineReducers({
   auth: authReducer,
-  category: categoryReducer
+  category: categoryReducer,
+  property: propertyReducer,
 });
 
 const persistConfig = {

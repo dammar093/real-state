@@ -217,6 +217,26 @@ class PropertyController extends AsyncHandler {
             include: { service: true },
           },
           images: true,
+          user: {
+            select: {
+              id: true,
+              fullName: true,
+              email: true,
+              role: true,
+              userDetail: {
+                select: {
+                  phoneNumber: true,
+                  address: true,
+                  profile: {
+                    select: {
+                      id: true,
+                      image: true, // profile image URL
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
         orderBy: sort
           ? {
@@ -230,6 +250,7 @@ class PropertyController extends AsyncHandler {
       const total = await db.properties.count({
         where: {
           isDelete: false,
+          status: true,
           OR: [
             { location: { contains: String(search), mode: "insensitive" } },
             { title: { contains: String(search), mode: "insensitive" } },
@@ -246,19 +267,27 @@ class PropertyController extends AsyncHandler {
         },
       });
 
-      return res.status(200).json(new ApiResponse(200, {
-        properties,
-        pagination: {
-          total,
-          page: Number(page),
-          limit: Number(limit),
-          pages: Math.ceil(total / Number(limit)),
-        },
-      }, "Propertis fetched successfully"));
+      return res.status(200).json(
+        new ApiResponse(
+          200,
+          {
+            properties,
+            pagination: {
+              total,
+              page: Number(page),
+              limit: Number(limit),
+              pages: Math.ceil(total / Number(limit)),
+            },
+          },
+          "Properties fetched successfully"
+        )
+      );
     } catch (error) {
+      console.error(error);
       throw new ApiError(500, "Internal server error");
     }
   }
+
 }
 
 export default new PropertyController();

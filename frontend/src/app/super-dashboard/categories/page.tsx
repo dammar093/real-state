@@ -22,6 +22,7 @@ import Button from "@/components/ui/button";
 import Modal from "@/components/modal/modal";
 import { FaPlus } from "react-icons/fa";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
+import { BiLoader } from "react-icons/bi";
 
 const CategoryPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -39,7 +40,12 @@ const CategoryPage = () => {
     category: Category | null;
   }>({ open: false, category: null });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <BiLoader />
+      </div>
+    );
   if (error) return <p className="text-red-500">Error: {error}</p>;
 
   // Toggle category status
@@ -119,7 +125,7 @@ const CategoryPage = () => {
           placeholder="Search categories..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border"
+          className="border p-2 mb-4 rounded !text-sm  text-white !w-[200px] !placeholder:text-sm"
         />
         <Button
           onClick={() => {
@@ -127,7 +133,7 @@ const CategoryPage = () => {
             setCategoryName("");
             setIsModalOpen(true);
           }}
-          className="px-6 py-2"
+          className="px-6 py-2 h-fit"
         >
           Create Category
         </Button>

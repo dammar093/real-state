@@ -1,6 +1,6 @@
 import createAPI from "./axiosConfig";
 
-const api = createAPI();
+export const api = createAPI();
 
 // === Auth API ===
 export async function loginUser(data: any) {
