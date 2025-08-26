@@ -203,5 +203,14 @@ propertyRouter.patch(
   requireRole("ADMIN"),
   propertyController.asyncHandler(propertyController.updatePropertyStatus.bind(propertyController))
 );
+// Get properties by categoryId
+propertyRouter.get(
+  "/category/:category",
+  propertyController.asyncHandler(
+    propertyController.getPropertyByCategory.bind(propertyController)
+  )
+);
+
+
 
 export default propertyRouter;

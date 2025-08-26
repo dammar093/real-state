@@ -287,6 +287,103 @@ class PropertyController extends AsyncHandler {
       throw new ApiError(500, "Internal server error");
     }
   }
+  // Get properties by category with search, pagination, and optional price sorting
+  // propertyController.ts
+  async getPropertyByCategory(req: Request, res: Response): Promise<Response> {
+    try {
+      const { page = 1, limit = 10, search = "", sort } = req.query;
+      const { category } = req.params;
+
+      if (!category) throw new ApiError(400, "Category is required");
+      const skip = (Number(page) - 1) * Number(limit);
+
+      const properties = await db.properties.findMany({
+        where: {
+          isDelete: false,
+          status: true,
+          category: {
+            name: { contains: String(category), mode: "insensitive" },
+          },
+          OR: [
+            { location: { contains: String(search), mode: "insensitive" } },
+            { title: { contains: String(search), mode: "insensitive" } },
+            {
+              services: {
+                some: {
+                  service: { name: { contains: String(search), mode: "insensitive" } },
+                },
+              },
+            },
+          ],
+        },
+        include: {
+          category: true,
+          services: { include: { service: true } },
+          images: true,
+          user: {
+            select: {
+              id: true,
+              fullName: true,
+              email: true,
+              role: true,
+              userDetail: {
+                select: {
+                  phoneNumber: true,
+                  address: true,
+                  profile: { select: { id: true, image: true } },
+                },
+              },
+            },
+          },
+        },
+        orderBy: sort ? { price: sort === "asc" ? "asc" : "desc" } : undefined,
+        skip,
+        take: Number(limit),
+      });
+
+      const total = await db.properties.count({
+        where: {
+          isDelete: false,
+          status: true,
+          category: {
+            name: { contains: String(category), mode: "insensitive" },
+          },
+          OR: [
+            { location: { contains: String(search), mode: "insensitive" } },
+            { title: { contains: String(search), mode: "insensitive" } },
+            {
+              services: {
+                some: {
+                  service: { name: { contains: String(search), mode: "insensitive" } },
+                },
+              },
+            },
+          ],
+        },
+      });
+
+      return res.status(200).json(
+        new ApiResponse(
+          200,
+          {
+            properties,
+            pagination: {
+              total,
+              page: Number(page),
+              limit: Number(limit),
+              pages: Math.ceil(total / Number(limit)),
+            },
+          },
+          "Properties fetched successfully by category"
+        )
+      );
+    } catch (error) {
+      console.error(error);
+      throw new ApiError(500, "Internal server error");
+    }
+  }
+
+
 
 }
 
