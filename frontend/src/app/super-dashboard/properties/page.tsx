@@ -5,6 +5,8 @@ import useProperties from "@/hooks/useProperties";
 import Input from "@/components/ui/input";
 import Loader from "@/components/loader/loader";
 import Button from "@/components/ui/button";
+import { FaEye, FaTrash } from "react-icons/fa";
+import Link from "next/link";
 
 const Properties = () => {
   const {
@@ -19,7 +21,6 @@ const Properties = () => {
 
   // Local input state
   const [term, setTerm] = useState("");
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   // Input typing
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,11 +36,32 @@ const Properties = () => {
   // Table columns
   const columns = [
     { title: "Title", selector: (row: any) => row.title },
-    { title: "Price", selector: (row: any) => `$${row.price}` },
+    { title: "Price", selector: (row: any) => `Rs.${row.price}` },
     { title: "Location", selector: (row: any) => row.location },
     { title: "Type", selector: (row: any) => row.type },
-    { title: "Category", selector: (row: any) => row.category?.name || "-" },
+    {
+      title: "Category",
+      selector: (row: any) => (
+        <span className="capitalize">{row.category?.name || "-"}</span>
+      ),
+    },
     { title: "User", selector: (row: any) => row.user?.fullName || "-" },
+    {
+      title: "Actions",
+      selector: (row: any) => (
+        <div className="flex gap-2">
+          <Link
+            href={`/properties/${row.id}`}
+            className="bg-transparent hover:text-blue-500 text-2xl"
+          >
+            <FaEye title="View Property" />
+          </Link>
+          <Button className="!bg-transparent hover:text-red-500 text-xl">
+            <FaTrash title="Delete Property" />
+          </Button>
+        </div>
+      ),
+    },
   ];
 
   if (loading) return <Loader />;
@@ -49,7 +71,7 @@ const Properties = () => {
     <div className="mt-10">
       {/* Search Input + Button */}
       <div className="mb-4 flex items-center gap-2">
-        <div className="flex items-center gap-2">
+        <form className="flex items-center gap-2" onSubmit={handleSearchClick}>
           <Input
             type="text"
             placeholder="Search properties..."
@@ -58,12 +80,12 @@ const Properties = () => {
             className="border p-2 rounded !text-sm !h-full text-white !w-[200px] !placeholder:text-sm"
           />
           <Button
-            onClick={handleSearchClick}
+            type="submit"
             className="px-4 py-1  bg-blue-500 hover:bg-blue-600 text-white rounded h-fit"
           >
             Search
           </Button>
-        </div>
+        </form>
       </div>
 
       {/* Table */}

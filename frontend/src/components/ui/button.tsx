@@ -1,3 +1,4 @@
+import { title } from "process";
 import React from "react";
 
 interface ButtonProps {
@@ -7,6 +8,7 @@ interface ButtonProps {
   loading?: boolean;
   disabled?: boolean;
   onClick?: () => void;
+  title?: string;
 }
 
 const Button = ({
@@ -24,6 +26,7 @@ const Button = ({
         className={` text-white rounded-full cursor-pointer ${className} bg-[var(--primary-color)] whitespace-nowrap`}
         onClick={onClick}
         disabled={loading || disabled}
+        title={title}
       >
         {loading ? "Loading..." : children}
       </button>

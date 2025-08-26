@@ -22,7 +22,7 @@ import Button from "@/components/ui/button";
 import Modal from "@/components/modal/modal";
 import { FaPlus } from "react-icons/fa";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
-import { BiLoader } from "react-icons/bi";
+import Loader from "@/components/loader/loader";
 
 const CategoryPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,12 +40,7 @@ const CategoryPage = () => {
     category: Category | null;
   }>({ open: false, category: null });
 
-  if (loading)
-    return (
-      <div className="h-screen flex justify-center items-center">
-        <BiLoader />
-      </div>
-    );
+  if (loading) return <Loader />;
   if (error) return <p className="text-red-500">Error: {error}</p>;
 
   // Toggle category status
@@ -156,20 +151,18 @@ const CategoryPage = () => {
                   checked={row.isActive}
                   onChange={() => handleToggle(row.id, row.isActive)}
                 />
-                <button
+                <Button
                   onClick={() => handleEditClick(row)}
-                  title="Edit Category"
-                  className="cursor-pointer"
+                  className="bg-transparent hover:text-blue-500 text-xl"
                 >
-                  <FiEdit className="text-xl" />
-                </button>
-                <button
+                  <FiEdit className="text-xl" title="Edit Category" />
+                </Button>
+                <Button
                   onClick={() => setDeleteModal({ open: true, category: row })}
-                  title="Delete Category"
-                  className="cursor-pointer"
+                  className="cursor-pointer bg-transparent hover:text-red-500 text-xl"
                 >
-                  <FiTrash2 className="text-xl" />
-                </button>
+                  <FiTrash2 className="text-xl" title="Delete Category" />
+                </Button>
               </div>
             ),
           },

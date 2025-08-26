@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
 import {
@@ -12,6 +12,7 @@ import {
   setSort,
   setLimit,
 } from "@/redux/feature/propertySlice";
+import axios from "axios";
 import { getProperties } from "@/api/property/property";
 
 const useProperties = () => {
@@ -19,31 +20,18 @@ const useProperties = () => {
   const { properties, loading, error, page, limit, search, sort, total } =
     useSelector((state: RootState) => state.property);
 
-  const [debouncedSearch, setDebouncedSearch] = useState(search);
-
-  // Debounce search input
-  useEffect(() => {
-    const handler = setTimeout(() => setDebouncedSearch(search), 500);
-    return () => clearTimeout(handler);
-  }, [search]);
-
   useEffect(() => {
     const fetchProperties = async () => {
       try {
         dispatch(setLoading(true));
         dispatch(setError(null));
 
-        const data = await getProperties({
-          page,
-          limit,
-          search: debouncedSearch,
-          sort,
-        });
-
-        dispatch(setProperties(data.data.properties));
-        dispatch(setTotal(data.data.pagination.total));
-        dispatch(setPage(data.data.pagination.page));
-        dispatch(setLimit(data.data.pagination.limit));
+        const data = await getProperties({ page, limit, search, sort });
+        console.log("data", data);
+        dispatch(setProperties(data?.data?.properties));
+        dispatch(setTotal(data?.data?.pagination?.total));
+        dispatch(setPage(data?.data?.pagination?.page));
+        dispatch(setLimit(data?.data?.pagination?.limit));
       } catch (err: any) {
         dispatch(setError(err.response?.data?.message || err.message));
       } finally {
@@ -52,7 +40,7 @@ const useProperties = () => {
     };
 
     fetchProperties();
-  }, [dispatch, page, limit, debouncedSearch, sort]);
+  }, [dispatch, page, limit, search, sort]);
 
   return {
     properties,
@@ -70,6 +58,7 @@ const useProperties = () => {
     setSortOrder: (order: "asc" | "desc") => dispatch(setSort(order)),
     setCurrentPage: (pageNumber: number) => dispatch(setPage(pageNumber)),
     setLimitNumber: (limitNumber: number) => dispatch(setLimit(limitNumber)),
+    refetch: () => {}, // optional, can call fetchProperties directly if needed
   };
 };
 
