@@ -89,8 +89,16 @@ const SliderLayout: FC<CardSliderProps> = ({ link, title, children }) => {
 
       <div
         ref={sliderRef}
-        className="flex gap-4 overflow-x-auto scrollbar-hide"
-        style={{ scrollBehavior: "smooth", whiteSpace: "nowrap" }}
+        className="
+    grid 
+    gap-4 
+    grid-cols-1        /* default small screens: 1 item */
+    sm:grid-cols-1     /* small screens */
+    md:grid-cols-2     /* medium screens */
+    lg:grid-cols-4     /* large screens */
+    xl:grid-cols-6     /* extra-large screens */
+    flex-nowrap
+  "
       >
         {children}
       </div>

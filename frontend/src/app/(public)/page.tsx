@@ -1,31 +1,22 @@
+"use client";
 import CardSlider from "@/components/card-slider/card-slider";
 import Slider from "@/components/layout/slider/slider";
+import useCategories from "@/hooks/useCategories";
 import React from "react";
-
 const Home = () => {
+  const { categories } = useCategories();
+  console.log(categories);
   return (
     <div className="w-full flex flex-col gap-10">
       <Slider />
-      <CardSlider
-        title="Explore Rooms"
-        link="/properties/rooms"
-        category="rooms"
-      />
-      <CardSlider
-        title="Explore Vilas"
-        link="/properties/vilas"
-        category="vilas"
-      />
-      <CardSlider
-        title="Explore Houses"
-        link="/properties/houses"
-        category="houses"
-      />
-      <CardSlider
-        title="Explore flats"
-        link="/properties/flats"
-        category="flats"
-      />
+      {categories.map((category) => (
+        <CardSlider
+          key={category.id}
+          title={`Explore ${category.name}`}
+          link={`/properties/${category?.name?.toLocaleLowerCase()}`}
+          category={category?.name}
+        />
+      ))}
     </div>
   );
 };

@@ -15,3 +15,17 @@ export const getProperties = async (params: GetPropertiesParams = {}) => {
     throw error;
   }
 };
+
+export const getPropertiesByCategory = async (
+  category: string,
+  { page, limit }: GetPropertiesParams = {}
+) => {
+  try {
+    const response = await api.get(`/properties/category/${category}`, {
+      params: { page, limit },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
