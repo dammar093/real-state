@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 const Dashboard = () => {
   const user = useAuth();
   useEffect(() => {
-    if (user?.role !== "admin") {
+    if (user?.role !== "ADMIN") {
       redirect("/sign-in");
     }
   }, [user]);
