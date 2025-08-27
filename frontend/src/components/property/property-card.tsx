@@ -33,7 +33,7 @@ const PropertyCard: React.FC<PropertyCradProps> = ({
     <div className="w-full">
       <div className="flex flex-col gap-2">
         <div
-          className={`aspect-square relative  ${styles["category-card"]} overflow-hidden rounded-lg`}
+          className={`min-h-[200px] min-w-[200px] aspect-square relative  ${styles["category-card"]} overflow-hidden rounded-lg`}
         >
           <Link
             href={`/properties/${category}/${id}`}

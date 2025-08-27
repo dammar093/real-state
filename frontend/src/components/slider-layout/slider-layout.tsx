@@ -38,46 +38,42 @@ const SliderLayout: FC<CardSliderProps> = ({ link, title, children }) => {
   }, []);
 
   const handlePrev = () => {
-    if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: -SLIDE_AMOUNT, behavior: "smooth" });
-    }
+    sliderRef.current?.scrollBy({ left: -SLIDE_AMOUNT, behavior: "smooth" });
   };
 
   const handleNext = () => {
-    if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: SLIDE_AMOUNT, behavior: "smooth" });
-    }
+    sliderRef.current?.scrollBy({ left: SLIDE_AMOUNT, behavior: "smooth" });
   };
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex items-center gap-2 justify-between">
+      <div className="flex items-center justify-between gap-2">
         <Link
           href={link}
           className="text-[var(--primary-color)] text-3xl md:text-2xl lg:text-3xl font-semibold capitalize"
         >
-          <div className="flex items-center">
+          <div className="flex items-center gap-1">
             <span>{title}</span>
-            <span>
-              <MdOutlineNavigateNext />
-            </span>
+            <MdOutlineNavigateNext />
           </div>
         </Link>
+
         <div className="flex items-center gap-2">
           <Button
             type="button"
             disabled={isAtStart}
-            className={`rounded-full w-[40px] h-[40px] p-0 flex items-center justify-center ${
+            className={`rounded-full w-[40px] h-[40px] flex items-center justify-center p-0 ${
               isAtStart ? "opacity-30 cursor-not-allowed" : ""
             }`}
             onClick={handlePrev}
           >
             <GrFormPrevious size={28} />
           </Button>
+
           <Button
             type="button"
             disabled={isAtEnd}
-            className={`rounded-full w-[40px] h-[40px] p-0 flex items-center justify-center ${
+            className={`rounded-full w-[40px] h-[40px] flex items-center justify-center p-0 ${
               isAtEnd ? "opacity-30 cursor-not-allowed" : ""
             }`}
             onClick={handleNext}
@@ -87,18 +83,10 @@ const SliderLayout: FC<CardSliderProps> = ({ link, title, children }) => {
         </div>
       </div>
 
+      {/* FLEX container with horizontal scroll */}
       <div
         ref={sliderRef}
-        className="
-    grid 
-    gap-4 
-    grid-cols-2        /* default small screens: 1 item */
-    sm:grid-cols-2     /* small screens */
-    md:grid-cols-3   /* medium screens */
-    lg:grid-cols-4    /* large screens */
-    xl:grid-cols-6   /* extra-large screens */
-    flex-nowrap
-  "
+        className="flex gap-3 overflow-x-auto scroll-smooth scrollbar-hide "
       >
         {children}
       </div>
