@@ -35,7 +35,7 @@ const PropertyPage = () => {
     };
 
     fetchProperty();
-  }, [id, property]);
+  }, [id]);
 
   if (loading) return <Loader />;
 
