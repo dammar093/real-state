@@ -12,8 +12,9 @@ import { getPropertyById } from "@/api/property/property";
 import Loader from "@/components/loader/loader";
 
 const PropertyPage = () => {
-  const params = useParams<{ id: string }>();
-  const { id } = params || {};
+  const params = useParams();
+  const id = params?.id as string | undefined;
+
   const [loading, setLoading] = useState(true);
   const [property, setProperty] = useState<Property | null>(null);
 
@@ -24,18 +25,19 @@ const PropertyPage = () => {
       setLoading(true);
       try {
         const data = await getPropertyById(id);
-        setProperty(data.data);
-      } catch (err) {
-        console.error("Error fetching property:", err);
+        setProperty(data.data ?? null);
+      } catch (error) {
+        console.error("Error fetching property:", error);
+        setProperty(null);
       } finally {
         setLoading(false);
       }
     };
 
     fetchProperty();
-  }, [id]);
+  }, [id, property]);
 
-  if (!id || loading) return <Loader />; // Wait for client data
+  if (loading) return <Loader />;
 
   if (!property)
     return (
@@ -43,32 +45,32 @@ const PropertyPage = () => {
     );
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col gap-5">
       {/* Property gallery */}
       {property.images?.length > 0 && (
         <PropertySlider images={property.images} />
       )}
 
       {/* Detail title and location */}
-      <div>
+      <div className="flex flex-col gap-1">
         <span className="capitalize font-medium text-[var(--primary-color)]">
           For {property.type}
         </span>
-        <h3 className="text-md md:text-lg font-medium text-gray-800">
+        <h3 className="text-base sm:text-lg md:text-xl font-medium text-gray-800">
           <span className="capitalize">{property.category?.name}</span> in{" "}
           <span className="capitalize">{property.location}</span>
         </h3>
-        <div className="flex items-center gap-1 mt-1">
-          <div className="text-gray-600 font-normal text-sm">
+        <div className="flex items-center gap-2 flex-wrap text-sm sm:text-base text-gray-600 mt-1">
+          <div>
             Rs.{property.price} for {property.duration}{" "}
             <span className="capitalize">
               {property.durationType?.toLowerCase()}
             </span>
           </div>
-          <LuDot className="text-gray-600" size={10} />
-          <div className="flex gap-1 items-center">
-            <GoStarFill size={10} className="text-slate-600" />
-            <span className="text-gray-600 text-sm">5.0</span>
+          <LuDot size={10} />
+          <div className="flex items-center gap-1">
+            <GoStarFill size={12} className="text-slate-600" />
+            <span>5.0</span>
           </div>
         </div>
       </div>
@@ -82,7 +84,7 @@ const PropertyPage = () => {
           {property.Services.map((service) => (
             <span
               key={service}
-              className="flex items-center gap-2 px-3 py-1 bg-gray-900/90 rounded-full shadow-sm text-white text-sm"
+              className="flex items-center gap-2 px-2 py-1 bg-gray-900/90 rounded-full text-white text-sm"
             >
               {service}
             </span>
@@ -92,7 +94,7 @@ const PropertyPage = () => {
 
       {/* Description */}
       {property.description && (
-        <article className="text-[14px] text-slate-600 text-justify">
+        <article className="text-[14px] sm:text-[15px] text-slate-600 text-justify">
           {property.description}
         </article>
       )}
