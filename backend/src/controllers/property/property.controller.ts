@@ -115,13 +115,37 @@ class PropertyController extends AsyncHandler {
 
   // Edit property - No image update
   async editProperty(req: Request, res: Response): Promise<Response> {
+    console.log(req.body, "shjdfbskfnl")
     try {
       const { id } = req.params;
-      const { title, price, location, description, map, duration, categoryId, serviceIds, type, isHotel, durationType } = req.body;
+      let {
+        title,
+        price,
+        location,
+        description,
+        map,
+        duration,
+        categoryId,
+        services,
+        type,
+        isHotel,
+        durationType,
+      } = req.body;
 
-      const existing = await db.properties.findFirst({ where: { id: +id, isDelete: false } });
+      // find existing property
+      const existing = await db.properties.findFirst({
+        where: { id: +id, isDelete: false },
+      });
       if (!existing) throw new ApiError(404, "Property not found");
 
+      // normalize services to string[]
+      const parsedServices: string[] = Array.isArray(services)
+        ? services
+        : typeof services === "string" && services.length
+          ? JSON.parse(services)
+          : [];
+
+      // update property
       const updatedProperty = await db.properties.update({
         where: { id: +id },
         data: {
@@ -135,20 +159,26 @@ class PropertyController extends AsyncHandler {
           isHotel,
           duration,
           durationType,
-          services: {
-            deleteMany: {}, // clear old services
-            create: serviceIds.map((sid: number) => ({
-              serviceId: sid,
-            })),
-          },
+          Services: services,
+        },
+        include: {
+          category: true,
+          user: true,
+          images: true,
         },
       });
 
-      return res.status(200).json(new ApiResponse(200, updatedProperty, "Property updated successfully"));
+
+      return res
+        .status(200)
+        .json(new ApiResponse(200, updatedProperty, "Property updated successfully"));
     } catch (error) {
-      throw new ApiError(500, "Inertnal server error");
+      console.error("Update property error:", error); // logs real error
+      throw new ApiError(500, "Internal server error");
     }
   }
+
+
 
   // Update only property status
   async updatePropertyStatus(req: Request, res: Response): Promise<Response> {

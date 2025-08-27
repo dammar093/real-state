@@ -167,31 +167,47 @@ const Properties = () => {
   // Submit form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const data = new FormData();
-      for (const key in formData) {
-        if (key === "images") {
-          formData.images.forEach((file) => data.append("image", file));
-        } else if (key === "services") {
-          formData.services.forEach((service) =>
-            data.append("services[]", service)
-          );
-        } else {
-          data.append(key, (formData as any)[key]);
-        }
-      }
+    setLoading(true);
 
+    try {
       if (modalType === "create") {
+        // If you want to handle images, use FormData
+        const data = new FormData();
+        for (const key in formData) {
+          if (key === "images") {
+            formData.images.forEach((file) => data.append("image", file));
+          } else if (key === "services") {
+            formData.services.forEach((service) =>
+              data.append("services[]", service)
+            );
+          } else {
+            data.append(key, (formData as any)[key]);
+          }
+        }
         const response = await apiCreateProperty(data);
         setProperties((prev) => [...prev, response.data]);
       } else if (modalType === "edit" && selectedProperty) {
+        // Plain JSON for edit
+        const data = {
+          title: formData.title,
+          price: Number(formData.price),
+          location: formData.location,
+          description: formData.description,
+          map: formData.map,
+          categoryId: Number(formData.categoryId),
+          type: formData.type,
+          isHotel: Boolean(formData.isHotel),
+          duration: Number(formData.duration),
+          durationType: formData.durationType,
+          services: formData.services, // array of strings
+        };
         const response = await apiUpdateProperty(selectedProperty.id, data);
         setProperties((prev) =>
           prev.map((p) => (p.id === selectedProperty.id ? response.data : p))
         );
       }
 
-      // Reset form
+      // Reset
       setIsModalOpen(false);
       setSelectedProperty(null);
       setFormData({
@@ -212,6 +228,8 @@ const Properties = () => {
       setServiceInput("");
     } catch (error) {
       console.error("Error saving property:", error);
+    } finally {
+      setLoading(false);
     }
   };
 

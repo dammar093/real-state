@@ -68,6 +68,7 @@ export const deleteProperty = async (id: number) => {
 
 // Update property
 export const updateProperty = async (id: number, data: any) => {
+  console.log(data, "data");
   try {
     const response = await api.patch(`/properties/${id}`, data);
     return response.data;

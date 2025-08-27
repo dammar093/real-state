@@ -9,6 +9,7 @@ import propertyReducer from "../feature/propertySlice";
 import propertyCategoryReducer from "../feature/propertyCategorySlice"
 import usersReducer from "../feature/userSlice"
 import serviceReducer from "../feature/serviceSlice"
+import dahboardReucer from "../feature/dashboardSlice"
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   property: propertyReducer,
   propertyCategory: propertyCategoryReducer,
   users: usersReducer,
-  services: serviceReducer
+  services: serviceReducer,
+  dashboard: dahboardReucer
 });
 
 const persistConfig = {

@@ -76,6 +76,7 @@ export interface Property {
   services: PropertyService[];
   createdAt: string;
   updatedAt: string;
+  Services: string[]
 }
 export interface Pagination {
   total: number;

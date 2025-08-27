@@ -1,17 +1,38 @@
 "use client";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GiBookCover } from "react-icons/gi";
 import { FaSackDollar } from "react-icons/fa6";
 import { MdMapsHomeWork } from "react-icons/md";
-import useProperties from "@/hooks/useProperties";
-import useCategories from "@/hooks/useCategories";
-import useUsers from "@/hooks/useUsers";
+import { decodeToken } from "@/utils/utils";
+import { getPropertiesByUserId } from "@/api/property/property";
+import Loader from "@/components/loader/loader";
 
 const Dashboard = () => {
-  const { total: totalProperties } = useProperties();
-  const { total: totalCategories } = useCategories();
-  const { total: totalUsers } = useUsers();
+  const [loading, setLoading] = useState(false);
+  const [totalProperties, setTotalProperties] = useState(0);
+  const [_, setError] = useState<string | null>(null);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const decoded = decodeToken(token as string);
+    const fetchProperties = async () => {
+      setLoading(true);
+      try {
+        const response = await getPropertiesByUserId(decoded?.id as number);
+        console.log(response.data, "sdfnsdfjilk.");
+        setTotalProperties(response?.data?.length || 0);
+      } catch (error) {
+        setError("Failed to fetch properties");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchProperties();
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-10">
@@ -30,7 +51,7 @@ const Dashboard = () => {
             <GiBookCover className="text-2xl" />
             <span>Booking</span>
           </h3>
-          <span className="text-gray-900 font-semibold">{totalProperties}</span>
+          <span className="text-gray-900 font-semibold">{0}</span>
         </div>
       </Link>
 
@@ -39,7 +60,7 @@ const Dashboard = () => {
           <FaSackDollar className="text-2xl" />
           <span>Earning</span>
         </h3>
-        <span className="text-gray-900 font-semibold">{totalCategories}</span>
+        <span className="text-gray-900 font-semibold">{0}</span>
       </div>
     </div>
   );

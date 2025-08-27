@@ -9,11 +9,12 @@ import { getPropertyById } from "@/api/property/property";
 import Link from "next/link";
 import { Property } from "@/types/property";
 import { getTimeSince } from "@/utils/utils";
+import Loader from "@/components/loader/loader";
 
 const PropertyPage = () => {
   const params = useParams<{ id: string }>();
   const { id } = params;
-
+  const [loading, setLoading] = useState(true);
   const [property, setProperty] = useState<Property | null>(null);
 
   useEffect(() => {
@@ -24,11 +25,16 @@ const PropertyPage = () => {
         setProperty(data.data);
       } catch (error) {
         console.error("Error fetching property:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchProperty();
   }, [id]);
 
+  if (loading) {
+    return <Loader />;
+  }
   return (
     <div className="text-white rounded-lg shadow-md flex flex-col gap-6 mt-10">
       {/* Image Gallery */}
@@ -128,15 +134,16 @@ const PropertyPage = () => {
 
       {/* Services */}
       <div className="flex flex-wrap gap-2">
-        <div className="flex items-center gap-2 px-3 py-1 bg-white/30 rounded-full shadow-sm text-white">
-          <Image
-            src="https://cdn-icons-png.flaticon.com/128/3287/3287922.png"
-            alt="wifi"
-            width={16}
-            height={16}
-          />
-          <span className="text-sm">Free Wifi</span>
-        </div>
+        {property?.Services &&
+          property?.Services?.map((service) => (
+            <div
+              key={service}
+              className="flex items-center gap-2 px-3 py-1 bg-white/30 rounded-full shadow-sm text-white"
+            >
+              <span className="text-sm">{service}</span>
+            </div>
+          ))}
+
         {/* Add other services here in similar divs */}
       </div>
 

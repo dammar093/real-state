@@ -74,7 +74,7 @@ const PropertyCard: React.FC<PropertyCradProps> = ({
         </div>
         <div>
           <div>
-            <h3 className="text-md md:text-lg font-medium text-gray-800">
+            <h3 className="text-md md:text-lg font-medium text-gray-800 line-clamp-2">
               <span className="capitalize">{category} </span>in{" "}
               <span className="capitalize">{location}</span>
             </h3>
