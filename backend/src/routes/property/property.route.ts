@@ -222,13 +222,5 @@ propertyRouter.get(
     propertyController.getPropertiesByUserId.bind(propertyController)
   )
 );
-propertyRouter.get(
-  "/:id",
-  propertyController.asyncHandler(
-    propertyController.getPropertyById.bind(propertyController)
-  )
-);
-
-
 
 export default propertyRouter;
