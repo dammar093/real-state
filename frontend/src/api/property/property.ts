@@ -29,3 +29,13 @@ export const getPropertiesByCategory = async (
     throw error;
   }
 };
+
+// get property by id 
+export const getPropertyById = async (id: string) => {
+  try {
+    const response = await api.get(`/properties/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

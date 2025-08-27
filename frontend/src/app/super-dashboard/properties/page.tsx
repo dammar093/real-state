@@ -67,14 +67,11 @@ const Properties = () => {
       selector: (row: Property) => (
         <div className="flex gap-2">
           <Link
-            href={`/properties/${row.id}`}
+            href={`/super-dashboard/properties/${row.id}`}
             className="bg-transparent hover:text-blue-500 text-2xl"
           >
             <FaEye title="View Property" />
           </Link>
-          <Button className="!bg-transparent hover:text-red-500 text-xl">
-            <FaTrash title="Delete Property" />
-          </Button>
         </div>
       ),
     },

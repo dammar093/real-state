@@ -4,12 +4,18 @@ import React from "react";
 import { FaUsers } from "react-icons/fa";
 import { GiMeepleGroup } from "react-icons/gi";
 import { FaSackDollar } from "react-icons/fa6";
-import { MdMapsHomeWork } from "react-icons/md";
+import { MdMapsHomeWork, MdOutlineMiscellaneousServices } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store/store";
+import useProperties from "@/hooks/useProperties";
+import useCategories from "@/hooks/useCategories";
+import useUsers from "@/hooks/useUsers";
 
 const Dashboard = () => {
-  const { total } = useSelector((state: RootState) => state.category);
+  const { total: totalProperties } = useProperties();
+  const { total: totalCategories } = useCategories();
+  const { total: totalUsers } = useUsers();
+
   return (
     <div className="grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-10">
       <Link href={"/super-dashboard/users"}>
@@ -18,7 +24,7 @@ const Dashboard = () => {
             <FaUsers className="text-2xl" />
             <span>Users</span>
           </h3>
-          <span className="text-gray-900 font-semibold">3000</span>
+          <span className="text-gray-900 font-semibold">{totalUsers}</span>
         </div>
       </Link>
       <Link href={"/super-dashboard/properties"}>
@@ -27,7 +33,7 @@ const Dashboard = () => {
             <MdMapsHomeWork className="text-2xl" />
             <span>Properties</span>
           </h3>
-          <span className="text-gray-900 font-semibold">3000</span>
+          <span className="text-gray-900 font-semibold">{totalProperties}</span>
         </div>
       </Link>
       <Link href={"/super-dashboard/categories"}>
@@ -36,16 +42,7 @@ const Dashboard = () => {
             <GiMeepleGroup className="text-2xl" />
             <span>Categories</span>
           </h3>
-          <span className="text-gray-900 font-semibold">{total}</span>
-        </div>
-      </Link>
-      <Link href={"/super-dashboard/earnings"}>
-        <div className="p-4 bg-white shadow rounded bg-gradient-to-tr from-pink-400 to-yellow-500">
-          <h3 className="text-lg font-semibold flex items-center gap-2">
-            <FaSackDollar className="text-2xl" />
-            <span>Earnings</span>
-          </h3>
-          <span className="text-gray-900 font-semibold">Rs. 3000</span>
+          <span className="text-gray-900 font-semibold">{totalCategories}</span>
         </div>
       </Link>
     </div>

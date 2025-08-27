@@ -210,6 +210,12 @@ propertyRouter.get(
     propertyController.getPropertyByCategory.bind(propertyController)
   )
 );
+propertyRouter.get(
+  "/:id",
+  propertyController.asyncHandler(
+    propertyController.getPropertyById.bind(propertyController)
+  )
+);
 
 
 

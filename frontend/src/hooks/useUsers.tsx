@@ -1,41 +1,45 @@
+// hooks/useUsers.ts
 "use client";
-import { useEffect, useState } from "react";
-
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  profile?: string; // optional avatar
-}
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchUsersStart,
+  fetchUsersSuccess,
+  fetchUsersFailure,
+} from "@/redux/feature/userSlice"; // adjust path if needed
+import { RootState } from "@/redux/store/store";
+import { User } from "@/types/property";
+import { getUsers } from "@/api/user/user";
 
 const useUsers = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch();
+  const { users, loading, error, page, total } = useSelector(
+    (state: RootState) => state.users
+  );
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        setLoading(true);
-        setError(null);
-
-        // Example: Replace with your API endpoint
-        const res = await fetch("/api/users");
-        if (!res.ok) throw new Error("Failed to fetch users");
-
-        const data: User[] = await res.json();
-        setUsers(data);
+        dispatch(fetchUsersStart());
+        const res = await getUsers();
+        console.log(res.data);
+        const data: User[] = res.data?.users;
+        dispatch(
+          fetchUsersSuccess({
+            users: data,
+            total: res.data?.pagination?.totalUsers,
+            page: res.data?.pagination?.totalPage,
+          })
+        );
       } catch (err: any) {
-        setError(err.message || "Something went wrong");
-      } finally {
-        setLoading(false);
+        dispatch(fetchUsersFailure(err.message || "Error fetching users"));
       }
     };
 
     fetchUsers();
-  }, []);
+  }, [dispatch]);
 
-  return { users, loading, error };
+  return { users, loading, error, page, total };
 };
 
 export default useUsers;

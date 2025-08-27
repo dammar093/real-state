@@ -1,88 +1,49 @@
 "use client";
 
+import { getPropertiesByCategory } from "@/api/property/property";
 import ProducsLayout from "@/components/layout/products-layout/products-layout";
 import PropertyCard from "@/components/property/property-card";
+import { Property } from "@/types/property";
+import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
 
-const Property = () => {
+const PropertiesPage = () => {
+  const [properties, setProperties] = React.useState<Property[]>([]);
+  const params = useParams<{ name: string }>();
+  const { name } = params;
   useEffect(() => {
     // Simulate fetching property data
-    const fetchProperty = async () => {};
+    const fetchProperty = async () => {
+      try {
+        const data = await getPropertiesByCategory(name);
+        setProperties(data.data?.properties);
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      }
+    };
 
     fetchProperty();
   }, []);
   return (
     <div>
-      <ProducsLayout>
-        <PropertyCard
-          id={1}
-          category="apartment"
-          image="/images/properties/property-1.jpg"
-          badgeTitle="For Rent"
-          title="Modern Apartment in City Center"
-          location="New York, NY"
-          price={2500}
-          duration={1}
-          durationType="month"
-        />
-        <PropertyCard
-          id={2}
-          category="house"
-          image="/images/properties/property-2.jpg"
-          badgeTitle="For Sale"
-          title="Cozy Family House"
-          location="Los Angeles, CA"
-          price={750000}
-          duration={0}
-          durationType=""
-        />
-        <PropertyCard
-          id={3}
-          category="villa"
-          image="/images/properties/property-3.jpg"
-          badgeTitle="For Rent"
-          title="Luxury Villa with Sea View"
-          location="Miami, FL"
-          price={5000}
-          duration={1}
-          durationType="month"
-        />
-        <PropertyCard
-          id={4}
-          category="condo"
-          image="/images/properties/property-4.jpg"
-          badgeTitle="For Sale"
-          title="Downtown Condo with Amenities"
-          location="Chicago, IL"
-          price={450000}
-          duration={0}
-          durationType=""
-        />
-        <PropertyCard
-          id={5}
-          category="townhouse"
-          image="/images/properties/property-5.jpg"
-          badgeTitle="For Rent"
-          title="Spacious Townhouse in Suburbs"
-          location="Austin, TX"
-          price={1800}
-          duration={1}
-          durationType="month"
-        />
-        <PropertyCard
-          id={6}
-          category="cottage"
-          image="/images/properties/property-6.jpg"
-          badgeTitle="For Sale"
-          title="Charming Cottage in the Countryside"
-          location="Nashville, TN"
-          price={320000}
-          duration={0}
-          durationType=""
-        />
+      <ProducsLayout category={name}>
+        {properties.map((property) => (
+          <PropertyCard
+            key={property.id}
+            id={property.id}
+            category={property.category?.name || ""}
+            image={property?.images[0]?.image || ""}
+            badgeTitle={property?.type || ""}
+            title={property.title}
+            location={property.location}
+            price={property.price}
+            duration={property.duration}
+            durationType={property.durationType}
+          />
+        ))}
       </ProducsLayout>
     </div>
   );
 };
 
-export default Property;
+export default PropertiesPage;

@@ -19,6 +19,8 @@ export interface UserDetail {
   phoneNumber?: string;
   address?: string;
   profile?: UserProfile;
+  facebook?: string;
+  instagram?: string;
 }
 
 export interface User {
@@ -27,21 +29,31 @@ export interface User {
   email: string;
   role: "SUPER_ADMIN" | "ADMIN" | "USER";
   userDetail?: UserDetail;
+  createdAt: string;
 }
 
-export interface PropertyService {
+export interface Service {
   id: number;
-  serviceId: number;
-  propertyId: number;
+  name: string;
+  image?: string; // URL of the service image
+  userId: number;
   status: boolean;
   isDelete: boolean;
   createdAt: string;
   updatedAt: string;
-  service: {
-    id: number;
-    name: string;
-  };
 }
+
+export interface PropertyService {
+  id: number;
+  propertyId: number;
+  serviceId: number;
+  status: boolean;
+  isDelete: boolean;
+  createdAt: string;
+  updatedAt: string;
+  service: Service;
+}
+
 
 export interface Property {
   id: number;

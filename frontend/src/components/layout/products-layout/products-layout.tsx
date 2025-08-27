@@ -1,7 +1,13 @@
 import React from "react";
 import { IoFilter } from "react-icons/io5";
 
-const ProducsLayout = ({ children }: { children: React.ReactNode }) => {
+const ProducsLayout = ({
+  category,
+  children,
+}: {
+  category?: string;
+  children: React.ReactNode;
+}) => {
   return (
     <>
       <div className="pt-5 flex flex-col gap-4">
@@ -10,7 +16,7 @@ const ProducsLayout = ({ children }: { children: React.ReactNode }) => {
             <h2 className="text-xl md:text-2xl lg:text-3xl fw-bold text-slate-800">
               Available{" "}
               <span className="capitalise text-[var(--primary-color)]">
-                Rooms
+                {category}
               </span>
             </h2>
           </div>

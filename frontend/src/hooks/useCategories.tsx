@@ -12,7 +12,7 @@ import { getCategories } from "@/api/api";
 
 const useCategories = () => {
   const dispatch = useDispatch();
-  const { categories, loading, error } = useSelector(
+  const { categories, loading, error, total } = useSelector(
     (state: RootState) => state.category
   );
 
@@ -39,7 +39,7 @@ const useCategories = () => {
     fetchCategories();
   }, [dispatch]);
 
-  return { categories, loading, error };
+  return { categories, loading, error, total };
 };
 
 export default useCategories;

@@ -25,3 +25,31 @@ export const decodeToken = (token: string): DecodedToken | null => {
     return null;
   }
 };
+
+
+export const getTimeSince = (dateString?: Date) => {
+  if (!dateString) return "Unknown";
+
+  const now = new Date();
+  const past = new Date(dateString);
+  const diffMs = now.getTime() - past.getTime(); // difference in milliseconds
+
+  const seconds = Math.floor(diffMs / 1000);
+  if (seconds < 60) return `${seconds} seconds`;
+
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes} minutes`;
+
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} hours`;
+
+  const days = Math.floor(hours / 24);
+  if (days < 30) return `${days} days`;
+
+  const months = Math.floor(days / 30); // approximate
+  if (months < 12) return `${months} months`;
+
+  const years = Math.floor(days / 365); // approximate
+  return `${years} years`;
+};
+

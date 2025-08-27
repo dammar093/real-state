@@ -382,6 +382,58 @@ class PropertyController extends AsyncHandler {
       throw new ApiError(500, "Internal server error");
     }
   }
+  async getPropertyById(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params;
+
+      if (!id) throw new ApiError(400, "Property ID is required");
+
+      const property = await db.properties.findUnique({
+        where: {
+          id: Number(id),
+          isDelete: false,
+          status: true,
+        },
+        include: {
+          category: true,
+          services: { include: { service: true } },
+          images: {
+            select: {
+              id: true,
+              image: true
+            }
+          },
+          user: {
+            select: {
+              id: true,
+              fullName: true,
+              email: true,
+              role: true,
+              createdAt: true,
+              userDetail: {
+                select: {
+                  phoneNumber: true,
+                  address: true,
+                  profile: { select: { id: true, image: true } },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!property) {
+        throw new ApiError(404, "Property not found");
+      }
+
+      return res
+        .status(200)
+        .json(new ApiResponse(200, property, "Property fetched successfully"));
+    } catch (error) {
+      console.error(error);
+      throw new ApiError(500, "Internal server error");
+    }
+  }
 
 
 

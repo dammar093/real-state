@@ -7,60 +7,42 @@ import {
 } from "react-icons/md";
 import Button from "../ui/button";
 
-const PropertySlider = () => {
+const PropertySlider = ({
+  images,
+}: {
+  images: { image: string; id: number }[];
+}) => {
   const [index, setIndex] = useState(0);
 
-  const sliderItems = [
-    {
-      id: 1,
-      image: "https://images.pexels.com/photos/271624/pexels-photo-271624.jpeg",
-    },
-    {
-      id: 2,
-      image:
-        "https://images.pexels.com/photos/8031934/pexels-photo-8031934.jpeg",
-    },
-    {
-      id: 3,
-      image: "https://images.pexels.com/photos/271619/pexels-photo-271619.jpeg",
-    },
-    {
-      id: 4,
-      image: "https://images.pexels.com/photos/262048/pexels-photo-262048.jpeg",
-    },
-    {
-      id: 5,
-      image:
-        "https://images.pexels.com/photos/11899139/pexels-photo-11899139.jpeg",
-    },
-  ];
-
   const handleForward = () => {
-    setIndex((prev) => (prev + 1) % sliderItems.length);
+    setIndex((prev) => (prev + 1) % images.length);
   };
 
   const handleBackward = () => {
-    setIndex((prev) => (prev === 0 ? sliderItems.length - 1 : prev - 1));
+    setIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % sliderItems.length);
+      setIndex((prev) => (prev + 1) % images.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, [sliderItems.length]);
+  }, [images?.length]);
 
   return (
     <section className="w-full mt-3 aspect-video relative rounded overflow-hidden">
       {/* Mobile: Swipeable slider */}
       <div className="flex md:hidden overflow-x-auto snap-x snap-mandatory scroll-smooth scrollbar-hide">
-        {sliderItems.map((item) => (
-          <div key={item.id} className="min-w-full h-full snap-center shrink-1">
+        {images?.map((item) => (
+          <div
+            key={item?.id}
+            className="min-w-full h-full snap-center shrink-1"
+          >
             <Image
               width={1080}
               height={720}
               className="w-full h-full object-cover"
-              src={item.image}
+              src={item?.image}
               loading="lazy"
               alt="slider image"
             />
@@ -72,8 +54,8 @@ const PropertySlider = () => {
         className="hidden md:flex w-full h-full transition-transform duration-700 ease-in-out"
         style={{ transform: `translateX(-${index * 100}%)` }}
       >
-        {sliderItems.map((item) => (
-          <div key={item.id} className="min-w-full h-full flex-shrink-0">
+        {images?.map((item) => (
+          <div key={item?.id} className="min-w-full h-full flex-shrink-0">
             <Image
               width={1080}
               height={720}

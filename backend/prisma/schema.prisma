@@ -88,6 +88,7 @@ model Properties {
   category    Category          @relation(fields: [categoryId], references: [id])
   services    PropertyService[] // many-to-many
   type        Types
+  Services    String[]
   status      Boolean           @default(true)
   isDelete    Boolean           @default(false)
   isHotel     Boolean           @default(false)

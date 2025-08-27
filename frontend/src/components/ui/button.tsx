@@ -18,6 +18,7 @@ const Button = ({
   loading,
   onClick,
   disabled,
+  title,
 }: ButtonProps) => {
   return (
     <>

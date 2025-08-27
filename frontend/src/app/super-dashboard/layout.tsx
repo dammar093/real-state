@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { BsFillBoxFill } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaUser } from "react-icons/fa";
-import { MdMapsHomeWork } from "react-icons/md";
+import { MdMapsHomeWork, MdOutlineMiscellaneousServices } from "react-icons/md";
 import Profile from "@/components/profile/profle";
 import { GiMeepleGroup } from "react-icons/gi";
 
