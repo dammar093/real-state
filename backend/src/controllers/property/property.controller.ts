@@ -417,10 +417,9 @@ class PropertyController extends AsyncHandler {
   async getPropertyById(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params;
-
       if (!id) throw new ApiError(400, "Property ID is required");
 
-      const property = await db.properties.findUnique({
+      const property = await db.properties.findFirst({
         where: {
           id: Number(id),
           isDelete: false,
@@ -429,12 +428,7 @@ class PropertyController extends AsyncHandler {
         include: {
           category: true,
           services: { include: { service: true } },
-          images: {
-            select: {
-              id: true,
-              image: true
-            }
-          },
+          images: { select: { id: true, image: true } },
           user: {
             select: {
               id: true,
@@ -454,9 +448,7 @@ class PropertyController extends AsyncHandler {
         },
       });
 
-      if (!property) {
-        throw new ApiError(404, "Property not found");
-      }
+      if (!property) throw new ApiError(404, "Property not found");
 
       return res
         .status(200)
