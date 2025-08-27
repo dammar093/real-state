@@ -2,19 +2,36 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { BsFillBoxFill } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaUser } from "react-icons/fa";
-import { MdMapsHomeWork, MdOutlineMiscellaneousServices } from "react-icons/md";
+import { MdMapsHomeWork } from "react-icons/md";
 import Profile from "@/components/profile/profle";
 import { GiMeepleGroup } from "react-icons/gi";
+import { useEffect } from "react";
+import { decodeToken } from "@/utils/utils";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log("token", token);
+    if (!token) {
+      router.push("/sign-in");
+    }
+    const decoded = decodeToken(token as string);
+    if (!decoded) {
+      router.push("/sign-in");
+    }
+    if (decoded?.role !== "SUPER_ADMIN") {
+      router.push("/sign-in");
+    }
+  }, []);
   const pathname = usePathname();
 
   const menuItems = [

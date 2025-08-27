@@ -2,40 +2,57 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { BsFillBoxFill } from "react-icons/bs";
 import { AiOutlineMenu } from "react-icons/ai";
 import { FaUser } from "react-icons/fa";
 import { MdMapsHomeWork, MdOutlineMiscellaneousServices } from "react-icons/md";
 import Profile from "@/components/profile/profle";
-import { GiMeepleGroup } from "react-icons/gi";
+import { GiBookCover, GiMeepleGroup } from "react-icons/gi";
+import { decodeToken } from "@/utils/utils";
+import { useEffect } from "react";
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log("token", token);
+    if (!token) {
+      router.push("/sign-in");
+    }
+    const decoded = decodeToken(token as string);
+    if (!decoded) {
+      router.push("/sign-in");
+    }
+    if (decoded?.role !== "ADMIN") {
+      router.push("/sign-in");
+    }
+  }, []);
+
   const pathname = usePathname();
 
   const menuItems = [
-    { label: "Dashboard", href: "/super-dashboard", icon: <BsFillBoxFill /> },
-    { label: "Users", href: "/super-dashboard/users", icon: <FaUser /> },
+    { label: "Dashboard", href: "/dashboard", icon: <BsFillBoxFill /> },
     {
       label: "Properties",
-      href: "/super-dashboard/properties",
+      href: "/dashboard/properties",
       icon: <MdMapsHomeWork />,
     },
     {
-      label: "Categories",
-      href: "/super-dashboard/categories",
-      icon: <GiMeepleGroup />,
+      label: "Booking",
+      href: "/dashboard/booking",
+      icon: <GiBookCover />,
     },
   ];
 
   // Determine if a menu item is active
   const isActive = (href: string) => {
     // Root dashboard is active only if exact path
-    if (href === "/super-dashboard") {
+    if (href === "/dashboard") {
       return pathname === href;
     }
     // Other pages: active if exact or nested route
@@ -48,7 +65,7 @@ export default function DashboardLayout({
       <aside className="md:w-50 bg-[#1F2937] shadow-lg text-gray-800 rounded-md overflow-hidden h-[95vh] sticky top-20 flex flex-col justify-between gap-4">
         {/* Logo */}
         <div className="border-b border-gray-300">
-          <Link href="/super-dashboard">
+          <Link href="/dashboard">
             <Image
               src="/assests/logo.png"
               alt="logo"

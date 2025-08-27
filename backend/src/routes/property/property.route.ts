@@ -216,6 +216,12 @@ propertyRouter.get(
     propertyController.getPropertyById.bind(propertyController)
   )
 );
+propertyRouter.get(
+  "/users/:id",
+  propertyController.asyncHandler(
+    propertyController.getPropertiesByUserId.bind(propertyController)
+  )
+);
 
 
 

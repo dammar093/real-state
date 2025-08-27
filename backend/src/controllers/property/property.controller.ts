@@ -27,6 +27,7 @@ class PropertyController extends AsyncHandler {
         duration,
         durationType,
         isHotel,
+        services
       } = req.body;
       const files = req.files as Express.Multer.File[];
       if (!files || files.length === 0) {
@@ -63,6 +64,7 @@ class PropertyController extends AsyncHandler {
           isHotel: isHotel === "true" || isHotel === true, // if coming from form-data
           userId: user.id,
           ...(serviceData && { services: serviceData }),
+          Services: services
         },
       });
       // Upload and link all images
@@ -435,6 +437,58 @@ class PropertyController extends AsyncHandler {
     }
   }
 
+  async getPropertiesByUserId(req: Request, res: Response): Promise<Response> {
+    try {
+      const { id } = req.params;
+
+      if (!id) throw new ApiError(400, "User ID is required");
+
+      const properties = await db.properties.findMany({
+        where: {
+          userId: Number(id),
+          isDelete: false,
+          status: true,
+        },
+        include: {
+          category: true,
+          services: { include: { service: true } },
+          images: {
+            select: {
+              id: true,
+              image: true,
+            },
+          },
+          user: {
+            select: {
+              id: true,
+              fullName: true,
+              email: true,
+              role: true,
+              createdAt: true,
+              userDetail: {
+                select: {
+                  phoneNumber: true,
+                  address: true,
+                  profile: { select: { id: true, image: true } },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!properties || properties.length === 0) {
+        throw new ApiError(404, "No properties found for this user");
+      }
+
+      return res
+        .status(200)
+        .json(new ApiResponse(200, properties, "Properties fetched successfully"));
+    } catch (error) {
+      console.error(error);
+      throw new ApiError(500, "Internal server error");
+    }
+  }
 
 
 }

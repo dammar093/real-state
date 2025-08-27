@@ -15,7 +15,7 @@ enum Role {
 }
 
 enum Types {
-  SELL
+  SALE
   RENT
 }
 
