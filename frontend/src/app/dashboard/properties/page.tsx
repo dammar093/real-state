@@ -322,7 +322,9 @@ const Properties = () => {
         </Button>
       </div>
 
-      <Table columns={columns} data={properties} />
+      <div className="w-full overflow-auto">
+        <Table columns={columns} data={properties} />
+      </div>
 
       {/* Delete Modal */}
       {deleteModal.open && deleteModal.property && (

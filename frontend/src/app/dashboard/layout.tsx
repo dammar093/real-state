@@ -101,14 +101,14 @@ export default function DashboardLayout({
       </aside>
 
       {/* Main content */}
-      <main className="flex-1">
+      <main className="w-5xl ">
         <header className="flex justify-between items-center bg-[#1D2736] h-12 p-4 rounded-md">
           <AiOutlineMenu className="text-white text-xl md:text-2xl lg:text-3xl cursor-pointer" />
           <Profile className="w-10 h-10 rounded-full" />
         </header>
 
         {/* Page content */}
-        {children}
+        <div>{children}</div>
       </main>
     </div>
   );
