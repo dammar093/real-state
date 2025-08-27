@@ -41,6 +41,8 @@ export const getPropertyById = async (id: string) => {
 };
 
 
+
+
 export const getPropertiesByUserId = async (
   userId: number,
   { page, limit, search, sort }: GetPropertiesParams = {}
