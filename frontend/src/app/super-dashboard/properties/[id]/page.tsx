@@ -128,15 +128,15 @@ const PropertyPage = () => {
 
       {/* Services */}
       <div className="flex flex-wrap gap-2">
-        <div className="flex items-center gap-2 px-3 py-1 bg-white/30 rounded-full shadow-sm text-white">
-          <Image
-            src="https://cdn-icons-png.flaticon.com/128/3287/3287922.png"
-            alt="wifi"
-            width={16}
-            height={16}
-          />
-          <span className="text-sm">Free Wifi</span>
-        </div>
+        {property?.Services &&
+          property?.Services?.map((service) => (
+            <div
+              key={service}
+              className="flex items-center gap-2 px-3 py-1 bg-white/30 rounded-full shadow-sm text-white"
+            >
+              <span className="text-sm">{service}</span>
+            </div>
+          ))}
         {/* Add other services here in similar divs */}
       </div>
 

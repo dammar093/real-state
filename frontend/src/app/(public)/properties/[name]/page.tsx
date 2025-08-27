@@ -23,7 +23,7 @@ const PropertiesPage = () => {
     };
 
     fetchProperty();
-  }, []);
+  }, [name]);
   return (
     <div>
       <ProducsLayout category={name}>

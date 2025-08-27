@@ -5,6 +5,7 @@ import useUsers from "@/hooks/useUsers";
 import { User } from "@/types/property";
 import Input from "@/components/ui/input";
 import Loader from "@/components/loader/loader";
+import Image from "next/image";
 
 const UserPage = () => {
   const { users, loading, error } = useUsers();
@@ -40,10 +41,12 @@ const UserPage = () => {
           {
             title: "Profile",
             selector: (row) => (
-              <img
+              <Image
                 src={row.userDetail?.profile?.image || "/assests/user.png"}
                 alt={row.fullName}
-                className="w-10 h-10 rounded-full object-cover"
+                width={1080}
+                height={720}
+                className="aspect-video rounded-full object-cover"
               />
             ),
           },

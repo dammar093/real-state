@@ -31,7 +31,7 @@ export default function DashboardLayout({
     if (decoded?.role !== "SUPER_ADMIN") {
       router.push("/sign-in");
     }
-  }, []);
+  }, [router]);
   const pathname = usePathname();
 
   const menuItems = [

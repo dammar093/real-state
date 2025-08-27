@@ -66,6 +66,7 @@ const Properties = () => {
         setProperties(response.data);
       } catch (error) {
         setError("Failed to fetch properties");
+        console.error("Error fetching properties:", error);
       } finally {
         setLoading(false);
       }

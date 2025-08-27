@@ -6,7 +6,6 @@ import Owner from "@/components/owner/owner";
 import { GoStarFill } from "react-icons/go";
 import { LuDot } from "react-icons/lu";
 import GoogleMap from "@/components/google-map/google-map";
-import Image from "next/image";
 import { Property, User } from "@/types/property";
 import { getPropertyById } from "@/api/property/property";
 
@@ -67,16 +66,15 @@ const PropertyPage = () => {
         {/* services */}
         <div className="service">
           <div className="text-slate-800 font-medium flex flex-wrap gap-2">
-            <div className="flex w-fit gap-2 items-center px-4 py-2 rounded-3xl bg-slate-500/10 shadow">
-              <Image
-                src="https://cdn-icons-png.flaticon.com/128/3287/3287922.png"
-                alt="wifi"
-                width={15}
-                height={15}
-                className="object-contain"
-              />
-              <span className="text-[13px]">Free Wifi</span>
-            </div>
+            {property?.Services &&
+              property?.Services?.map((service) => (
+                <div
+                  key={service}
+                  className="flex items-center gap-2 px-3 py-1 bg-gray-900/90 rounded-full shadow-sm text-white"
+                >
+                  <span className="text-sm">{service}</span>
+                </div>
+              ))}
             {/* ... other services ... */}
           </div>
         </div>

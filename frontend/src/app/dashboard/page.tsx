@@ -11,7 +11,6 @@ import Loader from "@/components/loader/loader";
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [totalProperties, setTotalProperties] = useState(0);
-  const [_, setError] = useState<string | null>(null);
   useEffect(() => {
     const token = localStorage.getItem("token");
     const decoded = decodeToken(token as string);
@@ -22,7 +21,7 @@ const Dashboard = () => {
         console.log(response.data, "sdfnsdfjilk.");
         setTotalProperties(response?.data?.length || 0);
       } catch (error) {
-        setError("Failed to fetch properties");
+        console.error("Error fetching properties:", error);
       } finally {
         setLoading(false);
       }

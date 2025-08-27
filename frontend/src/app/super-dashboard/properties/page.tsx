@@ -5,7 +5,7 @@ import useProperties from "@/hooks/useProperties";
 import Input from "@/components/ui/input";
 import Loader from "@/components/loader/loader";
 import Button from "@/components/ui/button";
-import { FaEye, FaTrash } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import { Property } from "@/types/property";
