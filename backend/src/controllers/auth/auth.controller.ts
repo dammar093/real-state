@@ -77,7 +77,7 @@ class AuthController extends AsyncHanler {
         where: {
           email,
           isVerified: true
-        }
+        },
       })
       if (!user?.password) {
         throw new ApiError(400, "Invalid email or password")
@@ -89,7 +89,7 @@ class AuthController extends AsyncHanler {
       if (!user) {
         throw new ApiError(401, "Invalid email or password");
       }
-      const token = createJwt.createJWT(user?.id, user?.fullName, user?.email, user?.role);
+      const token = createJwt.createJWT(user?.id, user?.fullName, user?.email, user?.role,);
       if (!token) {
         throw new ApiError(500, "fialed to create token");
       }
@@ -272,7 +272,39 @@ class AuthController extends AsyncHanler {
       throw new ApiError(500, "Failed to logout")
     }
   }
+  async getLoggedInUser(req: Request, res: Response): Promise<Response> {
+    try {
+      const userId = req.user?.id;
+      if (!userId) throw new ApiError(400, "Unauthorized")
+      const user = await db.users.findUnique({
+        where: { id: userId },
+        include: {
+          userDetail: {
+            include: {
+              profile: {
+                select: {
+                  image: true
+                }
+              },
+            },
+          },
+        },
+      });
 
+      if (!user) return res.status(404).json({ message: "User not found" });
+
+      // Optionally remove sensitive fields
+      const { password, otp, ...safeUser } = user;
+
+      return res.json(safeUser);
+    } catch (error) {
+
+      throw new ApiError(500, "intrnal server error")
+    }
+  };
 }
+
+
+
 
 export default new AuthController();

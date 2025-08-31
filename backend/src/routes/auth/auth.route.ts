@@ -199,5 +199,6 @@ authRouter.patch("/update-password", authController.asyncHandler(authController.
  *         description: Unauthorized
  */
 authRouter.get("/logout", createJwt.verifyJWT, authController.asyncHandler(authController.logoutUser.bind(authController)));
+authRouter.get("/:id", createJwt.verifyJWT, authController.asyncHandler(authController.getLoggedInUser.bind(authController)));
 
 export default authRouter;
