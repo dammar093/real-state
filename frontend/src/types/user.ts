@@ -10,6 +10,7 @@ export interface UserDetail {
   phoneNumber?: string;
   address?: string;
   profile?: Image;
+  profilePic?: string;
   about?: string
   createdAt?: Date;
   updatedAt?: Date;

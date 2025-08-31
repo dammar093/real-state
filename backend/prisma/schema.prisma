@@ -69,6 +69,7 @@ model UsersDetail {
   instagram   String?
   twitter     String?
   linkedin    String?
+  profilePic  String?
   profile     Images?  // Optional profile image
   userId      Int      @unique
   user        Users    @relation(fields: [userId], references: [id])

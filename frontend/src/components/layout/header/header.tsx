@@ -65,7 +65,7 @@ const Header = () => {
                         className="flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200"
                       >
                         <Profile
-                          img={user?.user?.userDetail?.profile?.image}
+                          img={user?.user?.userDetail?.profilePic}
                           className="w-10 h-10"
                         />
                       </Link>

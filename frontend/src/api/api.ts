@@ -63,13 +63,7 @@ export const getLoggedInUser = async (id: number) => {
 
 
 // Update user details
-export const updateUserDetails = async (data: {
-  fullName?: string;
-  phoneNumber?: string;
-  address?: string;
-  about?: string;
-  profileImage?: string; // optional
-}, id: number) => {
+export const updateUserDetails = async (data: any, id: number) => {
   const response = await api.patch(`/users/${id}`, data);
   return response.data;
 };

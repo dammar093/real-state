@@ -201,27 +201,7 @@ class UserController extends AsyncHandler {
       if (!existingUser) {
         return res.status(404).json({ message: "User not found" });
       }
-
-      let profileImageData;
-
-      if (profileFile) {
-        const imageUrl = await uploadImage(profileFile.path); // Cloudinary or S3
-        if (existingUser.userDetail?.profile) {
-          // Update existing profile image
-          profileImageData = await db.images.update({
-            where: { id: existingUser.userDetail.profile.id },
-            data: { image: imageUrl },
-          });
-        } else {
-          // Create new profile image
-          profileImageData = await db.images.create({
-            data: {
-              image: imageUrl,
-              profilePic: { connect: { id: existingUser.userDetail?.id } },
-            },
-          });
-        }
-      }
+      const imageUrl = await uploadImage(profileFile?.path);
 
       // Update user and details
       const updatedUser = await db.users.update({
@@ -238,9 +218,7 @@ class UserController extends AsyncHandler {
                 instagram,
                 twitter,
                 linkedin,
-                profile: profileImageData
-                  ? { connect: { id: profileImageData.id } }
-                  : undefined,
+                profilePic: imageUrl
               },
               update: {
                 phoneNumber,
@@ -250,14 +228,12 @@ class UserController extends AsyncHandler {
                 instagram,
                 twitter,
                 linkedin,
-                profile: profileImageData
-                  ? { connect: { id: profileImageData.id } }
-                  : undefined,
+                profilePic: imageUrl
               },
             },
           },
         },
-        include: { userDetail: { include: { profile: true } } },
+        include: { userDetail: true },
       });
 
       return res

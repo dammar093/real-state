@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { api, getLoggedInUser, updateUserDetails } from "@/api/api";
+import { getLoggedInUser, updateUserDetails } from "@/api/api";
 import Input from "@/components/ui/input";
 import Button from "@/components/ui/button";
 import useAuthUser from "@/hooks/useAuth";
@@ -45,10 +45,10 @@ const Profile = () => {
     }
   }, [watchProfileImage, user]);
 
+  // Fetch user details
   useEffect(() => {
     const fetchUser = async () => {
       if (!authUser.user) return;
-
       try {
         const data = await getLoggedInUser(authUser.user.id);
         setUser(data);
@@ -77,30 +77,26 @@ const Profile = () => {
     setUpdating(true);
     setError("");
     setSuccess("");
+
     try {
-      // If profileImage is selected, handle file upload
-      let uploadedImageUrl = user.userDetail?.profile?.image || null;
+      const payload = new FormData();
+
+      payload.append("fullName", formData.fullName);
+      if (formData.phoneNumber)
+        payload.append("phoneNumber", formData.phoneNumber);
+      if (formData.address) payload.append("address", formData.address);
+      if (formData.about) payload.append("about", formData.about);
+      if (formData.facebook) payload.append("facebook", formData.facebook);
+      if (formData.instagram) payload.append("instagram", formData.instagram);
+      if (formData.twitter) payload.append("twitter", formData.twitter);
+      if (formData.linkedin) payload.append("linkedin", formData.linkedin);
+
       if (formData.profileImage && formData.profileImage.length > 0) {
-        const file = formData.profileImage[0];
-        const formDataObj = new FormData();
-        formDataObj.append("file", file);
-
-        // Replace with your API for uploading file
-        const response = await api.patch(
-          `/users/${authUser?.user?.id}`,
-          formData
-        );
-
-        console.log(response, "response");
+        payload.append("profileImage", formData.profileImage[0]);
       }
 
-      const updatedUser = await updateUserDetails(
-        {
-          ...formData,
-          profileImage: uploadedImageUrl,
-        },
-        authUser?.user?.id as number
-      );
+      // Call your API function
+      const updatedUser = await updateUserDetails(payload, authUser.user.id);
       setUser(updatedUser);
       setSuccess("Profile updated successfully!");
     } catch (err: any) {
@@ -129,7 +125,6 @@ const Profile = () => {
         <Input label="Address" {...register("address")} className="border" />
         <Input label="About" {...register("about")} className="border" />
 
-        {/* Profile Image File Input */}
         <div>
           <label className="block mb-1 font-medium">Profile Image</label>
           <input
@@ -140,7 +135,6 @@ const Profile = () => {
           />
         </div>
 
-        {/* Social Inputs */}
         <Input
           label="Facebook"
           placeholder="Facebook URL"
@@ -171,7 +165,6 @@ const Profile = () => {
         </Button>
       </form>
 
-      {/* Display preview image */}
       {previewImage && (
         <div className="mt-4">
           <h3 className="font-medium mb-2">Profile Image Preview:</h3>
