@@ -29,7 +29,7 @@ export interface User {
   email: string;
   role: "SUPER_ADMIN" | "ADMIN" | "USER";
   userDetail?: UserDetail;
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface Service {

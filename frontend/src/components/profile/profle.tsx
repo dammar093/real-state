@@ -7,12 +7,9 @@ interface ProfileProps {
   className?: string;
 }
 const Profile: FC<ProfileProps> = ({ img, className }) => {
-  console.log(img);
   return (
     <div
       className={`border rounded-full border-[var(--primary-color)] flex justify-center items-center overflow-hidden ${className}`}
-      tabIndex={0}
-      role="button"
     >
       <Image
         src={img ? img : user}
@@ -20,6 +17,7 @@ const Profile: FC<ProfileProps> = ({ img, className }) => {
         height={720}
         alt="sdfsd"
         className={`w-full h-full object-cover`}
+        title="Profile"
       />
     </div>
   );

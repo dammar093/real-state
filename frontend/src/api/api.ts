@@ -47,6 +47,16 @@ export async function resendOtp(data: { email: string }) {
 }
 
 
+export const getLoggedInUser = async (id: number) => {
+  try {
+    const response = await api.get(`/auth/${id}`);
+    console.log(response.data, "response")
+    return response.data;
+  } catch (error) {
+    console.log(error)
+    throw error;
+  }
+};
 // === Categories API ===
 
 // Create category
