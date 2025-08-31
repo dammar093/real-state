@@ -19,9 +19,6 @@ class AuthController extends AsyncHanler {
       validtion.emailValidation(email);
       validtion.fullNameValidation(fullName);
       validtion.passwordValidation(password);
-      if (!this.userTypes.includes(role)) {
-        throw new ApiError(400, "Role must be USER or ADMIN");
-      }
       const existUser = await db.users.findUnique({
         where: {
           email,
@@ -45,7 +42,7 @@ class AuthController extends AsyncHanler {
         data: {
           fullName: fullName,
           email: email,
-          role: role,
+          role: role || "USER",
           password: hash.hashPassword(password),
           otp: generateOTP()
         }
