@@ -64,7 +64,10 @@ const Header = () => {
                         href={"/profile"}
                         className="flex items-center gap-2 px-3 py-2 rounded-full bg-gray-100 hover:bg-gray-200"
                       >
-                        <Profile img={""} className="w-10 h-10" />
+                        <Profile
+                          img={user?.user?.userDetail?.profile?.image}
+                          className="w-10 h-10"
+                        />
                       </Link>
                     ) : (
                       <Link

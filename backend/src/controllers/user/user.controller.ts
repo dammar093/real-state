@@ -4,6 +4,8 @@ import ApiError from "../../utils/errorHandler";
 import { db } from "../../config/db";
 import ApiResponse from "../../utils/apiRespons";
 import { Role } from "../../../generated/prisma";
+import { uploadServiceImage } from "../../middlwares/multer";
+import { uploadImage } from "../../utils/cloudinary";
 
 class UserController extends AsyncHandler {
   // get user
@@ -173,6 +175,100 @@ class UserController extends AsyncHandler {
       throw new ApiError(500, "Failed to delete user");
     }
   }
+
+  public async updateUserDetails(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+    const {
+      fullName,
+      phoneNumber,
+      address,
+      about,
+      facebook,
+      instagram,
+      linkedin,
+      twitter
+    } = req.body;
+
+    const profileFile = req.file; // single file upload
+
+    try {
+      // Fetch existing user with details
+      const existingUser = await db.users.findUnique({
+        where: { id: parseInt(id) },
+        include: { userDetail: { include: { profile: true } } },
+      });
+
+      if (!existingUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      let profileImageData;
+
+      if (profileFile) {
+        const imageUrl = await uploadImage(profileFile.path); // Cloudinary or S3
+        if (existingUser.userDetail?.profile) {
+          // Update existing profile image
+          profileImageData = await db.images.update({
+            where: { id: existingUser.userDetail.profile.id },
+            data: { image: imageUrl },
+          });
+        } else {
+          // Create new profile image
+          profileImageData = await db.images.create({
+            data: {
+              image: imageUrl,
+              profilePic: { connect: { id: existingUser.userDetail?.id } },
+            },
+          });
+        }
+      }
+
+      // Update user and details
+      const updatedUser = await db.users.update({
+        where: { id: parseInt(id) },
+        data: {
+          fullName,
+          userDetail: {
+            upsert: {
+              create: {
+                phoneNumber,
+                address,
+                about,
+                facebook,
+                instagram,
+                twitter,
+                linkedin,
+                profile: profileImageData
+                  ? { connect: { id: profileImageData.id } }
+                  : undefined,
+              },
+              update: {
+                phoneNumber,
+                address,
+                about,
+                facebook,
+                instagram,
+                twitter,
+                linkedin,
+                profile: profileImageData
+                  ? { connect: { id: profileImageData.id } }
+                  : undefined,
+              },
+            },
+          },
+        },
+        include: { userDetail: { include: { profile: true } } },
+      });
+
+      return res
+        .status(200)
+        .json({ message: "Profile updated successfully", data: updatedUser });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Failed to update profile" });
+    }
+  }
+
 
 }
 

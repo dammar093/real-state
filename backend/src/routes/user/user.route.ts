@@ -2,6 +2,7 @@ import { Router } from "express";
 import userController from "../../controllers/user/user.controller";
 import createJwt from "../../middlwares/createJwt";
 import { requireRole } from "../../middlwares/requireRole";
+import { uploadServiceImage } from "../../middlwares/multer";
 
 const userRouter = Router();
 
@@ -98,6 +99,12 @@ userRouter.delete(
   createJwt.verifyJWT,
   requireRole("SUPER_ADMIN"),
   userController.asyncHandler(userController.deleteUserById.bind(userController))
+);
+userRouter.patch(
+  "/:id",
+  createJwt.verifyJWT,
+  uploadServiceImage.single("profileImage"),
+  userController.asyncHandler(userController.updateUserDetails.bind(userController))
 );
 
 export default userRouter;

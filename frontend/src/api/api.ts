@@ -57,6 +57,19 @@ export const getLoggedInUser = async (id: number) => {
     throw error;
   }
 };
+
+
+// Update user details
+export const updateUserDetails = async (data: {
+  fullName?: string;
+  phoneNumber?: string;
+  address?: string;
+  about?: string;
+  profileImage?: string; // optional
+}, id: number) => {
+  const response = await api.patch(`/users/${id}`, data);
+  return response.data;
+};
 // === Categories API ===
 
 // Create category
