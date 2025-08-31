@@ -1,3 +1,4 @@
+import { Role } from "@/utils/utils";
 import createAPI from "./axiosConfig";
 
 export const api = createAPI();
@@ -17,7 +18,7 @@ export async function loginUser(data: { email: string; password: string }) {
 }
 
 // Register (Sign Up)
-export async function registerUser(data: { fullName: string; email: string; password: string }) {
+export async function registerUser(data: { fullName: string; email: string; password: string, role: Role }) {
   try {
     const response = await api.post("/auth/register", data);
     return response.data;
