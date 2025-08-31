@@ -47,7 +47,9 @@ export async function resendOtp(data: { email: string }) {
   }
 }
 
-
+export const resetPassword = async (data: { email: string; password: string, otp: string }) => {
+  return await api.post("/api/auth/reset-password", data);
+};
 export const getLoggedInUser = async (id: number) => {
   try {
     const response = await api.get(`/auth/${id}`);
