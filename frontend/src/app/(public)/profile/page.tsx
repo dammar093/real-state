@@ -96,7 +96,10 @@ const Profile = () => {
       }
 
       // Call your API function
-      const updatedUser = await updateUserDetails(payload, authUser.user.id);
+      const updatedUser = await updateUserDetails(
+        payload,
+        authUser?.user?.id as number
+      );
       setUser(updatedUser);
       setSuccess("Profile updated successfully!");
     } catch (err: any) {

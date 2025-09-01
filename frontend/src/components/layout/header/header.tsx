@@ -10,8 +10,6 @@ import useAuthUser from "@/hooks/useAuth";
 import Profile from "@/components/profile/profle";
 const Header = () => {
   const user = useAuthUser();
-  console.log("user", user);
-
   return (
     <header className="shadow-lg sticky z-[1080] top-0 bg-white w-full">
       <div className="relative">
