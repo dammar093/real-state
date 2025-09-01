@@ -20,7 +20,7 @@ const Owner = ({ owner }: { owner: User }) => {
                 {owner?.fullName}
               </h4>
               <p className="text-[14px] text-slate-600">
-                Member for {getTimeSince(new Date(owner?.createdAt))}
+                Member for {getTimeSince(new Date(owner?.createdAt as string))}
               </p>
               <div className="flex items-center gap-2">
                 {owner?.userDetail?.phoneNumber && (

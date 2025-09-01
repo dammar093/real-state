@@ -99,7 +99,8 @@ const PropertyPage = () => {
                 {property.user.fullName}
               </h4>
               <p className="text-sm text-gray-300">
-                Member for {getTimeSince(new Date(property.user.createdAt))}
+                Member for{" "}
+                {getTimeSince(new Date(property.user.createdAt as string))}
               </p>
               <div className="flex items-center gap-2 mt-1">
                 {property.user.userDetail?.phoneNumber && (

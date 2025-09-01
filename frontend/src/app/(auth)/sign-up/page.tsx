@@ -7,6 +7,7 @@ import Link from "next/link";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { registerUser } from "@/api/api"; // ⬅️ your signup API
 import { useRouter } from "next/navigation";
+import { Role } from "@/utils/utils";
 
 type SignUpForm = {
   fullName: string;
@@ -31,7 +32,7 @@ const SignUp = () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await registerUser(data); // ⬅️ call API
+      const res = await registerUser({ ...data, role: Role.USER }); // ⬅️ call API
       console.log("Sign up success:", res.data);
 
       // ✅ Redirect to verify account page

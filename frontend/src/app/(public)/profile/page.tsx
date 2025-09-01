@@ -5,6 +5,7 @@ import { getLoggedInUser, updateUserDetails } from "@/api/api";
 import Input from "@/components/ui/input";
 import Button from "@/components/ui/button";
 import useAuthUser from "@/hooks/useAuth";
+import Image from "next/image";
 
 type FormData = {
   fullName: string;
@@ -171,9 +172,11 @@ const Profile = () => {
       {previewImage && (
         <div className="mt-4">
           <h3 className="font-medium mb-2">Profile Image Preview:</h3>
-          <img
+          <Image
             src={previewImage}
             alt="Profile Preview"
+            width={1080}
+            height={720}
             className="w-32 h-32 object-cover rounded-full"
           />
         </div>
