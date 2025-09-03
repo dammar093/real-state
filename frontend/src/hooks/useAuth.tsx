@@ -18,14 +18,11 @@ const useAuthUser = (): { user: User | null; loading: boolean } => {
 
       try {
         const decoded: any = decodeToken(token);
-
         // Call backend API to get full user info
         const userData: User = await getLoggedInUser(decoded?.id);
-        console.log("sfsdf", userData);
         setUser(userData);
       } catch (err) {
         console.error("Failed to fetch user", err);
-
         setUser(null);
       } finally {
         setLoading(false);

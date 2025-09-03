@@ -61,6 +61,7 @@ wishlistRouter.post(
  */
 wishlistRouter.get(
   "/",
+  createJwt.verifyJWT,
   wishlistController.asyncHandler(wishlistController.getWishlist.bind(wishlistController))
 );
 

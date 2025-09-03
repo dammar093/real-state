@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -5,6 +6,10 @@ import styles from "./property.module.css";
 import Badge from "../badge/badege";
 import { GoStarFill } from "react-icons/go";
 import { LuDot } from "react-icons/lu";
+import wishlist from "@/api/whishlist/wishlist";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store/store";
+import { addWishlist } from "@/redux/feature/wishllistSlice";
 
 interface PropertyCradProps {
   id: number;
@@ -29,6 +34,15 @@ const PropertyCard: React.FC<PropertyCradProps> = ({
   duration,
   durationType,
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const addWihlist = async (id: number) => {
+    try {
+      const res = await wishlist.createWishlist(id);
+      dispatch(addWishlist(res.data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return (
     <div className="w-full">
       <div className="flex flex-col gap-2">
@@ -49,7 +63,7 @@ const PropertyCard: React.FC<PropertyCradProps> = ({
           </Link>
           <div className="w-full h-fit absolute top-0 left-0 p-1 flex justify-between ">
             <Badge title={badgeTitle} />
-            <span>
+            <span onClick={() => addWihlist(id)}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="z-100 hover:scale-110 cursor-pointer"

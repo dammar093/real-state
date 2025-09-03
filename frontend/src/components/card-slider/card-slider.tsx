@@ -24,7 +24,6 @@ const CardSlider = ({
   const categoryData = useSelector(
     (state: RootState) => state.propertyCategory.propertiesByCategory[category]
   );
-  console.log(categoryData?.properties, "sdfds");
 
   useEffect(() => {
     const fetchProperties = async () => {

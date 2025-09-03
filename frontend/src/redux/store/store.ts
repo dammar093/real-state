@@ -10,6 +10,7 @@ import propertyCategoryReducer from "../feature/propertyCategorySlice"
 import usersReducer from "../feature/userSlice"
 import serviceReducer from "../feature/serviceSlice"
 import dahboardReucer from "../feature/dashboardSlice"
+import wishlistReducer from "../feature/wishllistSlice"
 
 const rootReducer = combineReducers({
   auth: authReducer,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   propertyCategory: propertyCategoryReducer,
   users: usersReducer,
   services: serviceReducer,
-  dashboard: dahboardReucer
+  dashboard: dahboardReucer,
+  wislist: wishlistReducer
 });
 
 const persistConfig = {

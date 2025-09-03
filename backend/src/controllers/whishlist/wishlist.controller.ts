@@ -5,7 +5,6 @@ import ApiError from "../../utils/errorHandler";
 import { db } from "../../config/db";
 import ApiResponse from "../../utils/apiRespons";
 
-
 class WishListController extends AsyncHandler {
   // Create Wishlist
   async createWishlist(req: Request, res: Response): Promise<Response> {
@@ -37,13 +36,26 @@ class WishListController extends AsyncHandler {
 
       const wishlist = await db.wishList.create({
         data: { userId, propertyId: Number(propertyId) },
+        include: {
+          property: {
+            include: {
+              images: true,
+              category: true,
+              services: {
+                include: {
+                  service: true,
+                },
+              },
+            },
+          },
+        },
       });
 
       return res.status(201).json(
         new ApiResponse(201, wishlist, "Property added to wishlist")
       );
     } catch (error) {
-      throw new ApiError(500, "Internal server error")
+      throw new ApiError(500, "Internal server error");
     }
   }
 
@@ -70,16 +82,29 @@ class WishListController extends AsyncHandler {
         throw new ApiError(404, "Wishlist not found");
       }
 
-      const wishList = await db.wishList.update({
+      const updated = await db.wishList.update({
         where: { id: Number(id) },
         data: { isDelete: true },
+        include: {
+          property: {
+            include: {
+              images: true,
+              category: true,
+              services: {
+                include: {
+                  service: true,
+                },
+              },
+            },
+          },
+        },
       });
 
       return res
         .status(200)
-        .json(new ApiResponse(200, wishList, "Wishlist removed successfully"));
+        .json(new ApiResponse(200, updated, "Wishlist removed successfully"));
     } catch (error) {
-      throw new ApiError(500, "Internal server error")
+      throw new ApiError(500, "Internal server error");
     }
   }
 
@@ -130,15 +155,19 @@ class WishListController extends AsyncHandler {
       ]);
 
       return res.status(200).json(
-        new ApiResponse(200, {
-          total,
-          page,
-          limit,
-          data,
-        }, "Wishlist fetched successfully")
+        new ApiResponse(
+          200,
+          {
+            total,
+            page,
+            limit,
+            data,
+          },
+          "Wishlist fetched successfully"
+        )
       );
     } catch (error) {
-      throw new ApiError(500, "Internal server error")
+      throw new ApiError(500, "Internal server error");
     }
   }
 }

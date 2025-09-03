@@ -5,7 +5,6 @@ import useCategories from "@/hooks/useCategories";
 import React from "react";
 const Home = () => {
   const { categories } = useCategories();
-  console.log(categories);
   return (
     <div className="w-full flex flex-col gap-10">
       <Slider />

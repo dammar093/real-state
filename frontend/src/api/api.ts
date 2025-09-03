@@ -9,7 +9,6 @@ export const api = createAPI();
 export async function loginUser(data: { email: string; password: string }) {
   try {
     const response = await api.post("/auth/login", data);
-    console.log(response.data.data);
     localStorage.setItem("token", response.data.data);
     return response.data;
   } catch (error) {
@@ -53,7 +52,6 @@ export const resetPassword = async (data: { email: string; password: string, otp
 export const getLoggedInUser = async (id: number) => {
   try {
     const response = await api.get(`/auth/${id}`);
-    console.log(response.data, "response")
     return response.data;
   } catch (error) {
     console.log(error)
