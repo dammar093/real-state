@@ -11,7 +11,7 @@ import {
   UserAddOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme, Avatar, Dropdown, Grid } from "antd";
-import { BiBuildingHouse } from "react-icons/bi";
+import { BiBuildingHouse, BiCategory } from "react-icons/bi";
 import { TbBrandBooking } from "react-icons/tb";
 import Image from "next/image";
 import Link from "next/link";
@@ -87,11 +87,16 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           },
           {
             key: "2",
+            icon: <BiCategory />,
+            label: <Link href="/dashboard/categories">Categories</Link>,
+          },
+          {
+            key: "3",
             icon: <BiBuildingHouse />,
             label: <Link href="/dashboard/properties">Properties</Link>,
           },
           {
-            key: "3",
+            key: "4",
             icon: <UserAddOutlined />,
             label: <Link href="/dashboard/users">Users</Link>,
           },
