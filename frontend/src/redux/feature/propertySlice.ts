@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PropertyItem } from "@/types/property";
-import { getProperties, deleteProperty, togglePropertyStatus, getPropertiesByUserId } from "@/api/property/property";
+import { getProperties, deleteProperty, togglePropertyStatus, getPropertiesByUserId } from "@/api/property";
 import { Meta, Params } from "@/types/utils";
 import { message } from "antd";
 

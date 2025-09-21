@@ -5,9 +5,9 @@ import { GoStarFill } from "react-icons/go";
 import { LuDot } from "react-icons/lu";
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import Image from "next/image";
-import { getPropertyById } from "@/api/property/property";
+import { getPropertyById } from "@/api/property";
 import Link from "next/link";
-import { Property } from "@/types/property";
+import { PropertyItem } from "@/types/property";
 import { getTimeSince } from "@/utils/utils";
 import Loader from "@/components/loader/loader";
 
@@ -15,7 +15,7 @@ const PropertyPage = () => {
   const params = useParams<{ id: string }>();
   const { id } = params;
   const [loading, setLoading] = useState(true);
-  const [property, setProperty] = useState<Property | null>(null);
+  const [property, setProperty] = useState<PropertyItem | null>(null);
 
   useEffect(() => {
     if (!id) return;

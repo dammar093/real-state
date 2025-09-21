@@ -3,7 +3,7 @@ import AsyncHandler from "../../utils/asyncHandler";
 import ApiError from "../../utils/errorHandler";
 import { db } from "../../config/db";
 import ApiResponse from "../../utils/apiRespons";
-import { name } from "ejs";
+
 
 class CategoryController extends AsyncHandler {
   //create category
@@ -140,6 +140,22 @@ class CategoryController extends AsyncHandler {
     } catch (error) {
       console.error("Failed to toggle category status", error);
       throw new ApiError(500, "Failed to toggle category status");
+    }
+  }
+  async getCategoryById(req: Request, res: Response): Promise<Response> {
+    const { id } = req.params;
+
+    try {
+      const category = await db.category.findUnique({
+        where: { id: parseInt(id) },
+      });
+      if (!category) {
+        throw new ApiError(404, "Category not found");
+      }
+      return res.status(200).json(new ApiResponse(200, category, "Category fetched successfully"));
+    } catch (error) {
+      console.error("Failed to fetch category", error);
+      throw new ApiError(500, "Failed to fetch category");
     }
   }
 

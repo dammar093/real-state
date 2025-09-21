@@ -1,5 +1,5 @@
 import { Params } from "@/types/utils";
-import { api } from "../api";
+import { api } from "./api";
 
 
 

@@ -10,7 +10,8 @@ import Link from "next/link";
 import { dateFormatter } from "@/utils/utils";
 
 const Table: React.FC = () => {
-  const { loading, categories } = useCategories();
+  const { loading, categories, toggleCategoryStatus, deleteCategory } =
+    useCategories();
   const [sortedInfo, setSortedInfo] = useState<any>({});
 
   const handleChange: TableProps<CategoryItem>["onChange"] = (
@@ -48,25 +49,27 @@ const Table: React.FC = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center">
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
-            onClick={() => console.log("Edit", record.id)}
-          />
-          {/* Uncomment and implement if needed */}
+          <Link href={`/dashboard/categories/edit/${record.id}`}>
+            <Button type="primary" variant="filled" icon={<EditOutlined />} />
+          </Link>
 
           <Switch
             checkedChildren="Active"
             unCheckedChildren="Deactive"
-            // checked={record.status}
-            // onChange={(checked) => toggleCategory(record.id, checked)}
+            checked={record?.isActive}
+            onChange={(checked) =>
+              toggleCategoryStatus({
+                id: record.id,
+                isActive: !checked,
+              })
+            }
           />
           <Popconfirm
             title="Delete Category"
             description="Are you sure you want to delete this category?"
             okText="Yes"
             cancelText="No"
-            // onConfirm={() => deleteCategory(record.id)}
+            onConfirm={() => deleteCategory(record.id)}
           >
             <Button danger icon={<DeleteOutlined />} />
           </Popconfirm>

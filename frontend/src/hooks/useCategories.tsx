@@ -1,15 +1,21 @@
 "use client";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { AppDispatch, RootState } from "@/redux/store/store";
-import { CategoryItem } from "@/types/category";
-import { getCategories } from "@/api/api";
-import { fetchCategories } from "@/redux/feature/categorySlice";
+import {
+  createCategoryThunk,
+  deleteCategoryThunk,
+  fetchCategories,
+  getCategoryByIdThunk,
+  toggleCategory,
+  updateCategoryThunk,
+} from "@/redux/feature/categorySlice";
+import { useRouter } from "next/navigation";
 
 const useCategories = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { categories, loading, error, total } = useSelector(
+  const router = useRouter();
+  const { categories, loading, error, total, category } = useSelector(
     (state: RootState) => state.category
   );
 
@@ -17,7 +23,55 @@ const useCategories = () => {
     dispatch(fetchCategories({ page: 1, limit: 10, search: "" }));
   }, [dispatch]);
 
-  return { categories, loading, error, total };
+  const createCategory = useCallback(
+    (values: { name: string }) => {
+      dispatch(createCategoryThunk(values))
+        .unwrap()
+        .then(() => {
+          router.back();
+        });
+    },
+    [dispatch]
+  );
+  const toggleCategoryStatus = useCallback(
+    (values: { id: number; isActive: boolean }) => {
+      dispatch(toggleCategory({ id: values.id, active: values.isActive }));
+    },
+    [dispatch]
+  );
+  const deleteCategory = useCallback(
+    (id: number) => {
+      dispatch(deleteCategoryThunk(id));
+    },
+    [dispatch]
+  );
+  const getCategory = useCallback(
+    (id: number) => {
+      dispatch(getCategoryByIdThunk(id));
+    },
+    [dispatch]
+  );
+  const updateCategory = useCallback(
+    async (id: number, values: { name: string }) => {
+      dispatch(updateCategoryThunk({ id, name: values.name })).then(() => {
+        router.back();
+      });
+    },
+    [dispatch]
+  );
+
+  return {
+    categories,
+    loading,
+    error,
+    total,
+    createCategory,
+    toggleCategoryStatus,
+    deleteCategory,
+    getCategory,
+    category,
+    updateCategory,
+  };
 };
 
 export default useCategories;

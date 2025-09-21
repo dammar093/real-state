@@ -132,5 +132,6 @@ categoryRouter.delete("/:id", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), c
  */
 categoryRouter.patch("/:id", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), categoryController.asyncHandler(categoryController.editCategory.bind(categoryController)));
 categoryRouter.patch("/:id/toggle", createJwt.verifyJWT, requireRole("SUPER_ADMIN"), categoryController.asyncHandler(categoryController.toggleCategoryStatus.bind(categoryController)));
+categoryRouter.get("/:id", categoryController.asyncHandler(categoryController.getCategoryById.bind(categoryController)));
 
 export default categoryRouter;
