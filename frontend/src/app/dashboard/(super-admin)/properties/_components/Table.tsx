@@ -16,6 +16,7 @@ import useProperties from "@/hooks/useProperties";
 import { PropertyItem, PropertyImage } from "@/types/property";
 import Search from "antd/es/input/Search";
 import Link from "next/link";
+import { dateFormatter } from "@/utils/utils";
 const Table: React.FC = () => {
   const {
     properties,
@@ -77,10 +78,13 @@ const Table: React.FC = () => {
       title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (date: string) => new Date(date).toLocaleDateString(),
       sorter: (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+        new Date(a.createdAt as string).getTime() -
+        new Date(b.createdAt as string).getTime(),
       sortOrder: sortedInfo.columnKey === "createdAt" ? sortedInfo.order : null,
+      render: (date: string) => {
+        return dateFormatter(date);
+      },
     },
     {
       title: "Duration",

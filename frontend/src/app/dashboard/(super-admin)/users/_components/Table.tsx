@@ -17,6 +17,7 @@ import useUsers from "@/hooks/useUsers";
 import { User, UserDetail } from "@/types/user";
 import Link from "next/link";
 import Loader from "@/components/loader/loader";
+import { dateFormatter } from "@/utils/utils";
 
 const Table: React.FC = () => {
   const { users, loading } = useUsers();
@@ -96,11 +97,13 @@ const Table: React.FC = () => {
       title: "Created At",
       dataIndex: "createdAt",
       key: "createdAt",
-      render: (date: string) => new Date(date).toLocaleDateString(),
-      sorter: (a: User, b: User) =>
-        new Date(a.createdAt as Date).getTime() -
-        new Date(b.createdAt as Date).getTime(),
+      sorter: (a, b) =>
+        new Date(a.createdAt as string).getTime() -
+        new Date(b.createdAt as string).getTime(),
       sortOrder: sortedInfo.columnKey === "createdAt" ? sortedInfo.order : null,
+      render: (date: string) => {
+        return dateFormatter(date);
+      },
     },
     {
       title: "Action",

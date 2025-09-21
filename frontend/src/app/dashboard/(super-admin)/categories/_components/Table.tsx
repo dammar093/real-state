@@ -7,6 +7,7 @@ import Entry from "@/components/ui/entry";
 import useCategories from "@/hooks/useCategories";
 import { CategoryItem } from "@/types/category";
 import Link from "next/link";
+import { dateFormatter } from "@/utils/utils";
 
 const Table: React.FC = () => {
   const { loading, categories } = useCategories();
@@ -38,15 +39,10 @@ const Table: React.FC = () => {
         new Date(b.createdAt as string).getTime(),
       sortOrder: sortedInfo.columnKey === "createdAt" ? sortedInfo.order : null,
       render: (date: string) => {
-        const d = new Date(date);
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, "0");
-        const day = String(d.getDate()).padStart(2, "0");
-        const hours = String(d.getHours()).padStart(2, "0");
-        const minutes = String(d.getMinutes()).padStart(2, "0");
-        return `${year}-${month}-${day} ${hours}:${minutes}`;
+        return dateFormatter(date);
       },
     },
+
     {
       title: "Action",
       key: "action",
@@ -58,23 +54,22 @@ const Table: React.FC = () => {
             onClick={() => console.log("Edit", record.id)}
           />
           {/* Uncomment and implement if needed */}
-          {/*
+
           <Switch
             checkedChildren="Active"
             unCheckedChildren="Deactive"
-            checked={record.status}
-            onChange={(checked) => toggleCategory(record.id, checked)}
+            // checked={record.status}
+            // onChange={(checked) => toggleCategory(record.id, checked)}
           />
           <Popconfirm
             title="Delete Category"
             description="Are you sure you want to delete this category?"
             okText="Yes"
             cancelText="No"
-            onConfirm={() => deleteCategory(record.id)}
+            // onConfirm={() => deleteCategory(record.id)}
           >
             <Button danger icon={<DeleteOutlined />} />
           </Popconfirm>
-          */}
         </div>
       ),
     },
