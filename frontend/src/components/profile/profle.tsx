@@ -1,6 +1,5 @@
 import Image from "next/image";
 import React, { FC } from "react";
-import user from "../../../public/assests/user.png";
 
 interface ProfileProps {
   img?: string;
@@ -12,7 +11,7 @@ const Profile: FC<ProfileProps> = ({ img, className }) => {
       className={`border rounded-full border-[var(--primary-color)] flex justify-center items-center overflow-hidden ${className}`}
     >
       <Image
-        src={img ? img : user}
+        src={img ? img : "/assets/user.png"}
         width={1080}
         height={720}
         alt="sdfsd"

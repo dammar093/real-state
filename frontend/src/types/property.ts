@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 export interface PropertyImage {
   id: number;
   image: string;
@@ -10,52 +12,7 @@ export interface PropertyCategory {
   isDelete: boolean;
 }
 
-export interface UserProfile {
-  id: number;
-  image: string; // profile image URL
-}
-
-export interface UserDetail {
-  phoneNumber?: string;
-  address?: string;
-  profile?: UserProfile;
-  facebook?: string;
-  instagram?: string;
-}
-
-export interface User {
-  id: number;
-  fullName: string;
-  email: string;
-  role: "SUPER_ADMIN" | "ADMIN" | "USER";
-  userDetail?: UserDetail;
-  createdAt?: string;
-}
-
-export interface Service {
-  id: number;
-  name: string;
-  image?: string; // URL of the service image
-  userId: number;
-  status: boolean;
-  isDelete: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface PropertyService {
-  id: number;
-  propertyId: number;
-  serviceId: number;
-  status: boolean;
-  isDelete: boolean;
-  createdAt: string;
-  updatedAt: string;
-  service: Service;
-}
-
-
-export interface Property {
+export interface PropertyItem {
   id: number;
   title: string;
   price: number;
@@ -72,15 +29,8 @@ export interface Property {
   isHotel: boolean;
   duration: number;
   durationType: "NIGHT" | "DAY" | "MONTH" | "YEAR" | "LIFE_TIME";
-  images: PropertyImage[];
-  services: PropertyService[];
+  images: PropertyImage[]; // Array of property images
   createdAt: string;
   updatedAt: string;
   Services: string[]
-}
-export interface Pagination {
-  total: number;
-  page: number;
-  limit: number;
-  pages: number;
 }

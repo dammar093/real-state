@@ -1,13 +1,9 @@
+import { Params } from "@/types/utils";
 import { api } from "../api";
 
-interface GetPropertiesParams {
-  page?: number;
-  limit?: number;
-  search?: string;
-  sort?: "asc" | "desc";
-}
 
-export const getProperties = async (params: GetPropertiesParams = {}) => {
+
+export const getProperties = async (params: Params = {}) => {
   try {
     const response = await api.get("/properties", { params });
     return response.data;
@@ -18,7 +14,7 @@ export const getProperties = async (params: GetPropertiesParams = {}) => {
 
 export const getPropertiesByCategory = async (
   category: string,
-  { page, limit }: GetPropertiesParams = {}
+  { page, limit }: Params = {}
 ) => {
   try {
     const response = await api.get(`/properties/category/${category}`, {
@@ -45,12 +41,12 @@ export const getPropertyById = async (id: string) => {
 
 export const getPropertiesByUserId = async (
   userId: number,
-  { page, limit, search, sort }: GetPropertiesParams = {}
+  { page, limit, search }: Params = {}
 ) => {
   console.log("id", userId);
   try {
     const response = await api.get(`/properties/users/${userId}`, {
-      params: { page, limit, search, sort },
+      params: { page, limit, search },
     });
     return response.data;
   } catch (error) {

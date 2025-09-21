@@ -1,114 +1,194 @@
 "use client";
 
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
+import {
+  DashboardOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  SettingOutlined,
+  UserAddOutlined,
+} from "@ant-design/icons";
+import { Button, Layout, Menu, theme, Avatar, Dropdown, Grid } from "antd";
+import { BiBuildingHouse } from "react-icons/bi";
+import { TbBrandBooking } from "react-icons/tb";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import { BsFillBoxFill } from "react-icons/bs";
-import { AiOutlineMenu } from "react-icons/ai";
-import { MdMapsHomeWork } from "react-icons/md";
-import Profile from "@/components/profile/profle";
-import { GiBookCover } from "react-icons/gi";
-import { decodeToken } from "@/utils/utils";
-import { useEffect } from "react";
+import Link from "next/link";
+import useAuthUser from "@/hooks/useAuth";
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const router = useRouter();
+const { Header, Sider, Content } = Layout;
+const { useBreakpoint } = Grid;
+
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  const [collapsed, setCollapsed] = useState(false);
+  const screens = useBreakpoint(); // Responsive breakpoints
+
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
+  const { user } = useAuthUser();
+
+  // Collapse sidebar on small screens
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log("token", token);
-    if (!token) {
-      router.push("/sign-in");
+    if (!screens.md) {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
     }
-    const decoded = decodeToken(token as string);
-    if (!decoded) {
-      router.push("/sign-in");
-    }
-    if (decoded?.role !== "ADMIN") {
-      router.push("/sign-in");
-    }
-  }, [router]);
+  }, [screens.md]);
 
-  const pathname = usePathname();
+  // Dropdown menu for avatar
+  const avatarMenu = (
+    <Menu
+      items={[
+        {
+          key: "account",
+          icon: <SettingOutlined />,
+          label: <Link href="/dashboard/account">Account</Link>,
+        },
+        {
+          key: "logout",
+          icon: <LogoutOutlined />,
+          label: (
+            <span onClick={() => console.log("Logout clicked")}>Logout</span>
+          ),
+        },
+      ]}
+    />
+  );
 
-  const menuItems = [
-    { label: "Dashboard", href: "/dashboard", icon: <BsFillBoxFill /> },
-    {
-      label: "Properties",
-      href: "/dashboard/properties",
-      icon: <MdMapsHomeWork />,
-    },
-    {
-      label: "Booking",
-      href: "/dashboard/booking",
-      icon: <GiBookCover />,
-    },
-  ];
-
-  // Determine if a menu item is active
-  const isActive = (href: string) => {
-    // Root dashboard is active only if exact path
-    if (href === "/dashboard") {
-      return pathname === href;
-    }
-    // Other pages: active if exact or nested route
-    return pathname === href || pathname.startsWith(href + "/");
-  };
+  // Sidebar menu items
+  const menuItems =
+    user?.role === "ADMIN"
+      ? [
+          {
+            key: "1",
+            icon: <DashboardOutlined />,
+            label: <Link href="/dashboard">Dashboard</Link>,
+          },
+          {
+            key: "2",
+            icon: <BiBuildingHouse />,
+            label: <Link href="/dashboard/my-properties">My Properties</Link>,
+          },
+          {
+            key: "3",
+            icon: <TbBrandBooking />,
+            label: <Link href="/dashboard/bookings">Bookings</Link>,
+          },
+        ]
+      : [
+          {
+            key: "1",
+            icon: <DashboardOutlined />,
+            label: <Link href="/dashboard">Dashboard</Link>,
+          },
+          {
+            key: "2",
+            icon: <BiBuildingHouse />,
+            label: <Link href="/dashboard/properties">Properties</Link>,
+          },
+          {
+            key: "3",
+            icon: <UserAddOutlined />,
+            label: <Link href="/dashboard/users">Users</Link>,
+          },
+        ];
 
   return (
-    <div className="flex min-h-screen justify-between gap-4 bg-[#0F172A] md:p-4">
+    <Layout style={{ minHeight: "100vh" }}>
       {/* Sidebar */}
-      <aside className="md:w-50 bg-[#1F2937] shadow-lg text-gray-800 rounded-md overflow-hidden h-[95vh] sticky top-20 flex flex-col justify-between gap-4">
-        {/* Logo */}
-        <div className="border-b border-gray-300">
-          <Link href="/dashboard">
-            <Image
-              src="/assests/logo.png"
-              alt="logo"
-              width={1080}
-              height={720}
-              loading="lazy"
-              className="aspect-[16/9] w-full h-full object-contain"
-            />
-          </Link>
+      <Sider
+        trigger={null}
+        collapsible
+        collapsed={collapsed}
+        theme="light"
+        breakpoint="md"
+        onBreakpoint={(broken) => setCollapsed(broken)}
+        style={{
+          position: "fixed",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          height: "100vh",
+          zIndex: 100,
+        }}
+      >
+        <div className="h-20 w-full flex justify-center items-center my-4">
+          <Image
+            src={"/assets/logo.png"}
+            alt="Logo"
+            width={1080}
+            height={720}
+            className="w-full object-contain"
+          />
         </div>
+        <Menu
+          theme="light"
+          mode="inline"
+          defaultSelectedKeys={["1"]}
+          inlineCollapsed={collapsed}
+          items={menuItems}
+        />
+      </Sider>
 
-        {/* Menu */}
-        <nav className="h-[95%] overflow-y-scroll scrollbar-hide">
-          <ul className="flex flex-col gap-0.5 p-0 m-0 list-none">
-            {menuItems.map((item) => (
-              <li
-                key={item.href}
-                className={`px-4 py-2 w-[90%] mx-auto rounded-md cursor-pointer
-                  ${isActive(item.href) ? "bg-[#6338F0]" : "bg-transparent"}
-                  hover:bg-[#6338F0] transition-colors duration-200`}
-              >
-                <Link
-                  href={item.href}
-                  className="text-white flex gap-2 items-center"
-                >
-                  <span className="ml-2">{item.icon}</span>
-                  <span>{item.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </aside>
+      {/* Main Layout */}
+      <Layout
+        style={{
+          marginLeft: collapsed ? 80 : 200,
+          transition: "all 0.2s",
+        }}
+      >
+        <Header
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 1000,
+            background: colorBgContainer,
+            display: "flex",
+            alignItems: "center",
+            padding: "0 16px",
+            borderBottom: "1px solid #f0f0f0",
+          }}
+        >
+          <div className="flex justify-between w-full items-center">
+            <div className="flex items-center gap-2">
+              <Button
+                type="text"
+                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+                onClick={() => setCollapsed(!collapsed)}
+                style={{
+                  fontSize: "16px",
+                  width: 48,
+                  height: 48,
+                }}
+              />
+              <h2 className="ml-2 text-lg font-semibold">Dashboard</h2>
+            </div>
 
-      {/* Main content */}
-      <main className="w-5xl ">
-        <header className="flex justify-between items-center bg-[#1D2736] h-12 p-4 rounded-md">
-          <AiOutlineMenu className="text-white text-xl md:text-2xl lg:text-3xl cursor-pointer" />
-          <Profile className="w-10 h-10 rounded-full" />
-        </header>
+            {/* Avatar with Dropdown */}
+            <Dropdown overlay={avatarMenu} placement="bottomRight" arrow>
+              <Avatar style={{ cursor: "pointer" }} icon={<UserOutlined />} />
+            </Dropdown>
+          </div>
+        </Header>
 
-        {/* Page content */}
-        <div>{children}</div>
-      </main>
-    </div>
+        <Content
+          style={{
+            margin: "24px 16px",
+            padding: 24,
+            minHeight: "calc(100vh - 64px)",
+            background: colorBgContainer,
+            borderRadius: borderRadiusLG,
+          }}
+        >
+          {children}
+        </Content>
+      </Layout>
+    </Layout>
   );
-}
+};
+
+export default DashboardLayout;

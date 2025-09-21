@@ -21,7 +21,8 @@ export interface User {
   fullName: string;
   email: string;
   role: "SUPER_ADMIN" | "ADMIN" | "USER";
-  createdAt?: Date;
-  updatedAt?: Date;
+  isVerified: boolean;
+  createdAt?: string | Date | undefined | number;
+  updatedAt?: string | Date | undefined | number;
   userDetail?: UserDetail;
 }

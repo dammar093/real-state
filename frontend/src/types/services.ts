@@ -1,18 +1,4 @@
-// User Interface
-export interface User {
-  id: number;
-  fullName: string;
-  email: string;
-  password: string;
-  role: "SUPER_ADMIN" | "ADMIN" | "USER";
-  isVerified: boolean;
-  status: boolean;
-  isDelete: boolean;
-  otp: string;
-  otpExpires: Date;
-  createdAt: Date;
-  updatedAt: Date;
-}
+import { User } from "./user";
 
 // Images Interface
 export interface Image {
