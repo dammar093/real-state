@@ -121,14 +121,16 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           zIndex: 100,
         }}
       >
-        <div className="h-20 w-full flex justify-center items-center my-4">
-          <Image
-            src={"/assets/logo.png"}
-            alt="Logo"
-            width={1080}
-            height={720}
-            className="w-full object-contain"
-          />
+        <div className="shadow-md">
+          <div className="h-20 w-full flex justify-center items-center my-4">
+            <Image
+              src={"/assets/logo.png"}
+              alt="Logo"
+              width={1080}
+              height={720}
+              className="w-full h-full object-contain"
+            />
+          </div>
         </div>
         <Menu
           theme="light"
