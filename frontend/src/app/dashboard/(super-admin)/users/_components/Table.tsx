@@ -16,9 +16,10 @@ import Search from "antd/es/input/Search";
 import useUsers from "@/hooks/useUsers";
 import { User, UserDetail } from "@/types/user";
 import Link from "next/link";
+import Loader from "@/components/loader/loader";
 
 const Table: React.FC = () => {
-  const { users } = useUsers();
+  const { users, loading } = useUsers();
   const [sortedInfo, setSortedInfo] = useState<any>({});
 
   const handleChange: TableProps<User>["onChange"] = (
@@ -129,6 +130,10 @@ const Table: React.FC = () => {
       ),
     },
   ];
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className="flex flex-col gap-3">
