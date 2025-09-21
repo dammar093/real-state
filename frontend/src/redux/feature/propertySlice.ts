@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PropertyItem } from "@/types/property";
-import { getProperties, deleteProperty, togglePropertyStatus } from "@/api/property/property";
+import { getProperties, deleteProperty, togglePropertyStatus, getPropertiesByUserId } from "@/api/property/property";
 import { Meta, Params } from "@/types/utils";
 import { message } from "antd";
 
@@ -12,6 +12,19 @@ export const fetchProperties = createAsyncThunk<
 >("property/fetchProperties", async (params, { rejectWithValue }) => {
   try {
     const res = await getProperties(params);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(err.message || "Failed to fetch properties");
+  }
+});
+// Fetch properties async thunk
+export const fetchPropertiesUserId = createAsyncThunk<
+  { properties: PropertyItem[]; meta: Meta },
+  { id: number; params: Params },
+  { rejectValue: string }
+>("property/fetchPropertiesUserId", async ({ id, params }, { rejectWithValue }) => {
+  try {
+    const res = await getPropertiesByUserId(id, params);
     return res.data;
   } catch (err: any) {
     return rejectWithValue(err.message || "Failed to fetch properties");
@@ -95,7 +108,22 @@ const propertySlice = createSlice({
         state.error = action.payload || "Failed to fetch properties";
         state.loading = false;
       })
-
+    builder
+      // Fetch by id
+      .addCase(fetchPropertiesUserId.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPropertiesUserId.fulfilled, (state, action) => {
+        state.properties = action.payload.properties;
+        state.meta = action.payload.meta;
+        state.loading = false;
+      })
+      .addCase(fetchPropertiesUserId.rejected, (state, action) => {
+        state.error = action.payload || "Failed to fetch properties";
+        state.loading = false;
+      })
+    builder
       // Toggle
       .addCase(togglePropertyStatusById.fulfilled, (state, action) => {
         const updated = action.payload;
@@ -108,7 +136,8 @@ const propertySlice = createSlice({
         state.error = action.payload || "Failed to toggle status";
       })
 
-      // Delete
+    // Delete
+    builder
       .addCase(deletePropertyById.fulfilled, (state, action) => {
         state.properties = state.properties.filter((p) => p.id !== action.payload);
       })

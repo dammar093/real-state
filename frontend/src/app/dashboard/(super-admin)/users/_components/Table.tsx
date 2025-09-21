@@ -15,6 +15,7 @@ import Entry from "@/components/ui/entry";
 import Search from "antd/es/input/Search";
 import useUsers from "@/hooks/useUsers";
 import { User, UserDetail } from "@/types/user";
+import Link from "next/link";
 
 const Table: React.FC = () => {
   const { users } = useUsers();
@@ -44,13 +45,23 @@ const Table: React.FC = () => {
         />
       ),
     },
+
     {
       title: "Full Name",
       dataIndex: "fullName",
       key: "fullName",
       sorter: (a: User, b: User) => a.fullName.localeCompare(b.fullName),
       sortOrder: sortedInfo.columnKey === "fullName" ? sortedInfo.order : null,
+      render: (text: string, record: User) => (
+        <Link
+          href={`/dashboard/users/${record.id}`}
+          className="text-blue-500 hover:underline"
+        >
+          {text}
+        </Link>
+      ),
     },
+
     {
       title: "Email",
       dataIndex: "email",

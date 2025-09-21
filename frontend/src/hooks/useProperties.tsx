@@ -5,8 +5,10 @@ import { RootState, AppDispatch } from "@/redux/store/store";
 import {
   deletePropertyById,
   fetchProperties,
+  fetchPropertiesUserId,
   togglePropertyStatusById,
 } from "@/redux/feature/propertySlice";
+import { get } from "http";
 
 const useProperties = (debounceDelay = 500, limitItems = 10) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,6 +49,14 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
     [dispatch]
   );
 
+  // get properties by user
+  const getPropertiesByUser = useCallback(
+    (id: number) => {
+      dispatch(fetchPropertiesUserId({ id, params: { page, limit, search } }));
+    },
+    [dispatch, page, limit, search]
+  );
+
   return {
     properties,
     loading,
@@ -59,6 +69,7 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
     meta,
     deleteProperty,
     togglePropertyStatus,
+    getPropertiesByUser,
   };
 };
 
