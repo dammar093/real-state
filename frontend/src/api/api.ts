@@ -68,7 +68,7 @@ export const updateUserDetails = async (data: any, id: number) => {
 // === Categories API ===
 
 // Create category
-export const createCategory = async (data: { name: string }) => {
+export const createCategories = async (data: { name: string }) => {
   try {
     const response = await api.post("/categories", data);
     return response.data;
@@ -100,7 +100,7 @@ export const toggleCategoryStatus = async (id: number, isActive: boolean) => {
 };
 
 // Update category
-export const updateCategory = async (id: number, data: { name: string }) => {
+export const updateCategories = async (id: number, data: { name: string }) => {
   try {
     const response = await api.patch(`/categories/${id}`, data);
     return response.data;
@@ -110,7 +110,7 @@ export const updateCategory = async (id: number, data: { name: string }) => {
 };
 
 // Delete category
-export const deleteCategory = async (id: number) => {
+export const deleteCategories = async (id: number) => {
   try {
     const response = await api.delete(`/categories/${id}`);
     return response.data;
