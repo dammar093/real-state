@@ -2,7 +2,11 @@
 import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store/store";
-import { fetchProperties } from "@/redux/feature/propertySlice";
+import {
+  deletePropertyById,
+  fetchProperties,
+  togglePropertyStatusById,
+} from "@/redux/feature/propertySlice";
 
 const useProperties = (debounceDelay = 500, limitItems = 10) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,12 +26,26 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
   // Fetch properties whenever page, limit, or search changes
   useEffect(() => {
     dispatch(fetchProperties({ page, limit, search }));
-  }, [dispatch]);
+  }, [dispatch, page, limit, search]);
 
   // Update search text locally
   const onSearch = useCallback((text: string) => {
     setSearch(text);
   }, []);
+  // Delete property
+  const deleteProperty = useCallback(
+    (id: number) => {
+      dispatch(deletePropertyById(id));
+    },
+    [dispatch]
+  );
+  //toggle property status
+  const togglePropertyStatus = useCallback(
+    (id: number, status: boolean) => {
+      dispatch(togglePropertyStatusById({ id, status }));
+    },
+    [dispatch]
+  );
 
   return {
     properties,
@@ -39,6 +57,8 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
     page,
     setPage,
     meta,
+    deleteProperty,
+    togglePropertyStatus,
   };
 };
 

@@ -84,3 +84,15 @@ export const createProperty = async (data: any) => {
     throw error;
   }
 };
+
+//toggle property
+export const togglePropertyStatus = async (id: number, status: boolean) => {
+  try {
+    const response = await api.patch(`/properties/status/${id}`, { status });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+

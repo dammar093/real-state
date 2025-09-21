@@ -189,6 +189,8 @@ class PropertyController extends AsyncHandler {
       const property = await db.properties.update({
         where: { id: +id },
         data: { status },
+        include: { images: true, category: true, user: true },
+
       });
 
       return res.status(200).json(new ApiResponse(200, property, "Propety status updated successfully"));
@@ -228,7 +230,6 @@ class PropertyController extends AsyncHandler {
       const properties = await db.properties.findMany({
         where: {
           isDelete: false,
-          status: true,
           OR: [
             { location: { contains: String(search), mode: "insensitive" } },
             { title: { contains: String(search), mode: "insensitive" } },

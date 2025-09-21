@@ -46,7 +46,7 @@ const propertyRouter = Router();
 propertyRouter.post(
   "/",
   createJwt.verifyJWT,
-  requireRole("ADMIN"),
+  requireRole(["ADMIN", "SUPER_ADMIN"]),
   uploadServiceImage.array("image"),
   propertyController.asyncHandler(propertyController.createProperty.bind(propertyController))
 );
@@ -109,8 +109,10 @@ propertyRouter.get(
 propertyRouter.delete(
   "/:id",
   createJwt.verifyJWT,
-  requireRole("ADMIN"),
-  propertyController.asyncHandler(propertyController.deleteProperty.bind(propertyController))
+  requireRole(["ADMIN", "SUPER_ADMIN"]),
+  propertyController.asyncHandler(
+    propertyController.deleteProperty.bind(propertyController)
+  )
 );
 
 /**
@@ -155,7 +157,7 @@ propertyRouter.delete(
 propertyRouter.patch(
   "/:id",
   createJwt.verifyJWT,
-  requireRole("ADMIN"),
+  requireRole(["ADMIN", "SUPER_ADMIN"]),
   propertyController.asyncHandler(propertyController.editProperty.bind(propertyController))
 );
 
@@ -200,7 +202,7 @@ propertyRouter.patch(
 propertyRouter.patch(
   "/status/:id",
   createJwt.verifyJWT,
-  requireRole("ADMIN"),
+  requireRole(["ADMIN", "SUPER_ADMIN"]),
   propertyController.asyncHandler(propertyController.updatePropertyStatus.bind(propertyController))
 );
 // Get properties by categoryId

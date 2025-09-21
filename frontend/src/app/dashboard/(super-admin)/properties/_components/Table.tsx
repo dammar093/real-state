@@ -16,9 +16,17 @@ import useProperties from "@/hooks/useProperties";
 import { PropertyItem, PropertyImage } from "@/types/property";
 import Search from "antd/es/input/Search";
 import Link from "next/link";
-
 const Table: React.FC = () => {
-  const { properties, loading, meta } = useProperties();
+  const {
+    properties,
+    loading,
+    meta,
+    search,
+    setSearch,
+    setPage,
+    deleteProperty,
+    togglePropertyStatus,
+  } = useProperties();
   const [sortedInfo, setSortedInfo] = useState<any>({});
 
   const handleChange: TableProps<PropertyItem>["onChange"] = (
@@ -27,6 +35,9 @@ const Table: React.FC = () => {
     sorter
   ) => {
     setSortedInfo(sorter);
+    if (pagination.current) {
+      setPage(pagination.current);
+    }
   };
 
   const columns: TableProps<PropertyItem>["columns"] = [
@@ -87,6 +98,14 @@ const Table: React.FC = () => {
         sortedInfo.columnKey === "durationType" ? sortedInfo.order : null,
     },
     {
+      title: "Owner",
+      key: "owner",
+      sorter: (a: PropertyItem, b: PropertyItem) =>
+        a.user?.fullName.localeCompare(b.user?.fullName || "") ?? 0,
+      sortOrder: sortedInfo.columnKey === "owner" ? sortedInfo.order : null,
+      render: (_, record: PropertyItem) => record.user?.fullName || "N/A",
+    },
+    {
       title: "Action",
       key: "action",
       render: (_, record) => (
@@ -99,14 +118,16 @@ const Table: React.FC = () => {
           <Switch
             checkedChildren="Active"
             unCheckedChildren="Deactive"
-            defaultChecked
+            checked={record.status}
+            onChange={(checked) => togglePropertyStatus(record.id, checked)}
           />
+
           <Popconfirm
             title="Delete Property"
             description="Are you sure you want to delete this property?"
             okText="Yes"
             cancelText="No"
-            onConfirm={() => console.log("Delete", record.id)}
+            onConfirm={() => deleteProperty(record.id)}
           >
             <Button danger icon={<DeleteOutlined />} />
           </Popconfirm>
@@ -128,7 +149,11 @@ const Table: React.FC = () => {
       <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
         <Entry />
         <div className="max-w-50">
-          <Search placeholder="Search properties..." />
+          <Search
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search properties..."
+          />
         </div>
       </div>
 
