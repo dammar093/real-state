@@ -1,4 +1,3 @@
-// app/verify-otp/page.tsx
 import React, { Suspense } from "react";
 import ResetPassword from "./components";
 
