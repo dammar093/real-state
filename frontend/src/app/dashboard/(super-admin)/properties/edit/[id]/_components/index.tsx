@@ -26,8 +26,8 @@ const EditPropety = () => {
             href: "/dashboard/properties",
           },
           {
-            title: "Create Property",
-            href: "/dashboard/properties/create",
+            title: "Edit Property",
+            href: `/dashboard/properties/edit/${id}`,
           },
         ]}
       />

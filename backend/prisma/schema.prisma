@@ -13,12 +13,6 @@ enum Role {
   ADMIN
   USER
 }
-
-enum Types {
-  SALE
-  RENT
-}
-
 enum Status {
   SUCCESS
   PENDING
@@ -83,7 +77,6 @@ model Properties {
   price       Int
   location    String
   description String
-  map         String
   userId      Int
   user        Users             @relation(fields: [userId], references: [id])
   images      Images[]
@@ -92,13 +85,13 @@ model Properties {
   review      Reviews[]
   categoryId  Int
   category    Category          @relation(fields: [categoryId], references: [id])
-  type        Types
   Services    String[]
   status      Boolean           @default(true)
   isDelete    Boolean           @default(false)
-  isHotel     Boolean           @default(false)
   createdAt   DateTime          @default(now())
   duration    Int
+  latitude   Float
+  longitude Float
   durationType DuratinType
   updatedAt   DateTime          @default(now()) @updatedAt
 }

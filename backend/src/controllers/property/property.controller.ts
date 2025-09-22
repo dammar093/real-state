@@ -20,13 +20,12 @@ class PropertyController extends AsyncHandler {
         price,
         location,
         description,
-        map,
+        latitude,
+        longitude,
         categoryId,
         serviceIds,
-        type,
         duration,
         durationType,
-        isHotel,
         services
       } = req.body;
       const files = req.files as Express.Multer.File[];
@@ -35,7 +34,7 @@ class PropertyController extends AsyncHandler {
       }
       // console.log(req.body)
       // Validate required fields
-      if (!title || !price || !location || !categoryId || !type || !duration || !durationType || !description || !map) {
+      if (!title || !price || !location || !categoryId || !duration || !durationType || !description || !longitude || !longitude) {
         throw new ApiError(400, "Missing required fields");
       }
 
@@ -56,12 +55,11 @@ class PropertyController extends AsyncHandler {
           price: Number(price),
           location,
           description,
-          map,
+          latitude: Number(latitude),
+          longitude: Number(longitude),
           categoryId: Number(categoryId),
-          type,
           duration: parseInt(duration),
           durationType,
-          isHotel: isHotel === "true" || isHotel === true, // if coming from form-data
           userId: user.id,
           ...(serviceData && { services: serviceData }),
           Services: services
@@ -118,12 +116,11 @@ class PropertyController extends AsyncHandler {
         price,
         location,
         description,
-        map,
+        latitude,
+        longitude,
         duration,
         categoryId,
         Services,
-        type,
-        isHotel,
         durationType,
       } = req.body;
 
@@ -133,12 +130,6 @@ class PropertyController extends AsyncHandler {
       });
       if (!existing) throw new ApiError(404, "Property not found");
 
-      // normalize services to string[]
-      const parsedServices: string[] = Array.isArray(Services)
-        ? Services
-        : typeof Services === "string" && Services.length
-          ? JSON.parse(Services)
-          : [];
 
       // update property
       const updatedProperty = await db.properties.update({
@@ -148,10 +139,9 @@ class PropertyController extends AsyncHandler {
           price,
           location,
           description,
-          map,
+          latitude: Number(latitude),
+          longitude: Number(longitude),
           categoryId,
-          type,
-          isHotel,
           duration,
           durationType,
           Services,

@@ -18,7 +18,6 @@ export interface PropertyItem {
   price: number;
   location: string;
   description: string;
-  map: string;
   userId: number;
   user?: User;
   categoryId: number;
@@ -32,5 +31,7 @@ export interface PropertyItem {
   images: PropertyImage[]; // Array of property images
   createdAt: string;
   updatedAt: string;
-  Services: string[]
+  Services: string[];
+  latitude: number;
+  longitude: number;
 }
