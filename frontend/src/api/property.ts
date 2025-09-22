@@ -45,7 +45,7 @@ export const getPropertiesByUserId = async (
 ) => {
   console.log("id", userId);
   try {
-    const response = await api.get(`/properties/users/${userId}`, {
+    const response = await api.get(`/properties/users/${userId},`, {
       params: { page, limit, search },
     });
     return response.data;

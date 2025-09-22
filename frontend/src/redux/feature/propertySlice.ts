@@ -1,10 +1,17 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PropertyItem } from "@/types/property";
-import { getProperties, deleteProperty, togglePropertyStatus, getPropertiesByUserId } from "@/api/property";
+import {
+  getProperties,
+  deleteProperty,
+  togglePropertyStatus,
+  getPropertiesByUserId,
+} from "@/api/property";
 import { Meta, Params } from "@/types/utils";
 import { message } from "antd";
 
-// Fetch properties async thunk
+// ----------------- Async Thunks -----------------
+
+// Fetch all properties
 export const fetchProperties = createAsyncThunk<
   { properties: PropertyItem[]; meta: Meta },
   Params,
@@ -17,7 +24,8 @@ export const fetchProperties = createAsyncThunk<
     return rejectWithValue(err.message || "Failed to fetch properties");
   }
 });
-// Fetch properties async thunk
+
+// Fetch properties by user ID
 export const fetchPropertiesUserId = createAsyncThunk<
   { properties: PropertyItem[]; meta: Meta },
   { id: number; params: Params },
@@ -27,14 +35,14 @@ export const fetchPropertiesUserId = createAsyncThunk<
     const res = await getPropertiesByUserId(id, params);
     return res.data;
   } catch (err: any) {
-    return rejectWithValue(err.message || "Failed to fetch properties");
+    return rejectWithValue(err.message || "Failed to fetch user properties");
   }
 });
 
-//  Toggle property status async thunk
+// Toggle property status
 export const togglePropertyStatusById = createAsyncThunk<
   PropertyItem,
-  { id: number, status: boolean },
+  { id: number; status: boolean },
   { rejectValue: string }
 >("property/togglePropertyStatus", async ({ id, status }, { rejectWithValue }) => {
   try {
@@ -47,7 +55,7 @@ export const togglePropertyStatusById = createAsyncThunk<
   }
 });
 
-// Delete property async thunk
+// Delete property
 export const deletePropertyById = createAsyncThunk<
   number,
   number,
@@ -63,83 +71,95 @@ export const deletePropertyById = createAsyncThunk<
   }
 });
 
-// Slice state
+// ----------------- Slice State -----------------
+
 interface PropertyState {
-  properties: PropertyItem[];
+  all: {
+    properties: PropertyItem[];
+    meta: Meta;
+  };
+  user: {
+    properties: PropertyItem[];
+    meta: Meta;
+  };
   loading: boolean;
   error: string | null;
-  meta: {
-    page: number;
-    total: number;
-    limit: number;
-    pages?: number;
-  };
 }
 
 const initialState: PropertyState = {
-  properties: [],
+  all: {
+    properties: [],
+    meta: { page: 1, total: 0, limit: 10, pages: 0 },
+  },
+  user: {
+    properties: [],
+    meta: { page: 1, total: 0, limit: 10, pages: 0 },
+  },
   loading: false,
   error: null,
-  meta: {
-    page: 1,
-    total: 0,
-    limit: 10,
-    pages: 0,
-  },
 };
+
+// ----------------- Slice -----------------
 
 const propertySlice = createSlice({
   name: "property",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    // --- Fetch All ---
     builder
-      // Fetch
       .addCase(fetchProperties.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchProperties.fulfilled, (state, action) => {
-        state.properties = action.payload.properties;
-        state.meta = action.payload.meta;
+        state.all.properties = action.payload.properties;
+        state.all.meta = action.payload.meta;
         state.loading = false;
       })
       .addCase(fetchProperties.rejected, (state, action) => {
         state.error = action.payload || "Failed to fetch properties";
         state.loading = false;
-      })
+      });
+
+    // --- Fetch by User ---
     builder
-      // Fetch by id
       .addCase(fetchPropertiesUserId.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(fetchPropertiesUserId.fulfilled, (state, action) => {
-        state.properties = action.payload.properties;
-        state.meta = action.payload.meta;
+        state.user.properties = action.payload.properties;
+        state.user.meta = action.payload.meta;
         state.loading = false;
       })
       .addCase(fetchPropertiesUserId.rejected, (state, action) => {
-        state.error = action.payload || "Failed to fetch properties";
+        state.error = action.payload || "Failed to fetch user properties";
         state.loading = false;
-      })
+      });
+
+    // --- Toggle ---
     builder
-      // Toggle
       .addCase(togglePropertyStatusById.fulfilled, (state, action) => {
         const updated = action.payload;
-        const index = state.properties.findIndex((p) => p.id === updated.id);
-        if (index !== -1) {
-          state.properties[index] = updated;
-        }
+
+        // update in "all"
+        const indexAll = state.all.properties.findIndex((p) => p.id === updated.id);
+        if (indexAll !== -1) state.all.properties[indexAll] = updated;
+
+        // update in "user"
+        const indexUser = state.user.properties.findIndex((p) => p.id === updated.id);
+        if (indexUser !== -1) state.user.properties[indexUser] = updated;
       })
       .addCase(togglePropertyStatusById.rejected, (state, action) => {
         state.error = action.payload || "Failed to toggle status";
-      })
+      });
 
-    // Delete
+    // --- Delete ---
     builder
       .addCase(deletePropertyById.fulfilled, (state, action) => {
-        state.properties = state.properties.filter((p) => p.id !== action.payload);
+        state.all.properties = state.all.properties.filter((p) => p.id !== action.payload);
+        state.user.properties = state.user.properties.filter((p) => p.id !== action.payload);
       })
       .addCase(deletePropertyById.rejected, (state, action) => {
         state.error = action.payload || "Failed to delete property";

@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 import SliderLayout from "../slider-layout/slider-layout";
 import PropertyCard from "../property/property-card";
-import { getPropertiesByCategory } from "@/api/property/property";
+import { getPropertiesByCategory } from "@/api/property";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store/store";
 import {

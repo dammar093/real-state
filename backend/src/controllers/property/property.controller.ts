@@ -464,23 +464,64 @@ class PropertyController extends AsyncHandler {
     try {
       const { id } = req.params;
 
-      if (!id) throw new ApiError(400, "User ID is required");
+      // Validate ID
+      const userId = parseInt(id);
+      if (!id || isNaN(userId)) {
+        throw new ApiError(400, "Invalid User ID");
+      }
 
+      // Query params
+      const page = Number(req.query.page) || 1;
+      const limit = Number(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
+      const search = String(req.query.search || "");
+
+      // Total count with search
+      const total = await db.properties.count({
+        where: {
+          userId: userId,
+          isDelete: false,
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { location: { contains: search, mode: "insensitive" } },
+            {
+              services: {
+                some: {
+                  service: {
+                    name: { contains: search, mode: "insensitive" },
+                  },
+                },
+              },
+            },
+          ],
+        },
+      });
+
+      // Paginated data with search
       const properties = await db.properties.findMany({
         where: {
-          userId: Number(id),
+          userId: userId,
           isDelete: false,
-          status: true,
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { location: { contains: search, mode: "insensitive" } },
+            {
+              services: {
+                some: {
+                  service: {
+                    name: { contains: search, mode: "insensitive" },
+                  },
+                },
+              },
+            },
+          ],
         },
+        skip,
+        take: limit,
         include: {
           category: true,
           services: { include: { service: true } },
-          images: {
-            select: {
-              id: true,
-              image: true,
-            },
-          },
+          images: { select: { id: true, image: true } },
           user: {
             select: {
               id: true,
@@ -500,19 +541,22 @@ class PropertyController extends AsyncHandler {
         },
       });
 
-      if (!properties || properties.length === 0) {
-        throw new ApiError(404, "No properties found for this user");
-      }
+      // Pagination metadata
+      const meta = {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit),
+      };
 
-      return res
-        .status(200)
-        .json(new ApiResponse(200, properties, "Properties fetched successfully"));
+      return res.status(200).json(
+        new ApiResponse(200, { properties, meta }, "Properties fetched successfully")
+      );
     } catch (error) {
       console.error(error);
       throw new ApiError(500, "Internal server error");
     }
   }
-
 
 }
 

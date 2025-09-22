@@ -5,7 +5,7 @@ import { GiBookCover } from "react-icons/gi";
 import { FaSackDollar } from "react-icons/fa6";
 import { MdMapsHomeWork } from "react-icons/md";
 import { decodeToken } from "@/utils/utils";
-import { getPropertiesByUserId } from "@/api/property/property";
+import { getPropertiesByUserId } from "@/api/property";
 import Loader from "@/components/loader/loader";
 
 const Dashboard = () => {

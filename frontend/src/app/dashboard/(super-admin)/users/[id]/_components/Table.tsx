@@ -17,22 +17,25 @@ import { PropertyItem, PropertyImage } from "@/types/property";
 import Search from "antd/es/input/Search";
 import Link from "next/link";
 import { dateFormatter } from "@/utils/utils";
+import { useParams } from "next/navigation";
 const Table: React.FC = () => {
   const {
-    all,
+    user,
     loading,
     search,
     setSearch,
     setPage,
     deleteProperty,
     togglePropertyStatus,
-    getAllProperties,
+    getPropertiesByUser,
   } = useProperties();
+  const { id } = useParams();
   const [sortedInfo, setSortedInfo] = useState<any>({});
+  // console.log("propeties", properties)
 
   useEffect(() => {
-    getAllProperties();
-  }, [getAllProperties]);
+    getPropertiesByUser(Number(id));
+  }, [id, getPropertiesByUser]);
 
   const handleChange: TableProps<PropertyItem>["onChange"] = (
     pagination,
@@ -168,14 +171,14 @@ const Table: React.FC = () => {
       <AntTable<PropertyItem>
         rowKey="id"
         loading={loading}
-        dataSource={all?.properties}
+        dataSource={user?.properties}
         columns={columns}
         scroll={{ x: true }}
         onChange={handleChange}
         pagination={{
-          current: all?.meta?.page || 1,
-          pageSize: all?.meta?.limit || 10,
-          total: all?.meta?.total || 0,
+          current: user?.meta?.page || 1,
+          pageSize: user?.meta?.limit || 10,
+          total: user?.meta?.total || 0,
           showQuickJumper: true,
           showLessItems: true,
         }}

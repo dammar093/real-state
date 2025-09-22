@@ -8,14 +8,13 @@ import {
   fetchPropertiesUserId,
   togglePropertyStatusById,
 } from "@/redux/feature/propertySlice";
-import { get } from "http";
 
 const useProperties = (debounceDelay = 500, limitItems = 10) => {
   const dispatch = useDispatch<AppDispatch>();
   const [limit, setLimit] = useState(limitItems);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const { properties, loading, meta } = useSelector(
+  const { user, loading, all } = useSelector(
     (state: RootState) => state.property
   );
   // Debounce search effect
@@ -26,10 +25,9 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
   }, [search, dispatch, debounceDelay, limit]);
 
   // Fetch properties whenever page, limit, or search changes
-  useEffect(() => {
-    dispatch(fetchProperties({ page, limit, search }));
-  }, [dispatch, page, limit, search]);
-
+  const getAllProperties = useCallback(() => {
+    dispatch(fetchProperties({ search, page, limit }));
+  }, [dispatch, search, page, limit]);
   // Update search text locally
   const onSearch = useCallback((text: string) => {
     setSearch(text);
@@ -58,7 +56,7 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
   );
 
   return {
-    properties,
+    user,
     loading,
     search,
     setSearch,
@@ -66,10 +64,11 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
     limit,
     page,
     setPage,
-    meta,
+    all,
     deleteProperty,
     togglePropertyStatus,
     getPropertiesByUser,
+    getAllProperties,
   };
 };
 
