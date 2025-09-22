@@ -23,7 +23,7 @@ const Header = () => {
                     <Image
                       width={1080}
                       height={720}
-                      src={"/assests/logo.png"}
+                      src={"/assets/logo.png"}
                       alt="real estate logo"
                       loading="lazy"
                       className="h-full w-full"

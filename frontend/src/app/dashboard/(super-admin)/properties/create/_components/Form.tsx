@@ -114,7 +114,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ property }) => {
               { required: true, message: "Please enter property location" },
             ]}
           >
-            <Input placeholder="Location" />
+            <Input placeholder="Address" />
           </Form.Item>
         </Col>
 
