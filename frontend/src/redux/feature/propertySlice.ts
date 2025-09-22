@@ -231,6 +231,9 @@ const propertySlice = createSlice({
 
     // --- Create ---
     builder
+      .addCase(createPropertyThunk.pending, (state) => {
+        state.loading = true
+      })
       .addCase(createPropertyThunk.fulfilled, (state, action) => {
         state.all.properties.unshift(action.payload);
         state.user.properties.unshift(action.payload);
@@ -241,6 +244,9 @@ const propertySlice = createSlice({
 
     // --- Update ---
     builder
+      .addCase(updatePropertyThunk.pending, (state) => {
+        state.loading = true
+      })
       .addCase(updatePropertyThunk.fulfilled, (state, action) => {
         const updated = action.payload;
 

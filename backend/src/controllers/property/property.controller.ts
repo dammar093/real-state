@@ -85,11 +85,6 @@ class PropertyController extends AsyncHandler {
         },
         include: {
           images: true, // 👈 includes related images
-          services: {
-            include: {
-              service: true, // if you also want service details
-            },
-          },
           category: true, // optional: include category if needed
           user: {
             select: {
@@ -233,22 +228,11 @@ class PropertyController extends AsyncHandler {
           OR: [
             { location: { contains: String(search), mode: "insensitive" } },
             { title: { contains: String(search), mode: "insensitive" } },
-            {
-              services: {
-                some: {
-                  service: {
-                    name: { contains: String(search), mode: "insensitive" },
-                  },
-                },
-              },
-            },
+
           ],
         },
         include: {
           category: true,
-          services: {
-            include: { service: true },
-          },
           images: true,
           user: {
             select: {
@@ -287,15 +271,6 @@ class PropertyController extends AsyncHandler {
           OR: [
             { location: { contains: String(search), mode: "insensitive" } },
             { title: { contains: String(search), mode: "insensitive" } },
-            {
-              services: {
-                some: {
-                  service: {
-                    name: { contains: String(search), mode: "insensitive" },
-                  },
-                },
-              },
-            },
           ],
         },
       });
@@ -340,18 +315,11 @@ class PropertyController extends AsyncHandler {
           OR: [
             { location: { contains: String(search), mode: "insensitive" } },
             { title: { contains: String(search), mode: "insensitive" } },
-            {
-              services: {
-                some: {
-                  service: { name: { contains: String(search), mode: "insensitive" } },
-                },
-              },
-            },
+
           ],
         },
         include: {
           category: true,
-          services: { include: { service: true } },
           images: true,
           user: {
             select: {
@@ -384,13 +352,6 @@ class PropertyController extends AsyncHandler {
           OR: [
             { location: { contains: String(search), mode: "insensitive" } },
             { title: { contains: String(search), mode: "insensitive" } },
-            {
-              services: {
-                some: {
-                  service: { name: { contains: String(search), mode: "insensitive" } },
-                },
-              },
-            },
           ],
         },
       });
@@ -428,7 +389,6 @@ class PropertyController extends AsyncHandler {
         },
         include: {
           category: true,
-          services: { include: { service: true } },
           images: { select: { id: true, image: true } },
           user: {
             select: {
@@ -484,15 +444,6 @@ class PropertyController extends AsyncHandler {
           OR: [
             { title: { contains: search, mode: "insensitive" } },
             { location: { contains: search, mode: "insensitive" } },
-            {
-              services: {
-                some: {
-                  service: {
-                    name: { contains: search, mode: "insensitive" },
-                  },
-                },
-              },
-            },
           ],
         },
       });
@@ -505,22 +456,12 @@ class PropertyController extends AsyncHandler {
           OR: [
             { title: { contains: search, mode: "insensitive" } },
             { location: { contains: search, mode: "insensitive" } },
-            {
-              services: {
-                some: {
-                  service: {
-                    name: { contains: search, mode: "insensitive" },
-                  },
-                },
-              },
-            },
           ],
         },
         skip,
         take: limit,
         include: {
           category: true,
-          services: { include: { service: true } },
           images: { select: { id: true, image: true } },
           user: {
             select: {

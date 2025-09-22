@@ -51,7 +51,6 @@ model Users {
   payment    Payment[]
   otp        String
   otpExpires DateTime     @default(now())
-  services   Services[]
   isVerified Boolean      @default(false)
   role       Role         @default(USER)
   status     Boolean      @default(true)
@@ -93,7 +92,6 @@ model Properties {
   review      Reviews[]
   categoryId  Int
   category    Category          @relation(fields: [categoryId], references: [id])
-  services    PropertyService[] // many-to-many
   type        Types
   Services    String[]
   status      Boolean           @default(true)
@@ -118,8 +116,6 @@ model Category {
 model Images {
   id           Int          @id @default(autoincrement())
   image        String
-  serviceId    Int?         @unique
-  service      Services?    @relation(fields: [serviceId], references: [id])
   propertyId   Int?
   property     Properties?  @relation(fields: [propertyId], references: [id])
   userDetailId Int?         @unique
@@ -180,29 +176,3 @@ model Payment {
   updatedAt     DateTime       @default(now()) @updatedAt
 }
 
-model Services {
-  id         Int               @id @default(autoincrement())
-  name       String
-  image      Images? // optional relation
-  userId     Int // uploaded by super admin
-  user       Users             @relation(fields: [userId], references: [id])
-  status     Boolean           @default(true)
-  isDelete   Boolean           @default(false)
-  properties PropertyService[] // many-to-many relation
-  createdAt  DateTime          @default(now())
-  updatedAt  DateTime          @default(now()) @updatedAt
-}
-
-model PropertyService {
-  id         Int        @id @default(autoincrement())
-  propertyId Int
-  serviceId  Int
-  property   Properties @relation(fields: [propertyId], references: [id])
-  service    Services   @relation(fields: [serviceId], references: [id])
-  status     Boolean    @default(true)
-  isDelete   Boolean    @default(false)
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @default(now()) @updatedAt
-
-  @@unique([propertyId, serviceId]) // prevent duplicates
-}
