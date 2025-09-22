@@ -176,9 +176,9 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
 
             {/* Avatar with Dropdown */}
-            <Dropdown overlay={avatarMenu} placement="bottomRight" arrow>
+            {/* <Dropdown placement="bottomRight" arrow>
               <Avatar style={{ cursor: "pointer" }} icon={<UserOutlined />} />
-            </Dropdown>
+            </Dropdown> */}
           </div>
         </Header>
 

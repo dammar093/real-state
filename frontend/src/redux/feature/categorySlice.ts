@@ -154,9 +154,7 @@ const categorySlice = createSlice({
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.loading = false;
         state.categories = action.payload.categories;
-        state.meta.total = action.payload.total;
-        state.meta.page = action.payload.page;
-        state.meta.pages = Math.ceil(action.payload.total / state.meta.limit);
+        // state.meta = action.payload?
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.loading = false;

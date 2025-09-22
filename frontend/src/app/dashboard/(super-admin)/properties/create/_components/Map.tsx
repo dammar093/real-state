@@ -7,13 +7,14 @@ import {
   Marker,
   Popup,
   useMapEvents,
+  useMap,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { FormInstance, Input, message } from "antd";
 
 // Fix default icon issue in Leaflet
-//@ts-ignore
+// @ts-ignore
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -28,6 +29,14 @@ interface MapSearchProps {
   form: FormInstance<any>;
 }
 
+const ChangeMapView = ({ center, zoom }: { center: LatLng; zoom: number }) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView(center, zoom);
+  }, [center, zoom, map]);
+  return null;
+};
+
 const MapSearch: React.FC<MapSearchProps> = ({ form }) => {
   const initialLat = form.getFieldValue("latitude") ?? 27.7172;
   const initialLon = form.getFieldValue("longitude") ?? 85.324;
@@ -37,6 +46,7 @@ const MapSearch: React.FC<MapSearchProps> = ({ form }) => {
   const [popupText, setPopupText] = useState<string>(
     `Lat: ${initialLat}, Lon: ${initialLon}`
   );
+  const [zoom, setZoom] = useState(6); // default zoom = 6
 
   // Update map when form values change (for editing)
   useEffect(() => {
@@ -59,6 +69,7 @@ const MapSearch: React.FC<MapSearchProps> = ({ form }) => {
         const { lat, lng } = e.latlng;
         setPosition([lat, lng]);
         setPopupText(`Lat: ${lat}, Lon: ${lng}`);
+        setZoom(10); // zoom in on click too
       },
     });
     return null;
@@ -78,6 +89,7 @@ const MapSearch: React.FC<MapSearchProps> = ({ form }) => {
       const lon = parseFloat(coords[1]);
       setPosition([lat, lon]);
       setPopupText(`Lat: ${lat}, Lon: ${lon}`);
+      setZoom(10); // zoom when searched
       return;
     }
 
@@ -95,6 +107,7 @@ const MapSearch: React.FC<MapSearchProps> = ({ form }) => {
       const lon = parseFloat(data[0].lon);
       setPosition([lat, lon]);
       setPopupText(`${searchValue} (Lat: ${lat}, Lon: ${lon})`);
+      setZoom(10); // zoom when searched
     } catch (error) {
       console.error(error);
       message.error("Error fetching location");
@@ -115,7 +128,7 @@ const MapSearch: React.FC<MapSearchProps> = ({ form }) => {
 
       <MapContainer
         center={position}
-        zoom={6}
+        zoom={zoom}
         style={{ height: "400px", width: "100%" }}
       >
         <TileLayer
@@ -126,6 +139,7 @@ const MapSearch: React.FC<MapSearchProps> = ({ form }) => {
           <Popup>{popupText}</Popup>
         </Marker>
         <MapClickHandler />
+        <ChangeMapView center={position} zoom={zoom} />
       </MapContainer>
     </div>
   );
