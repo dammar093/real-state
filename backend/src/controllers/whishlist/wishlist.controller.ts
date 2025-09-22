@@ -41,11 +41,7 @@ class WishListController extends AsyncHandler {
             include: {
               images: true,
               category: true,
-              services: {
-                include: {
-                  service: true,
-                },
-              },
+
             },
           },
         },
@@ -90,11 +86,7 @@ class WishListController extends AsyncHandler {
             include: {
               images: true,
               category: true,
-              services: {
-                include: {
-                  service: true,
-                },
-              },
+
             },
           },
         },
@@ -134,11 +126,6 @@ class WishListController extends AsyncHandler {
               include: {
                 images: true,
                 category: true,
-                services: {
-                  include: {
-                    service: true,
-                  },
-                },
               },
             },
           },
