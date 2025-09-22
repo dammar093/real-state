@@ -5,6 +5,7 @@ import { RootState, AppDispatch } from "@/redux/store/store";
 import {
   createPropertyThunk,
   deletePropertyById,
+  fetchActiveProperties,
   fetchProperties,
   fetchPropertiesUserId,
   getPropertyByIdThunk,
@@ -18,7 +19,7 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
   const [limit, setLimit] = useState(limitItems);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const { user, loading, all, singleProperty } = useSelector(
+  const { user, loading, all, singleProperty, active } = useSelector(
     (state: RootState) => state.property
   );
   const router = useRouter();
@@ -32,6 +33,10 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
   // Fetch properties whenever page, limit, or search changes
   const getAllProperties = useCallback(() => {
     dispatch(fetchProperties({ search, page, limit }));
+  }, [dispatch, search, page, limit]);
+  // Fetch properties whenever page, limit, or search changes
+  const getActiveProperties = useCallback(() => {
+    dispatch(fetchActiveProperties({ search, page, limit }));
   }, [dispatch, search, page, limit]);
 
   // Delete property
@@ -96,6 +101,8 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
     getPropertyById,
     singleProperty,
     updatePropertyById,
+    getActiveProperties,
+    active,
   };
 };
 

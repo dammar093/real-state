@@ -7,7 +7,8 @@ import {
   getPropertiesByUserId,
   createProperty,
   updateProperty,
-  getPropertyById, // <- make sure this API exists
+  getPropertyById,
+  getActiveProperties, // <- make sure this API exists
 } from "@/api/property";
 import { Meta, Params } from "@/types/utils";
 import { message } from "antd";
@@ -22,6 +23,19 @@ export const fetchProperties = createAsyncThunk<
 >("property/fetchProperties", async (params, { rejectWithValue }) => {
   try {
     const res = await getProperties(params);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(err.message || "Failed to fetch properties");
+  }
+});
+// Fetch all properties
+export const fetchActiveProperties = createAsyncThunk<
+  { properties: PropertyItem[]; meta: Meta },
+  Params,
+  { rejectValue: string }
+>("property/fetchActiveProperties", async (params, { rejectWithValue }) => {
+  try {
+    const res = await getActiveProperties(params);
     return res.data;
   } catch (err: any) {
     return rejectWithValue(err.message || "Failed to fetch properties");
@@ -131,6 +145,10 @@ interface PropertyState {
     properties: PropertyItem[];
     meta: Meta;
   };
+  active: {
+    properties: PropertyItem[];
+    meta: Meta;
+  };
   singleProperty: PropertyItem | null;
   loading: boolean;
   error: string | null;
@@ -142,6 +160,10 @@ const initialState: PropertyState = {
     meta: { page: 1, total: 0, limit: 10, pages: 0 },
   },
   user: {
+    properties: [],
+    meta: { page: 1, total: 0, limit: 10, pages: 0 },
+  },
+  active: {
     properties: [],
     meta: { page: 1, total: 0, limit: 10, pages: 0 },
   },
@@ -169,6 +191,21 @@ const propertySlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchProperties.rejected, (state, action) => {
+        state.error = action.payload || "Failed to fetch properties";
+        state.loading = false;
+      });
+    // --- Fetch active ---
+    builder
+      .addCase(fetchActiveProperties.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchActiveProperties.fulfilled, (state, action) => {
+        state.active.properties = action.payload.properties;
+        state.active.meta = action.payload.meta;
+        state.loading = false;
+      })
+      .addCase(fetchActiveProperties.rejected, (state, action) => {
         state.error = action.payload || "Failed to fetch properties";
         state.loading = false;
       });

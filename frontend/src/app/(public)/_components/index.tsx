@@ -2,6 +2,7 @@
 import React from "react";
 import Slider from "@/components/layout/slider/slider";
 import CategoriesTab from "./Tabs";
+import PropertyWrapper from "./Poperties";
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
       <Slider />
       {/* Categories in Tabs */}
       <CategoriesTab />
+      <PropertyWrapper />
     </div>
   );
 };

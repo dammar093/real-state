@@ -79,6 +79,10 @@ propertyRouter.get(
   "/",
   propertyController.asyncHandler(propertyController.getAllProperty.bind(propertyController))
 );
+propertyRouter.get(
+  "/active",
+  propertyController.asyncHandler(propertyController.getActiveProperties.bind(propertyController))
+);
 
 /**
  * @openapi

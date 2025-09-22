@@ -12,6 +12,15 @@ export const getProperties = async (params: Params = {}) => {
   }
 };
 
+export const getActiveProperties = async (params: Params = {}) => {
+  try {
+    const response = await api.get("/properties/active", { params });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getPropertiesByCategory = async (
   category: string,
   { page, limit }: Params = {}
