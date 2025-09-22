@@ -61,7 +61,6 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
     search,
     setSearch,
     setLimit,
-    limit,
     page,
     setPage,
     all,

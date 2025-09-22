@@ -141,7 +141,7 @@ const Table: React.FC = () => {
   return (
     <div className="flex flex-col gap-3">
       <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-        <Entry />
+        <Entry total={10} />
         <div className="max-w-50">
           <Search placeholder="Search users..." />
         </div>

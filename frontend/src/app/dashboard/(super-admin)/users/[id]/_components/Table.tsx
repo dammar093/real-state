@@ -28,6 +28,7 @@ const Table: React.FC = () => {
     deleteProperty,
     togglePropertyStatus,
     getPropertiesByUser,
+    setLimit,
   } = useProperties();
   const { id } = useParams();
   const [sortedInfo, setSortedInfo] = useState<any>({});
@@ -158,7 +159,10 @@ const Table: React.FC = () => {
         </Link>
       </div>
       <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-        <Entry />
+        <Entry
+          onChange={(val: string) => setLimit(parseInt(val))}
+          total={user?.meta?.total}
+        />
         <div className="max-w-50">
           <Search
             value={search}

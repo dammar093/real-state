@@ -90,7 +90,7 @@ const Table: React.FC = () => {
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
-        <Entry />
+        <Entry total={10} />
         <div className="max-w-50">{/* Optional Search */}</div>
       </div>
 
