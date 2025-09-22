@@ -74,7 +74,7 @@ const Table: React.FC = () => {
       dataIndex: "price",
       key: "price",
       render: (price: number) => (
-        <Tag color="green">${price.toLocaleString()}</Tag>
+        <Tag color="green">Rs.{price.toLocaleString()}</Tag>
       ),
       sorter: (a, b) => a.price - b.price,
       sortOrder: sortedInfo.columnKey === "price" ? sortedInfo.order : null,
