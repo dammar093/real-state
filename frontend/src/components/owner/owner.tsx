@@ -3,7 +3,7 @@ import Profile from "../profile/profle";
 import Link from "next/link";
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import Button from "../ui/button";
-import { User } from "@/types/property";
+import { User } from "@/types/user";
 import { getTimeSince } from "@/utils/utils";
 
 const Owner = ({ owner }: { owner: User }) => {

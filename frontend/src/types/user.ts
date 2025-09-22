@@ -11,6 +11,8 @@ export interface UserDetail {
   address?: string;
   profile?: Image;
   profilePic?: string;
+  facebook?: string;
+  instagram?: string
   about?: string
   createdAt?: Date;
   updatedAt?: Date;

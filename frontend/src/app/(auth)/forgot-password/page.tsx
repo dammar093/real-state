@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
-import logo from "../../../../public/assests/logo.png";
 import Input from "@/components/ui/input";
 import Button from "@/components/ui/button";
 import { useForm } from "react-hook-form";
@@ -54,7 +53,7 @@ const ForgotPasswordPage = () => {
           <div>
             <div className="aspect-square w-23 h-23 mx-auto">
               <Image
-                src={logo}
+                src={"/assets/logo.png"}
                 alt="logo"
                 width={1080}
                 height={720}

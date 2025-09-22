@@ -1,4 +1,5 @@
-import { Property } from "./property";
+import { PropertyItem } from "./property";
+
 
 interface Wishlist {
   id: number;
@@ -7,7 +8,7 @@ interface Wishlist {
   isDelete: boolean;
   createdAt: string;
   updatedAt: string;
-  property: Property;
+  property: PropertyItem;
 
 }
 

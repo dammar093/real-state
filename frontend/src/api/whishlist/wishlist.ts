@@ -21,4 +21,5 @@ class Wishlist {
   }
 }
 
-export default new Wishlist()
+const whishlist = new Wishlist()
+export default whishlist

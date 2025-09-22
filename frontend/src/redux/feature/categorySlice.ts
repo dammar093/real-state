@@ -8,15 +8,11 @@ interface CategoryState {
   categories: CategoryItem[];
   loading: boolean;
   error: string | null;
-  page: number;
-  total: number;
   category: CategoryItem | null;
 }
 
 const initialState: CategoryState = {
   categories: [],
-  page: 0,
-  total: 0,
   category: null,
   loading: false,
   error: null,
@@ -27,8 +23,8 @@ const initialState: CategoryState = {
 // Fetch categories
 export const fetchCategories = createAsyncThunk<
   { categories: CategoryItem[]; total: number; page: number },
-  { page?: number; limit?: number; search?: string }
->("category/fetchCategories", async ({ page = 1, limit = 10, search = "" }, { rejectWithValue }) => {
+  void
+>("category/fetchCategories", async (_, { rejectWithValue }) => {
   try {
     const response = await getCategories()
     return response.data; // { categories, total, page }
@@ -127,8 +123,7 @@ const categorySlice = createSlice({
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.loading = false;
         state.categories = action.payload.categories;
-        state.page = action.payload.page;
-        state.total = action.payload.total;
+
       })
       .addCase(fetchCategories.rejected, (state, action) => {
         state.loading = false;

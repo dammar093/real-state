@@ -12,7 +12,7 @@ const useUsers = () => {
   );
 
   useEffect(() => {
-    dispatch(fetchUsers({ page: 1, limit: 10, search: "" }));
+    dispatch(fetchUsers());
   }, [dispatch]);
 
   return { users, loading, error, page, total };

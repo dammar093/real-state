@@ -1,5 +1,5 @@
 // store/slices/userSlice.ts
-import { getUsers } from "@/api/user/user";
+import { getUsers } from "@/api/user";
 import { User } from "@/types/user";
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
@@ -22,10 +22,10 @@ const initialState: UserState = {
 // Async thunk to fetch users
 export const fetchUsers = createAsyncThunk<
   { users: User[]; total: number; page: number }, // return type
-  { page?: number; limit?: number; search?: string } // argument type
+  void
 >(
   "user/fetchUsers",
-  async ({ page = 1, limit = 10, search = "" }, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
       const response = await getUsers();
       // Assuming response.data contains { users, total, page }

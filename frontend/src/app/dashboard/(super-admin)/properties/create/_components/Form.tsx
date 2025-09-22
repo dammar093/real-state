@@ -8,7 +8,6 @@ import {
   Select,
   Button,
   Upload,
-  Switch,
   message,
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
@@ -21,17 +20,11 @@ const { TextArea } = Input;
 const { Option } = Select;
 
 interface PropertyFormProps {
-  property?: PropertyItem | null; // Optional for edit
-}
-
-interface Service {
-  id: number;
-  name: string;
+  property?: PropertyItem | null;
 }
 
 const PropertyForm: React.FC<PropertyFormProps> = ({ property }) => {
   const [form] = Form.useForm();
-  const [services, setServices] = useState<Service[]>([]);
   const [fileList, setFileList] = useState<any[]>([]);
   const { categories } = useCategories();
   const { createProperty, updatePropertyById, loading } = useProperties();
@@ -190,13 +183,7 @@ const PropertyForm: React.FC<PropertyFormProps> = ({ property }) => {
           placeholder="Enter services and press Enter"
           tokenSeparators={[","]}
           style={{ width: "100%" }}
-        >
-          {services.map((srv) => (
-            <Option key={srv.id} value={srv.name}>
-              {srv.name}
-            </Option>
-          ))}
-        </Select>
+        ></Select>
       </Form.Item>
 
       {!property && (

@@ -8,7 +8,6 @@ import categoryReducer from "../feature/categorySlice";
 import propertyReducer from "../feature/propertySlice";
 import propertyCategoryReducer from "../feature/propertyCategorySlice"
 import usersReducer from "../feature/userSlice"
-import serviceReducer from "../feature/serviceSlice"
 import dahboardReucer from "../feature/dashboardSlice"
 import wishlistReducer from "../feature/wishllistSlice"
 
@@ -18,7 +17,6 @@ const rootReducer = combineReducers({
   property: propertyReducer,
   propertyCategory: propertyCategoryReducer,
   users: usersReducer,
-  services: serviceReducer,
   dashboard: dahboardReucer,
   wislist: wishlistReducer
 });

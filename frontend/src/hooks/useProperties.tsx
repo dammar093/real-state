@@ -33,10 +33,7 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
   const getAllProperties = useCallback(() => {
     dispatch(fetchProperties({ search, page, limit }));
   }, [dispatch, search, page, limit]);
-  // Update search text locally
-  const onSearch = useCallback((text: string) => {
-    setSearch(text);
-  }, []);
+
   // Delete property
   const deleteProperty = useCallback(
     (id: number) => {
@@ -66,7 +63,7 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
         .unwrap()
         .then(() => router.back());
     },
-    [dispatch]
+    [dispatch, router]
   );
   const getPropertyById = useCallback(
     (id: number) => {
@@ -80,7 +77,7 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
         .unwrap()
         .then(() => router.back());
     },
-    [dispatch]
+    [dispatch, router]
   );
   return {
     user,

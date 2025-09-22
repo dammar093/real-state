@@ -1,14 +1,14 @@
 "use client";
 
-import { getPropertiesByCategory } from "@/api/property/property";
+import { getPropertiesByCategory } from "@/api/property";
 import ProducsLayout from "@/components/layout/products-layout/products-layout";
 import PropertyCard from "@/components/property/property-card";
-import { Property } from "@/types/property";
+import { PropertyItem } from "@/types/property";
 import { useParams } from "next/navigation";
 import React, { useEffect } from "react";
 
 const PropertiesPage = () => {
-  const [properties, setProperties] = React.useState<Property[]>([]);
+  const [properties, setProperties] = React.useState<PropertyItem[]>([]);
   const params = useParams<{ name: string }>();
   const { name } = params;
   useEffect(() => {

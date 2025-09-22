@@ -7,16 +7,17 @@ import Owner from "@/components/owner/owner";
 import { GoStarFill } from "react-icons/go";
 import { LuDot } from "react-icons/lu";
 import GoogleMap from "@/components/google-map/google-map";
-import { Property, User } from "@/types/property";
-import { getPropertyById } from "@/api/property/property";
+import { PropertyItem } from "@/types/property";
+import { getPropertyById } from "@/api/property";
 import Loader from "@/components/loader/loader";
+import { User } from "@/types/user";
 
 const PropertyPage = () => {
   const params = useParams();
   const id = params?.id as string | undefined;
 
   const [loading, setLoading] = useState(true);
-  const [property, setProperty] = useState<Property | null>(null);
+  const [property, setProperty] = useState<PropertyItem | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -24,7 +25,7 @@ const PropertyPage = () => {
     const fetchProperty = async () => {
       setLoading(true);
       try {
-        const data = await getPropertyById(id);
+        const data = await getPropertyById(Number(id));
         setProperty(data.data ?? null);
       } catch (error) {
         console.error("Error fetching property:", error);

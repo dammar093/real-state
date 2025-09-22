@@ -15,12 +15,12 @@ import { useRouter } from "next/navigation";
 const useCategories = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { categories, loading, error, total, category } = useSelector(
+  const { categories, loading, error, category } = useSelector(
     (state: RootState) => state.category
   );
 
   useEffect(() => {
-    dispatch(fetchCategories({ page: 1, limit: 10, search: "" }));
+    dispatch(fetchCategories());
   }, [dispatch]);
 
   const createCategory = useCallback(
@@ -31,7 +31,7 @@ const useCategories = () => {
           router.back();
         });
     },
-    [dispatch]
+    [dispatch, router]
   );
   const toggleCategoryStatus = useCallback(
     (values: { id: number; isActive: boolean }) => {
@@ -57,14 +57,13 @@ const useCategories = () => {
         router.back();
       });
     },
-    [dispatch]
+    [dispatch, router]
   );
 
   return {
     categories,
     loading,
     error,
-    total,
     createCategory,
     toggleCategoryStatus,
     deleteCategory,
