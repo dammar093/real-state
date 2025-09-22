@@ -11,6 +11,7 @@ import {
   togglePropertyStatusById,
   updatePropertyThunk,
 } from "@/redux/feature/propertySlice";
+import { useRouter } from "next/navigation";
 
 const useProperties = (debounceDelay = 500, limitItems = 10) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +21,7 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
   const { user, loading, all, singleProperty } = useSelector(
     (state: RootState) => state.property
   );
+  const router = useRouter();
   // Debounce search effect
   useEffect(() => {
     const handler = setTimeout(() => {}, debounceDelay);
@@ -60,7 +62,9 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
 
   const createProperty = useCallback(
     (data: any) => {
-      dispatch(createPropertyThunk(data));
+      dispatch(createPropertyThunk(data))
+        .unwrap()
+        .then(() => router.back());
     },
     [dispatch]
   );
@@ -72,7 +76,9 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
   );
   const updatePropertyById = useCallback(
     (id: number, data: any) => {
-      dispatch(updatePropertyThunk({ id, data }));
+      dispatch(updatePropertyThunk({ id, data }))
+        .unwrap()
+        .then(() => router.back());
     },
     [dispatch]
   );
