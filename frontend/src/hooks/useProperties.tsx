@@ -3,10 +3,13 @@ import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "@/redux/store/store";
 import {
+  createPropertyThunk,
   deletePropertyById,
   fetchProperties,
   fetchPropertiesUserId,
+  getPropertyByIdThunk,
   togglePropertyStatusById,
+  updatePropertyThunk,
 } from "@/redux/feature/propertySlice";
 
 const useProperties = (debounceDelay = 500, limitItems = 10) => {
@@ -14,7 +17,7 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
   const [limit, setLimit] = useState(limitItems);
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const { user, loading, all } = useSelector(
+  const { user, loading, all, singleProperty } = useSelector(
     (state: RootState) => state.property
   );
   // Debounce search effect
@@ -55,6 +58,24 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
     [dispatch, page, limit, search]
   );
 
+  const createProperty = useCallback(
+    (data: any) => {
+      dispatch(createPropertyThunk(data));
+    },
+    [dispatch]
+  );
+  const getPropertyById = useCallback(
+    (id: number) => {
+      dispatch(getPropertyByIdThunk(id));
+    },
+    [dispatch]
+  );
+  const updatePropertyById = useCallback(
+    (id: number, data: any) => {
+      dispatch(updatePropertyThunk({ id, data }));
+    },
+    [dispatch]
+  );
   return {
     user,
     loading,
@@ -68,6 +89,10 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
     togglePropertyStatus,
     getPropertiesByUser,
     getAllProperties,
+    createProperty,
+    getPropertyById,
+    singleProperty,
+    updatePropertyById,
   };
 };
 

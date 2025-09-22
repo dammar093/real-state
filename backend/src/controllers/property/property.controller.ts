@@ -126,7 +126,7 @@ class PropertyController extends AsyncHandler {
         map,
         duration,
         categoryId,
-        services,
+        Services,
         type,
         isHotel,
         durationType,
@@ -139,10 +139,10 @@ class PropertyController extends AsyncHandler {
       if (!existing) throw new ApiError(404, "Property not found");
 
       // normalize services to string[]
-      const parsedServices: string[] = Array.isArray(services)
-        ? services
-        : typeof services === "string" && services.length
-          ? JSON.parse(services)
+      const parsedServices: string[] = Array.isArray(Services)
+        ? Services
+        : typeof Services === "string" && Services.length
+          ? JSON.parse(Services)
           : [];
 
       // update property
@@ -159,7 +159,7 @@ class PropertyController extends AsyncHandler {
           isHotel,
           duration,
           durationType,
-          Services: services,
+          Services,
         },
         include: {
           category: true,

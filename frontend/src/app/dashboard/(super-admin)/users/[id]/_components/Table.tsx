@@ -122,11 +122,14 @@ const Table: React.FC = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center">
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
-            onClick={() => console.log("Edit", record.id)}
-          />
+          <Link href={`/dashboard/properties/edit/${record?.id}`}>
+            <Button
+              type="primary"
+              variant="filled"
+              icon={<EditOutlined />}
+              onClick={() => console.log("Edit", record.id)}
+            />
+          </Link>
           <Switch
             checkedChildren="Active"
             unCheckedChildren="Deactive"

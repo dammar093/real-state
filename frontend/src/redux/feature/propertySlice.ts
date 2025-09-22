@@ -5,6 +5,9 @@ import {
   deleteProperty,
   togglePropertyStatus,
   getPropertiesByUserId,
+  createProperty,
+  updateProperty,
+  getPropertyById, // <- make sure this API exists
 } from "@/api/property";
 import { Meta, Params } from "@/types/utils";
 import { message } from "antd";
@@ -36,6 +39,20 @@ export const fetchPropertiesUserId = createAsyncThunk<
     return res.data;
   } catch (err: any) {
     return rejectWithValue(err.message || "Failed to fetch user properties");
+  }
+});
+
+// Get property by ID
+export const getPropertyByIdThunk = createAsyncThunk<
+  PropertyItem,
+  number,
+  { rejectValue: string }
+>("property/getPropertyById", async (id, { rejectWithValue }) => {
+  try {
+    const res = await getPropertyById(id);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(err.message || "Failed to fetch property");
   }
 });
 
@@ -71,6 +88,38 @@ export const deletePropertyById = createAsyncThunk<
   }
 });
 
+// Create property
+export const createPropertyThunk = createAsyncThunk<
+  PropertyItem,
+  Partial<PropertyItem>,
+  { rejectValue: string }
+>("property/createProperty", async (data, { rejectWithValue }) => {
+  try {
+    const res = await createProperty(data);
+    message.success("Property created successfully");
+    return res.data;
+  } catch (err: any) {
+    message.error(err.message || "Failed to create property");
+    return rejectWithValue(err.message || "Failed to create property");
+  }
+});
+
+// Update property
+export const updatePropertyThunk = createAsyncThunk<
+  PropertyItem,
+  { id: number; data: Partial<PropertyItem> },
+  { rejectValue: string }
+>("property/updateProperty", async ({ id, data }, { rejectWithValue }) => {
+  try {
+    const res = await updateProperty(id, data);
+    message.success("Property updated successfully");
+    return res.data;
+  } catch (err: any) {
+    message.error(err.message || "Failed to update property");
+    return rejectWithValue(err.message || "Failed to update property");
+  }
+});
+
 // ----------------- Slice State -----------------
 
 interface PropertyState {
@@ -82,6 +131,7 @@ interface PropertyState {
     properties: PropertyItem[];
     meta: Meta;
   };
+  singleProperty: PropertyItem | null;
   loading: boolean;
   error: string | null;
 }
@@ -95,6 +145,7 @@ const initialState: PropertyState = {
     properties: [],
     meta: { page: 1, total: 0, limit: 10, pages: 0 },
   },
+  singleProperty: null,
   loading: false,
   error: null,
 };
@@ -138,16 +189,29 @@ const propertySlice = createSlice({
         state.loading = false;
       });
 
+    // --- Get by ID ---
+    builder
+      .addCase(getPropertyByIdThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(getPropertyByIdThunk.fulfilled, (state, action) => {
+        state.singleProperty = action.payload;
+        state.loading = false;
+      })
+      .addCase(getPropertyByIdThunk.rejected, (state, action) => {
+        state.error = action.payload || "Failed to fetch property";
+        state.loading = false;
+      });
+
     // --- Toggle ---
     builder
       .addCase(togglePropertyStatusById.fulfilled, (state, action) => {
         const updated = action.payload;
 
-        // update in "all"
         const indexAll = state.all.properties.findIndex((p) => p.id === updated.id);
         if (indexAll !== -1) state.all.properties[indexAll] = updated;
 
-        // update in "user"
         const indexUser = state.user.properties.findIndex((p) => p.id === updated.id);
         if (indexUser !== -1) state.user.properties[indexUser] = updated;
       })
@@ -163,6 +227,35 @@ const propertySlice = createSlice({
       })
       .addCase(deletePropertyById.rejected, (state, action) => {
         state.error = action.payload || "Failed to delete property";
+      });
+
+    // --- Create ---
+    builder
+      .addCase(createPropertyThunk.fulfilled, (state, action) => {
+        state.all.properties.unshift(action.payload);
+        state.user.properties.unshift(action.payload);
+      })
+      .addCase(createPropertyThunk.rejected, (state, action) => {
+        state.error = action.payload || "Failed to create property";
+      });
+
+    // --- Update ---
+    builder
+      .addCase(updatePropertyThunk.fulfilled, (state, action) => {
+        const updated = action.payload;
+
+        const indexAll = state.all.properties.findIndex((p) => p.id === updated.id);
+        if (indexAll !== -1) state.all.properties[indexAll] = updated;
+
+        const indexUser = state.user.properties.findIndex((p) => p.id === updated.id);
+        if (indexUser !== -1) state.user.properties[indexUser] = updated;
+
+        if (state.singleProperty?.id === updated.id) {
+          state.singleProperty = updated;
+        }
+      })
+      .addCase(updatePropertyThunk.rejected, (state, action) => {
+        state.error = action.payload || "Failed to update property";
       });
   },
 });

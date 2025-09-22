@@ -27,7 +27,7 @@ export const getPropertiesByCategory = async (
 };
 
 // get property by id 
-export const getPropertyById = async (id: string) => {
+export const getPropertyById = async (id: number) => {
   try {
     const response = await api.get(`/properties/${id}`);
     return response.data;
