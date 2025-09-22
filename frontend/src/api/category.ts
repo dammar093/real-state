@@ -1,5 +1,6 @@
 // === Categories API ===
 
+import { Params } from "@/types/utils";
 import { api } from "./api";
 
 // Create category
@@ -58,6 +59,16 @@ export const deleteCategories = async (id: number) => {
 export const getCategoryById = async (id: number) => {
   try {
     const response = await api.get(`/categories/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const getActiveCategories = async () => {
+  try {
+    const response = await api.get("/categories/active");
     return response.data;
   } catch (error) {
     throw error;

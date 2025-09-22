@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from "@/redux/store/store";
 import {
   createCategoryThunk,
   deleteCategoryThunk,
+  fetchActiveCategories,
   fetchCategories,
   getCategoryByIdThunk,
   toggleCategory,
@@ -15,12 +16,15 @@ import { useRouter } from "next/navigation";
 const useCategories = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { categories, loading, error, category } = useSelector(
-    (state: RootState) => state.category
-  );
+  const { categories, loading, error, category, activeCategories } =
+    useSelector((state: RootState) => state.category);
 
   useEffect(() => {
     dispatch(fetchCategories());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchActiveCategories());
   }, [dispatch]);
 
   const createCategory = useCallback(
@@ -70,6 +74,7 @@ const useCategories = () => {
     getCategory,
     category,
     updateCategory,
+    activeCategories,
   };
 };
 

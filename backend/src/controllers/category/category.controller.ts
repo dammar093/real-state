@@ -158,6 +158,30 @@ class CategoryController extends AsyncHandler {
       throw new ApiError(500, "Failed to fetch category");
     }
   }
+  async getActiveCategories(req: Request, res: Response): Promise<Response> {
+    console.log("activesfsfsf")
+    try {
+      const categories = await db.category.findMany({
+        where: {
+          isDelete: false,
+          isActive: true,
+        }
+      });
+
+      return res.status(200).json(
+        new ApiResponse(
+          200,
+          {
+            categories,
+          },
+          "Active categories fetched successfully"
+        )
+      );
+    } catch (error) {
+      console.error("Error fetching active categories:", error);
+      throw new ApiError(500, "Failed to fetch active categories");
+    }
+  }
 
 }
 
