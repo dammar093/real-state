@@ -5,12 +5,21 @@ import {
   DashboardOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  UserOutlined,
   LogoutOutlined,
   SettingOutlined,
   UserAddOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu, theme, Avatar, Dropdown, Grid } from "antd";
+import {
+  Button,
+  Layout,
+  Menu,
+  theme,
+  Avatar,
+  Dropdown,
+  Grid,
+  MenuProps,
+} from "antd";
 import { BiBuildingHouse, BiCategory } from "react-icons/bi";
 import { TbBrandBooking } from "react-icons/tb";
 import Image from "next/image";
@@ -40,24 +49,21 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   }, [screens.md]);
 
   // Dropdown menu for avatar
-  const avatarMenu = (
-    <Menu
-      items={[
-        {
-          key: "account",
-          icon: <SettingOutlined />,
-          label: <Link href="/dashboard/account">Account</Link>,
-        },
-        {
-          key: "logout",
-          icon: <LogoutOutlined />,
-          label: (
-            <span onClick={() => console.log("Logout clicked")}>Logout</span>
-          ),
-        },
-      ]}
-    />
-  );
+  const items: MenuProps["items"] = [
+    {
+      key: "account",
+      label: <Link href="/account">Account</Link>,
+      icon: <UserOutlined />,
+    },
+    {
+      type: "divider",
+    },
+    {
+      key: "logout",
+      label: <button className="w-full text-left">Logout</button>,
+      icon: <LogoutOutlined />,
+    },
+  ];
 
   // Sidebar menu items
   const menuItems =
@@ -176,9 +182,17 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
 
             {/* Avatar with Dropdown */}
-            {/* <Dropdown placement="bottomRight" arrow>
-              <Avatar style={{ cursor: "pointer" }} icon={<UserOutlined />} />
-            </Dropdown> */}
+            <Dropdown menu={{ items }} trigger={["click", "hover"]}>
+              <Avatar
+                size="large"
+                src={user?.userDetail?.profilePic || undefined}
+                className="cursor-pointer"
+              >
+                <span className="text-2xl">
+                  {user?.fullName?.charAt(0).toUpperCase()}
+                </span>
+              </Avatar>
+            </Dropdown>
           </div>
         </Header>
 

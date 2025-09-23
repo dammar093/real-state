@@ -4,8 +4,8 @@ import PropertySlider from "@/components/property-sldier/property-slider";
 import useProperties from "@/hooks/useProperties";
 import { PropertyItem } from "@/types/property";
 import { useParams } from "next/navigation";
-import React, { useEffect } from "react";
-import { Avatar } from "antd";
+import React, { useEffect, useState } from "react";
+import { Avatar, Button, Modal } from "antd";
 import LocationMap from "./Location";
 import Link from "next/link";
 import { getTimeSince } from "@/utils/utils";
@@ -14,6 +14,10 @@ import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 const PropertyDetail = () => {
   const { loading, getPropertyById, singleProperty } = useProperties();
   const { id } = useParams();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => setIsModalOpen(true);
+  const handleCancel = () => setIsModalOpen(false);
+
   useEffect(() => {
     getPropertyById(Number(id));
   }, [id, getPropertyById]);
@@ -43,35 +47,59 @@ const PropertyDetail = () => {
           </div>
         </div>
         <div>
-          <Link
-            href={`/user/${singleProperty?.userId}/propeties`}
-            className="!w-fit block"
-          >
-            <div className="flex gap-2 items-center w-fit  p-2 ">
-              <Avatar
-                size="large"
-                src={
-                  singleProperty?.user?.userDetail?.profile?.image || undefined
-                }
-              >
-                <span className="text-2xl">
-                  {singleProperty?.user?.fullName?.charAt(0).toUpperCase()}
-                </span>
-              </Avatar>
+          <div className="flex justify-between flex-wrap-reverse gap-3 items-center">
+            <Link
+              href={`/user/${singleProperty?.userId}/propeties`}
+              className="!w-fit block"
+            >
+              <div className="flex gap-2 items-center w-fit  p-2 ">
+                <Avatar
+                  size="large"
+                  src={
+                    singleProperty?.user?.userDetail?.profile?.image ||
+                    undefined
+                  }
+                >
+                  <span className="text-2xl">
+                    {singleProperty?.user?.fullName?.charAt(0).toUpperCase()}
+                  </span>
+                </Avatar>
 
-              <div>
-                <h4 className="text-slate-700 fw-medium capitalize text-[16px]">
-                  {singleProperty?.user?.fullName}
-                </h4>
-                <p className="text-[14px] text-slate-600">
-                  Member for{" "}
-                  {getTimeSince(
-                    new Date(singleProperty?.user?.createdAt as string)
-                  )}
-                </p>
+                <div>
+                  <h4 className="text-slate-700 fw-medium capitalize text-[16px]">
+                    {singleProperty?.user?.fullName}
+                  </h4>
+                  <p className="text-[14px] text-slate-600">
+                    Member for{" "}
+                    {getTimeSince(
+                      new Date(singleProperty?.user?.createdAt as string)
+                    )}
+                  </p>
+                </div>
               </div>
+            </Link>
+            <div>
+              <Button
+                type="primary"
+                style={{ backgroundColor: "#800000", borderColor: "#800000" }}
+                onClick={showModal}
+              >
+                Book Now
+              </Button>
+
+              <Modal
+                title="Fill up details"
+                open={isModalOpen}
+                onCancel={handleCancel}
+                width="90vw"
+                centered
+                style={{ maxWidth: 900 }}
+                footer={null}
+              >
+                <p>Put your booking form or details here...</p>
+              </Modal>
             </div>
-          </Link>
+          </div>
           <div className="flex items-center gap-2">
             {singleProperty?.user?.userDetail?.phoneNumber && (
               <Link
