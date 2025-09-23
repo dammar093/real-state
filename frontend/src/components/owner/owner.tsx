@@ -22,29 +22,6 @@ const Owner = ({ owner }: { owner: User }) => {
               <p className="text-[14px] text-slate-600">
                 Member for {getTimeSince(new Date(owner?.createdAt as string))}
               </p>
-              <div className="flex items-center gap-2">
-                {owner?.userDetail?.phoneNumber && (
-                  <Link
-                    href={`https://wa.me/${owner?.userDetail?.phoneNumber}`}
-                  >
-                    <FaWhatsapp size={20} className="text-slate-700" />
-                  </Link>
-                )}
-                {owner?.userDetail?.facebook && (
-                  <Link
-                    href={`https://www.facebook.com/${owner?.userDetail?.facebook}`}
-                  >
-                    <FaFacebook size={20} className="text-slate-700" />
-                  </Link>
-                )}
-                {owner?.userDetail?.instagram && (
-                  <Link
-                    href={`https://www.instagram.com/${owner?.userDetail?.instagram}`}
-                  >
-                    <FaInstagram size={20} className="text-slate-700" />
-                  </Link>
-                )}
-              </div>
             </div>
           </div>
           <div>
