@@ -8,6 +8,7 @@ import {
   Tag,
   Image,
   Switch,
+  Avatar,
 } from "antd";
 import type { TableProps } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -34,17 +35,13 @@ const Table: React.FC = () => {
   const columns: TableProps<User>["columns"] = [
     {
       title: "Image",
-      dataIndex: "images",
-      key: "images",
-      render: (userDetail: UserDetail) => (
-        <Image
-          src={userDetail?.profile?.image || "/assets/placeholder.png"}
-          alt="User"
-          width={80}
-          height={60}
-          loading="lazy"
-          style={{ objectFit: "cover", borderRadius: 8 }}
-        />
+      key: "image",
+      render: (_, record: User) => (
+        <Avatar size="large" src={record.userDetail?.profilePic || undefined}>
+          {!record.userDetail?.profilePic && record.fullName
+            ? record.fullName.charAt(0).toUpperCase()
+            : null}
+        </Avatar>
       ),
     },
 
