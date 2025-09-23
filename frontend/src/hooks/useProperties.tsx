@@ -7,6 +7,7 @@ import {
   deletePropertyById,
   fetchActiveProperties,
   fetchProperties,
+  fetchPropertiesCategoryThunk,
   fetchPropertiesUserId,
   getPropertyByIdThunk,
   togglePropertyStatusById,
@@ -61,6 +62,17 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
     },
     [dispatch, page, limit, search]
   );
+  const getPropertiesByCategory = useCallback(
+    (category: string) => {
+      dispatch(
+        fetchPropertiesCategoryThunk({
+          category,
+          params: { page, limit, search },
+        })
+      );
+    },
+    [dispatch, page, limit, search]
+  );
 
   const createProperty = useCallback(
     (data: any) => {
@@ -103,6 +115,7 @@ const useProperties = (debounceDelay = 500, limitItems = 10) => {
     updatePropertyById,
     getActiveProperties,
     active,
+    getPropertiesByCategory,
   };
 };
 

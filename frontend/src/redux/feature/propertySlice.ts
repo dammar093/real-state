@@ -8,7 +8,8 @@ import {
   createProperty,
   updateProperty,
   getPropertyById,
-  getActiveProperties, // <- make sure this API exists
+  getActiveProperties,
+  getPropertiesByCategory, // <- make sure this API exists
 } from "@/api/property";
 import { Meta, Params } from "@/types/utils";
 import { message } from "antd";
@@ -50,6 +51,19 @@ export const fetchPropertiesUserId = createAsyncThunk<
 >("property/fetchPropertiesUserId", async ({ id, params }, { rejectWithValue }) => {
   try {
     const res = await getPropertiesByUserId(id, params);
+    return res.data;
+  } catch (err: any) {
+    return rejectWithValue(err.message || "Failed to fetch user properties");
+  }
+});
+// Fetch properties by category
+export const fetchPropertiesCategoryThunk = createAsyncThunk<
+  { properties: PropertyItem[]; meta: Meta },
+  { category: string; params: Params },
+  { rejectValue: string }
+>("property/fetchPropertiesCategory", async ({ category, params }, { rejectWithValue }) => {
+  try {
+    const res = await getPropertiesByCategory(category, params);
     return res.data;
   } catch (err: any) {
     return rejectWithValue(err.message || "Failed to fetch user properties");
@@ -222,6 +236,21 @@ const propertySlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchPropertiesUserId.rejected, (state, action) => {
+        state.error = action.payload || "Failed to fetch user properties";
+        state.loading = false;
+      });
+    // --- Fetch by category ---
+    builder
+      .addCase(fetchPropertiesCategoryThunk.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPropertiesCategoryThunk.fulfilled, (state, action) => {
+        state.active.properties = action.payload.properties;
+        state.user.meta = action.payload.meta;
+        state.loading = false;
+      })
+      .addCase(fetchPropertiesCategoryThunk.rejected, (state, action) => {
         state.error = action.payload || "Failed to fetch user properties";
         state.loading = false;
       });

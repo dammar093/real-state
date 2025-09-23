@@ -10,7 +10,7 @@ const CategoriesTab = () => {
     <div className="flex items-center gap-3">
       {categories?.map((cat) => (
         <Link
-          href={`/properties/${cat?.name}`}
+          href={`/properties/categories/${cat?.name}`}
           key={cat?.id}
           className="flex rounded bg-[var(--primary-color)] px-4 py-1 text-white capitalize"
         >

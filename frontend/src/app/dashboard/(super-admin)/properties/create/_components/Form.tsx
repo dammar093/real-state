@@ -14,10 +14,11 @@ import {
 } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import useCategories from "@/hooks/useCategories";
-import { DurationType, Types } from "../_types/enum";
+import { DurationType } from "../_types/enum";
 import useProperties from "@/hooks/useProperties";
 import { PropertyItem } from "@/types/property";
-import MapSearch from "./Map";
+import dynamic from "next/dynamic";
+const MapSearch = dynamic(() => import("./Map"));
 
 const { TextArea } = Input;
 const { Option } = Select;
