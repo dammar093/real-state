@@ -80,7 +80,7 @@ const Table: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex justify-end">
+      <div className="flex justify-center md:justify-end">
         <Link href="/dashboard/categories/create">
           <Button type="primary" className="mb-4">
             <PlusOutlined />

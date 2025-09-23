@@ -17,7 +17,7 @@ import { PropertyItem, PropertyImage } from "@/types/property";
 import Search from "antd/es/input/Search";
 import Link from "next/link";
 import { dateFormatter } from "@/utils/utils";
-import { useParams } from "next/navigation";
+import useAuthUser from "@/hooks/useAuth";
 const Table: React.FC = () => {
   const {
     user,
@@ -27,16 +27,15 @@ const Table: React.FC = () => {
     setPage,
     deleteProperty,
     togglePropertyStatus,
-    getPropertiesByUser,
+    getPropertyById,
     setLimit,
   } = useProperties();
-  const { id } = useParams();
   const [sortedInfo, setSortedInfo] = useState<any>({});
-  // console.log("propeties", properties)
+  const { user: auth } = useAuthUser();
 
   useEffect(() => {
-    getPropertiesByUser(Number(id));
-  }, [id, getPropertiesByUser]);
+    getPropertyById(auth?.id as number);
+  }, [getPropertyById]);
 
   const handleChange: TableProps<PropertyItem>["onChange"] = (
     pagination,
@@ -122,7 +121,7 @@ const Table: React.FC = () => {
       key: "action",
       render: (_, record) => (
         <div className="flex gap-2 items-center">
-          <Link href={`/dashboard/properties/edit/${record?.id}`}>
+          <Link href={`/dashboard/my-properties/edit/${record?.id}`}>
             <Button
               type="primary"
               variant="filled"
@@ -153,8 +152,8 @@ const Table: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="flex justify-center md:justify-end">
-        <Link href="/dashboard/properties/create">
+      <div className="flex  justify-center md:justify-end">
+        <Link href="/dashboard/my-properties/create">
           <Button type="primary" className="mb-4">
             <PlusOutlined />
             Add New Property
