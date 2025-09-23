@@ -18,7 +18,7 @@ import useUsers from "@/hooks/useUsers";
 import { User, UserDetail } from "@/types/user";
 import Link from "next/link";
 import Loader from "@/components/loader/loader";
-import { dateFormatter } from "@/utils/utils";
+import { dateFormatter, Role } from "@/utils/utils";
 
 const Table: React.FC = () => {
   const { users, loading } = useUsers();
@@ -105,29 +105,30 @@ const Table: React.FC = () => {
     {
       title: "Action",
       key: "action",
-      render: (_, record) => (
-        <div className="flex gap-2 items-center">
-          <Button
-            type="primary"
-            icon={<EditOutlined />}
-            onClick={() => console.log("Edit", record.id)}
-          />
-          <Switch
-            checkedChildren="Active"
-            unCheckedChildren="Deactive"
-            defaultChecked
-          />
-          <Popconfirm
-            title="Delete User"
-            description="Are you sure you want to delete this user?"
-            okText="Yes"
-            cancelText="No"
-            onConfirm={() => console.log("Delete", record.id)}
-          >
-            <Button danger icon={<DeleteOutlined />} />
-          </Popconfirm>
-        </div>
-      ),
+      render: (_, record) =>
+        record.role !== Role.SUPER_ADMIN ? (
+          <div className="flex gap-2 items-center">
+            <Button
+              type="primary"
+              icon={<EditOutlined />}
+              onClick={() => console.log("Edit", record.id)}
+            />
+            <Switch
+              checkedChildren="Active"
+              unCheckedChildren="Deactive"
+              defaultChecked
+            />
+            <Popconfirm
+              title="Delete User"
+              description="Are you sure you want to delete this user?"
+              okText="Yes"
+              cancelText="No"
+              onConfirm={() => console.log("Delete", record.id)}
+            >
+              <Button danger icon={<DeleteOutlined />} />
+            </Popconfirm>
+          </div>
+        ) : null,
     },
   ];
 
