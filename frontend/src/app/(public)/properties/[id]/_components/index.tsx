@@ -49,7 +49,7 @@ const PropertyDetail = () => {
         <div>
           <div className="flex justify-between flex-wrap-reverse gap-3 items-center">
             <Link
-              href={`/user/${singleProperty?.userId}/propeties`}
+              href={`/users/${singleProperty?.userId}/properties`}
               className="!w-fit block"
             >
               <div className="flex gap-2 items-center w-fit  p-2 ">
