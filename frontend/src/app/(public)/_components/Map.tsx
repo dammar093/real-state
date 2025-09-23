@@ -5,9 +5,10 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import useProperties from "@/hooks/useProperties";
-import { Input, message } from "antd";
+import { Button, Input, message } from "antd";
 import Image from "next/image";
 import Link from "next/link";
+import { BiSearch } from "react-icons/bi";
 
 // Fix default icon issue in Leaflet
 // @ts-ignore
@@ -83,7 +84,14 @@ const Map: React.FC = () => {
         placeholder="Enter location (e.g., Kathmandu, Pokhara)"
         onChange={(e) => setSearchValue(e.target.value)}
         onSearch={handleSearch}
-        enterButton
+        enterButton={
+          <Button
+            type="primary"
+            style={{ backgroundColor: "#800000", borderColor: "#800000" }}
+          >
+            <BiSearch />
+          </Button>
+        }
         style={{ maxWidth: 400, marginBottom: 10 }}
       />
 
@@ -91,6 +99,7 @@ const Map: React.FC = () => {
         center={center}
         zoom={zoom}
         style={{ height: "400px", width: "100%" }}
+        className="overflow-hidden"
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

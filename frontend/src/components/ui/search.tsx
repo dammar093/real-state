@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Input, message } from "antd";
+import { Button, Input, message } from "antd";
+import { BiSearch } from "react-icons/bi";
 
 const { Search } = Input;
 
@@ -21,7 +22,14 @@ const SearchBar: React.FC = () => {
       <Search
         placeholder="Search..."
         allowClear
-        enterButton="Search"
+        enterButton={
+          <Button
+            type="primary"
+            style={{ backgroundColor: "#800000", borderColor: "#800000" }}
+          >
+            <BiSearch />
+          </Button>
+        }
         size="large"
         onSearch={onSearch}
       />
