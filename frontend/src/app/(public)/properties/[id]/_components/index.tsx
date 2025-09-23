@@ -21,7 +21,7 @@ const PropertyDetail = () => {
   return (
     <div>
       <div className="flex flex-col gap-2 md:gap-5">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 mt-3">
           <PropertySlider pr={singleProperty as PropertyItem} />
           <div>
             <h1 className="text-gray-800 font-semibold text-md md:text-lg lg:text-xl">
