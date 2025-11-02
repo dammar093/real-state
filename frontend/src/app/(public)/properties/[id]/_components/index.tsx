@@ -10,6 +10,7 @@ import LocationMap from "./Location";
 import Link from "next/link";
 import { getTimeSince } from "@/utils/utils";
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
+import BookingForm from "./booking-form";
 
 const PropertyDetail = () => {
   const { loading, getPropertyById, singleProperty } = useProperties();
@@ -88,7 +89,7 @@ const PropertyDetail = () => {
               </Button>
 
               <Modal
-                title="Fill up details"
+                title="Book Now"
                 open={isModalOpen}
                 onCancel={handleCancel}
                 width="90vw"
@@ -96,7 +97,7 @@ const PropertyDetail = () => {
                 style={{ maxWidth: 900 }}
                 footer={null}
               >
-                <p>Put your booking form or details here...</p>
+                <BookingForm property={singleProperty!} />
               </Modal>
             </div>
           </div>
