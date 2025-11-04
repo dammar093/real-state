@@ -11,6 +11,10 @@ import Link from "next/link";
 import { getTimeSince } from "@/utils/utils";
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import BookingForm from "./booking-form";
+import { api } from "@/api/api";
+import { BookingItem } from "@/types/booking";
+import { calc } from "antd/es/theme/internal";
+import { getBookingAvailability } from "@/utils/calculateBookingDate";
 
 const PropertyDetail = () => {
   const { loading, getPropertyById, singleProperty } = useProperties();
@@ -18,10 +22,26 @@ const PropertyDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => setIsModalOpen(true);
   const handleCancel = () => setIsModalOpen(false);
+  const [booking, setBooking] = useState<BookingItem | null>(null);
 
   useEffect(() => {
     getPropertyById(Number(id));
   }, [id, getPropertyById]);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (singleProperty) {
+        const res = await api.get(`booking/property/${singleProperty.id}`);
+        console.log("sddsf", res.data);
+        setBooking(res.data?.data || null);
+      }
+    }
+    fetchData();
+  }, [singleProperty]);
+
+  const { isAvailable, nextBookingDate } = getBookingAvailability(
+    booking as BookingItem
+  );
   if (loading) return <Loader />;
   return (
     <div>
@@ -80,13 +100,22 @@ const PropertyDetail = () => {
               </div>
             </Link>
             <div>
-              <Button
-                type="primary"
-                style={{ backgroundColor: "#800000", borderColor: "#800000" }}
-                onClick={showModal}
-              >
-                Book Now
-              </Button>
+              {isAvailable ? (
+                <Button
+                  type="primary"
+                  style={{ backgroundColor: "#800000", borderColor: "#800000" }}
+                  onClick={showModal}
+                >
+                  Book Now
+                </Button>
+              ) : (
+                <Button type="primary" disabled>
+                  Next Booking Date:{" "}
+                  {nextBookingDate
+                    ? nextBookingDate.toLocaleDateString()
+                    : "N/A"}
+                </Button>
+              )}
 
               <Modal
                 title="Book Now"

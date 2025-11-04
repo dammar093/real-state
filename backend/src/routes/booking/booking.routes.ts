@@ -7,6 +7,11 @@ import bookingController from "../../controllers/booking/booking.controller";
 
 bookingRouter.post("/", createJwt.verifyJWT, bookingController.createBooking);
 bookingRouter.get("/user", createJwt.verifyJWT, bookingController.getUserBookings);
-bookingRouter.get("/owner", createJwt.verifyJWT, bookingController.getOwnerBookings);
+bookingRouter.get(
+  "/property/:propertyId",
+  createJwt.verifyJWT,
+  bookingController.getBookingByPropertyId
+);
+bookingRouter.get("/owner", createJwt.verifyJWT, requireRole(["ADMIN", "SUPER_ADMIN"]), bookingController.getOwnerBookings);
 
 export default bookingRouter;

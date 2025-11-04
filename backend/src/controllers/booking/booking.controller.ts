@@ -5,50 +5,43 @@ import ApiResponse from "../../utils/apiRespons";
 import { db } from "../../config/db";
 
 class BookingController extends AsyncHandler {
-  /**
-   * @desc Create a new booking
-   * @route POST /api/bookings
-   * @access Authenticated Users
-   */
   async createBooking(req: Request, res: Response): Promise<Response> {
     const { transaction_uuid, total_amount } = req.body;
 
+    console.log(req.body);
     try {
-      if (!transaction_uuid || !total_amount) {
-        throw new ApiError(400, "Missing required fields");
-      }
-
-      const [propertyIdStr, paymentIdPart] = transaction_uuid.split("=");
-      const propertyId = parseInt(propertyIdStr);
-      const paymentId = paymentIdPart;
-
       const existingBooking = await db.booking.findFirst({
-        where: { paymentId },
+        where: { paymentId: transaction_uuid.split("=")[1] },
       });
-
       if (existingBooking) {
         return res
           .status(400)
           .send(new ApiResponse(400, null, "Booking already exists"));
       }
-
-      const property = await db.properties.findUnique({
-        where: { id: propertyId },
+      const property = await db.booking.findFirst({
+        where: {
+          propertyId: parseInt(transaction_uuid.split("=")[0]),
+        },
+        include: {
+          property: true
+        }
       });
-
-      const duration = Date.now() + (property?.durationType === "DAY" ? property.duration * 24 * 60 * 60 * 1000 : property?.durationType === "MONTH" ? property.duration * 30 * 24 * 60 * 60 * 1000 : 0);
-
-      if (duration > Date.now()) {
-        throw new ApiError(400, "The property duration is already booked out");
+      const now = new Date();
+      let bookingEnd;
+      if (property?.property.durationType === "DAY") {
+        bookingEnd = property.createdAt.getTime() + property?.property.duration * 24 * 60 * 60 * 1000;
+      } else if (property?.property.durationType === "MONTH") {
+        bookingEnd = property.createdAt.getTime() + property?.property.duration * 30 * 24 * 60 * 60 * 1000;
       }
 
-      if (!property) {
-        throw new ApiError(404, "Property not found");
+      if (bookingEnd) {
+        return res
+          .status(400)
+          .send(new ApiResponse(400, null, "User has already booked this property"));
       }
-
       const booking = await db.booking.create({
         data: {
-          propertyId,
+          propertyId: parseInt(transaction_uuid.split("=")[0]),
           userId: req.user.id,
           amount: parseInt(total_amount),
           paymentId: transaction_uuid,
@@ -59,97 +52,70 @@ class BookingController extends AsyncHandler {
       return res
         .status(201)
         .send(new ApiResponse(201, booking, "Booking created successfully"));
-    } catch (error: any) {
-      console.error("Booking creation error:", error);
-      throw new ApiError(400, error.message || "Booking creation failed");
+    } catch (error) {
+      throw new ApiError(400, "Booking creation failed");
     }
   }
 
-  /**
-   * @desc Get all bookings for the logged-in user
-   * @route GET /api/bookings/user
-   * @access Authenticated Users
-   */
   async getUserBookings(req: Request, res: Response): Promise<Response> {
     try {
-      const { page = 1, limit = 10 } = req.query;
-
       const bookings = await db.booking.findMany({
         where: { userId: req.user.id },
         include: {
-          property: {
-            select: { id: true, title: true, price: true, images: true },
-          },
+          property: true,
         },
-        orderBy: { createdAt: "desc" },
-        skip: (Number(page) - 1) * Number(limit),
-        take: Number(limit),
       });
-
-      const total = await db.booking.count({ where: { userId: req.user.id } });
-
-      return res.status(200).send(
-        new ApiResponse(200, {
-          bookings,
-          pagination: {
-            total,
-            page: Number(page),
-            limit: Number(limit),
-            totalPages: Math.ceil(total / Number(limit)),
-          },
-        })
-      );
-    } catch (error: any) {
-      throw new ApiError(400, error.message || "Failed to fetch user bookings");
+      return res
+        .status(200)
+        .send(new ApiResponse(200, bookings, "User bookings retrieved successfully"));
+    } catch (error) {
+      throw new ApiError(400, "Failed to retrieve user bookings");
     }
   }
-
-  /**
-   * @desc Get all bookings for properties owned by the logged-in owner
-   * @route GET /api/bookings/owner
-   * @access Property Owners / Admin
-   */
   async getOwnerBookings(req: Request, res: Response): Promise<Response> {
     try {
-      const { page = 1, limit = 10 } = req.query;
-
-      const properties = await db.booking.findMany({
-        where: { userId: req.user.id },
-        select: { id: true },
-      });
-
-      const propertyIds = properties.map((p) => p.id);
-
       const bookings = await db.booking.findMany({
-        where: { propertyId: { in: propertyIds } },
-        include: {
-          property: { select: { id: true, title: true, price: true } },
-          user: { select: { id: true, fullName: true, email: true } },
-        },
-        orderBy: { createdAt: "desc" },
-        skip: (Number(page) - 1) * Number(limit),
-        take: Number(limit),
-      });
-
-      const total = await db.booking.count({
-        where: { propertyId: { in: propertyIds } },
-      });
-
-      return res.status(200).send(
-        new ApiResponse(200, {
-          bookings,
-          pagination: {
-            total,
-            page: Number(page),
-            limit: Number(limit),
-            totalPages: Math.ceil(total / Number(limit)),
+        where: {
+          property: {
+            userId: req.user.id,
           },
-        })
-      );
-    } catch (error: any) {
-      throw new ApiError(400, error.message || "Failed to fetch owner bookings");
+        },
+        include: {
+          property: true,
+        },
+      });
+      return res
+        .status(200)
+        .send(new ApiResponse(200, bookings, "Owner bookings retrieved successfully"));
+    } catch (error) {
+      throw new ApiError(400, "Failed to retrieve owner bookings");
     }
   }
-}
+  async getBookingByPropertyId(req: Request, res: Response): Promise<Response> {
+    const propertyId = parseInt(req.params.propertyId);
 
+    try {
+      const booking = await db.booking.findFirst({
+        where: { propertyId },
+        include: {
+          property: true,
+        },
+        orderBy: {
+          createdAt: "desc", // 👈 get the latest booking
+        },
+      });
+
+      if (!booking) {
+        throw new ApiError(404, "Booking not found for the given property ID");
+      }
+
+      return res.status(200).send(
+        new ApiResponse(200, booking, "Latest booking retrieved successfully")
+      );
+    } catch (error) {
+      throw new ApiError(400, "Failed to retrieve booking");
+    }
+  }
+
+}
 export default new BookingController();
