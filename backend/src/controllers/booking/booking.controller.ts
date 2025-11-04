@@ -32,6 +32,20 @@ class BookingController extends AsyncHandler {
           .send(new ApiResponse(400, null, "Booking already exists"));
       }
 
+      const property = await db.properties.findUnique({
+        where: { id: propertyId },
+      });
+
+      const duration = Date.now() + (property?.durationType === "DAY" ? property.duration * 24 * 60 * 60 * 1000 : property?.durationType === "MONTH" ? property.duration * 30 * 24 * 60 * 60 * 1000 : 0);
+
+      if (duration > Date.now()) {
+        throw new ApiError(400, "The property duration is already booked out");
+      }
+
+      if (!property) {
+        throw new ApiError(404, "Property not found");
+      }
+
       const booking = await db.booking.create({
         data: {
           propertyId,

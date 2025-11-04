@@ -25,11 +25,8 @@ enum PaymentMethods {
   CASH
 }
 enum DuratinType {
-  NIGHT
   DAY
   MONTH
-  YEAR
-  LIFE_TIME
 }
 
 model Users {
@@ -136,6 +133,8 @@ model Booking {
   amount     Float
   paymentMethod String  @default("ESEWA")
   paymentId String
+  checkIn   DateTime
+  checkOut  DateTime?
   status     Status     @default(PENDING)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @default(now()) @updatedAt
