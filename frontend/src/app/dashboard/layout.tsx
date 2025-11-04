@@ -6,7 +6,6 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   LogoutOutlined,
-  SettingOutlined,
   UserAddOutlined,
   UserOutlined,
 } from "@ant-design/icons";

@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
 import { Col, Flex, Row, Spin } from "antd";
-import { useRouter } from "next/navigation";
 import useProperties from "@/hooks/useProperties";
 import Link from "next/link";
 import PropertySlider from "@/components/property-sldier/property-slider";

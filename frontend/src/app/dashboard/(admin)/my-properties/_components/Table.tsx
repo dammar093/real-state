@@ -35,7 +35,7 @@ const Table: React.FC = () => {
 
   useEffect(() => {
     getPropertyById(auth?.id as number);
-  }, [getPropertyById]);
+  }, [getPropertyById, auth?.id]);
 
   const handleChange: TableProps<PropertyItem>["onChange"] = (
     pagination,

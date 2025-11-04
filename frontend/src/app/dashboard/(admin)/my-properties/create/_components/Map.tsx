@@ -14,7 +14,7 @@ import L from "leaflet";
 import { FormInstance, Input, message } from "antd";
 
 // Fix default icon issue in Leaflet
-// @ts-ignore
+// @ts-expect-error
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -56,7 +56,7 @@ const MapSearch: React.FC<MapSearchProps> = ({ form }) => {
       setPosition([lat, lon]);
       setPopupText(`Lat: ${lat}, Lon: ${lon}`);
     }
-  }, [form.getFieldValue("latitude"), form.getFieldValue("longitude")]);
+  }, [form.getFieldValue("latitude"), form.getFieldValue("longitude"), form]);
 
   // Update form when position changes
   useEffect(() => {

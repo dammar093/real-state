@@ -9,7 +9,7 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
       <main>
         <Container>{children}</Container>
       </main>
-      <footer>skjfsdhkfl</footer>
+      {/* <footer>skjfsdhkfl</footer> */}
     </>
   );
 }

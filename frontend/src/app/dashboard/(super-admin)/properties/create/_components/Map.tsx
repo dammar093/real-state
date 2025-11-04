@@ -14,7 +14,7 @@ import L from "leaflet";
 import { FormInstance, Input, message } from "antd";
 
 // Fix default icon issue in Leaflet
-// @ts-ignore
+// @ts-expect-error
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:

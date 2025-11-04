@@ -1,6 +1,5 @@
 // === Categories API ===
 
-import { Params } from "@/types/utils";
 import { api } from "./api";
 
 // Create category

@@ -6,7 +6,6 @@ import {
   Button,
   Popconfirm,
   Tag,
-  Image,
   Switch,
   Avatar,
 } from "antd";
@@ -15,7 +14,7 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import Entry from "@/components/ui/entry";
 import Search from "antd/es/input/Search";
 import useUsers from "@/hooks/useUsers";
-import { User, UserDetail } from "@/types/user";
+import { User } from "@/types/user";
 import Link from "next/link";
 import Loader from "@/components/loader/loader";
 import { dateFormatter, Role } from "@/utils/utils";

@@ -42,7 +42,6 @@ model Users {
   whishList  WishList[]
   booking    Booking[]
   reviews    Reviews[]
-  payment    Payment[]
   otp        String
   otpExpires DateTime     @default(now())
   isVerified Boolean      @default(false)
@@ -134,11 +133,10 @@ model Booking {
   property   Properties @relation(fields: [propertyId], references: [id])
   userId     Int // FK to Users — who booked
   user       Users      @relation(fields: [userId], references: [id])
-  checkIn    DateTime?
-  checkout   DateTime?
-  status     Status     @default(PENDING) // Booking status ENUM
-  isDelete   Boolean    @default(false)
-  payment    Payment[] // 1 booking can have multiple payments (e.g., split payments)
+  amount     Float
+  paymentMethod String  @default("ESEWA")
+  paymentId String
+  status     Status     @default(PENDING)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @default(now()) @updatedAt
 }
@@ -154,18 +152,5 @@ model Reviews {
   status     Boolean    @default(true)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @default(now()) @updatedAt
-}
-
-model Payment {
-  id            Int            @id @default(autoincrement())
-  status        Status         @default(PENDING)
-  paymentAmount Float
-  paymentMethod PaymentMethods
-  userId        Int // FK to Users — who paid
-  user          Users          @relation(fields: [userId], references: [id])
-  bookingId     Int // FK to Booking — payment for a booking
-  booking       Booking        @relation(fields: [bookingId], references: [id])
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @default(now()) @updatedAt
 }
 
