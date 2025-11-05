@@ -8,6 +8,7 @@ import {
   LogoutOutlined,
   UserAddOutlined,
   UserOutlined,
+  BookOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -24,6 +25,8 @@ import { TbBrandBooking } from "react-icons/tb";
 import Image from "next/image";
 import Link from "next/link";
 import useAuthUser from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
+import { api } from "@/api/api";
 
 const { Header, Sider, Content } = Layout;
 const { useBreakpoint } = Grid;
@@ -31,6 +34,7 @@ const { useBreakpoint } = Grid;
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [collapsed, setCollapsed] = useState(false);
   const screens = useBreakpoint(); // Responsive breakpoints
+  const router = useRouter();
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -59,7 +63,28 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     },
     {
       key: "logout",
-      label: <button className="w-full text-left">Logout</button>,
+      label: (
+        <button
+          className="w-full text-left"
+          onClick={async () => {
+            try {
+              // 1️⃣ Call logout API
+              await api.get("/auth/logout");
+
+              // 2️⃣ Clear localStorage
+              localStorage.removeItem("token"); // adjust your key
+              localStorage.removeItem("user");
+
+              // 3️⃣ Redirect to sign-in
+              router.push("/sign-in");
+            } catch (error) {
+              console.error("Logout failed:", error);
+            }
+          }}
+        >
+          Logout
+        </button>
+      ),
       icon: <LogoutOutlined />,
     },
   ];
@@ -81,7 +106,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
           {
             key: "3",
             icon: <TbBrandBooking />,
-            label: <Link href="/dashboard/bookings">Bookings</Link>,
+            label: <Link href="/dashboard/my-bookings">Bookings</Link>,
           },
         ]
       : [
@@ -104,6 +129,11 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             key: "4",
             icon: <UserAddOutlined />,
             label: <Link href="/dashboard/users">Users</Link>,
+          },
+          {
+            key: "5",
+            icon: <BookOutlined />,
+            label: <Link href="/dashboard/bookings">Bookings</Link>,
           },
         ];
 

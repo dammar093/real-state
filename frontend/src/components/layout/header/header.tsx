@@ -6,7 +6,12 @@ import Image from "next/image";
 import Search from "@/components/ui/search";
 import useAuthUser from "@/hooks/useAuth";
 import { Avatar, Dropdown, MenuProps, Modal } from "antd";
-import { HeartOutlined, UserOutlined, LogoutOutlined } from "@ant-design/icons";
+import {
+  HeartOutlined,
+  UserOutlined,
+  LogoutOutlined,
+  BookOutlined,
+} from "@ant-design/icons";
 import { useState } from "react";
 
 const Header = () => {
@@ -16,9 +21,9 @@ const Header = () => {
   // Dropdown items
   const items: MenuProps["items"] = [
     {
-      key: "wishlist",
-      label: <span onClick={() => setIsWishlistOpen(true)}>Wishlist</span>,
-      icon: <HeartOutlined />,
+      key: "booking",
+      label: <Link href="/my-booking">My Booking</Link>,
+      icon: <BookOutlined />,
     },
     {
       key: "account",

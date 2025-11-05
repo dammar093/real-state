@@ -1,7 +1,8 @@
 import React from "react";
+import OwnerBookingsTable from "./Table";
 
 const Booking = () => {
-  return <div>Booking</div>;
+  return <OwnerBookingsTable />;
 };
 
 export default Booking;

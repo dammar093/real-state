@@ -62,7 +62,11 @@ class BookingController extends AsyncHandler {
       const bookings = await db.booking.findMany({
         where: { userId: req.user.id },
         include: {
-          property: true,
+          property: {
+            include: {
+              images: true
+            }
+          },
         },
       });
       return res
@@ -81,8 +85,18 @@ class BookingController extends AsyncHandler {
           },
         },
         include: {
-          property: true,
+          property: {
+            include: {
+              images: true
+            }
+          },
+          user: {
+            include: {
+              userDetail: true
+            }
+          }
         },
+
       });
       return res
         .status(200)
@@ -99,7 +113,9 @@ class BookingController extends AsyncHandler {
         where: { propertyId },
         include: {
           property: true,
+
         },
+
         orderBy: {
           createdAt: "desc", // 👈 get the latest booking
         },
