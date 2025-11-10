@@ -1,7 +1,13 @@
-import React from "react";
+import dynamic from "next/dynamic";
+import React, { Suspense } from "react";
+const Search = dynamic(() => import("./_components"));
 
-const Search = () => {
-  return <div>Search</div>;
+const SearchPage = () => {
+  return (
+    <Suspense fallback={null}>
+      <Search />
+    </Suspense>
+  );
 };
 
-export default Search;
+export default SearchPage;

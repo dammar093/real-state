@@ -288,14 +288,7 @@ class PropertyController extends AsyncHandler {
   // Get all property with search, pagination, and optional price sorting
   async getActiveProperties(req: Request, res: Response): Promise<Response> {
     try {
-      const {
-        page = 1,
-        limit = 10,
-        search = "",
-        sort, // 'asc' | 'desc'
-      } = req.query;
-
-      const skip = (Number(page) - 1) * Number(limit);
+      const { search = "", sort } = req.query; // 'asc' | 'desc'
 
       const properties = await db.properties.findMany({
         where: {
@@ -304,7 +297,6 @@ class PropertyController extends AsyncHandler {
           OR: [
             { location: { contains: String(search), mode: "insensitive" } },
             { title: { contains: String(search), mode: "insensitive" } },
-
           ],
         },
         include: {
@@ -336,41 +328,17 @@ class PropertyController extends AsyncHandler {
             price: sort === "asc" ? "asc" : "desc",
           }
           : undefined,
-        skip,
-        take: Number(limit),
       });
 
-      const total = await db.properties.count({
-        where: {
-          isDelete: false,
-          status: true,
-          OR: [
-            { location: { contains: String(search), mode: "insensitive" } },
-            { title: { contains: String(search), mode: "insensitive" } },
-          ],
-        },
-      });
-
-      return res.status(200).json(
-        new ApiResponse(
-          200,
-          {
-            properties,
-            pagination: {
-              total,
-              page: Number(page),
-              limit: Number(limit),
-              pages: Math.ceil(total / Number(limit)),
-            },
-          },
-          "Properties fetched successfully"
-        )
-      );
+      return res
+        .status(200)
+        .json(new ApiResponse(200, { properties }, "Properties fetched successfully"));
     } catch (error) {
       console.error(error);
       throw new ApiError(500, "Internal server error");
     }
   }
+
   // Get properties by category with search, pagination, and optional price sorting
   // propertyController.ts
   async getPropertyByCategory(req: Request, res: Response): Promise<Response> {
@@ -574,6 +542,8 @@ class PropertyController extends AsyncHandler {
       throw new ApiError(500, "Internal server error");
     }
   }
+
+
 
 }
 

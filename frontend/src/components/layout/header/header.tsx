@@ -13,10 +13,13 @@ import {
   BookOutlined,
 } from "@ant-design/icons";
 import { useState } from "react";
+import { api } from "@/api/api";
+import { useRouter } from "next/navigation";
 
 const Header = () => {
   const { user } = useAuthUser();
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const router = useRouter();
 
   // Dropdown items
   const items: MenuProps["items"] = [
@@ -35,7 +38,28 @@ const Header = () => {
     },
     {
       key: "logout",
-      label: <button className="w-full text-left">Logout</button>,
+      label: (
+        <button
+          className="w-full text-left"
+          onClick={async () => {
+            try {
+              // 1️⃣ Call logout API
+              await api.get("/auth/logout");
+
+              // 2️⃣ Clear localStorage
+              localStorage.removeItem("token"); // adjust your key
+              localStorage.removeItem("user");
+
+              // 3️⃣ Redirect to sign-in
+              router.push("/sign-in");
+            } catch (error) {
+              console.error("Logout failed:", error);
+            }
+          }}
+        >
+          Logout
+        </button>
+      ),
       icon: <LogoutOutlined />,
     },
   ];

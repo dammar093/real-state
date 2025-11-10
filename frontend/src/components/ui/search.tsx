@@ -3,18 +3,23 @@
 import React from "react";
 import { Button, Input, message } from "antd";
 import { BiSearch } from "react-icons/bi";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const { Search } = Input;
 
 const SearchBar: React.FC = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const onSearch = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
     if (value.trim()) {
-      message.success(`Searching for: ${value}`);
-      // 🔑 here you can call API or filter table
-      console.log("Search query:", value);
+      params.set("query", value.trim());
     } else {
-      message.warning("Please enter a search term");
+      params.delete("query");
     }
+
+    // Push new URL with updated search param
+    router.push(`/search?${params.toString()}`);
   };
 
   return (
