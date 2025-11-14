@@ -3,18 +3,14 @@
 import Container from "../container/container";
 import Link from "next/link";
 import Image from "next/image";
-import Search from "@/components/ui/search";
+const Search = dynamic(() => import("@/components/ui/search"));
 import useAuthUser from "@/hooks/useAuth";
 import { Avatar, Dropdown, MenuProps, Modal } from "antd";
-import {
-  HeartOutlined,
-  UserOutlined,
-  LogoutOutlined,
-  BookOutlined,
-} from "@ant-design/icons";
+import { UserOutlined, LogoutOutlined, BookOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { api } from "@/api/api";
 import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 
 const Header = () => {
   const { user } = useAuthUser();
@@ -30,7 +26,7 @@ const Header = () => {
     },
     {
       key: "account",
-      label: <Link href="/account">Account</Link>,
+      label: <Link href="/profile">Account</Link>,
       icon: <UserOutlined />,
     },
     {
@@ -101,7 +97,7 @@ const Header = () => {
                         <Dropdown menu={{ items }} trigger={["click", "hover"]}>
                           <Avatar
                             size="large"
-                            src={user?.userDetail?.profilePic || undefined}
+                            src={user?.userDetail?.profile?.image || undefined}
                             className="cursor-pointer"
                           >
                             <span className="text-2xl">

@@ -1,8 +1,13 @@
-import React from "react";
-import Home from "./_components";
+import dynamic from "next/dynamic";
+import React, { Suspense } from "react";
+const Home = dynamic(() => import("./_components"));
 
 const HomePage = () => {
-  return <Home />;
+  return (
+    <Suspense>
+      <Home />
+    </Suspense>
+  );
 };
 
 export default HomePage;

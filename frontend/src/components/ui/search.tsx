@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button, Input, message } from "antd";
+import { Button, Input } from "antd";
 import { BiSearch } from "react-icons/bi";
 import { useRouter, useSearchParams } from "next/navigation";
 

@@ -5,10 +5,17 @@ import { Card, Tag, Spin, Empty } from "antd";
 import Image from "next/image";
 import { api } from "@/api/api";
 import { BookingItem } from "@/types/booking";
+import { useRouter } from "next/navigation";
+import useAuthUser from "@/hooks/useAuth";
 
 export default function MyBooking() {
   const [bookings, setBookings] = useState<BookingItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useAuthUser();
+  const router = useRouter();
+  if (!user) {
+    router.push("/sign-in");
+  }
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -45,7 +52,7 @@ export default function MyBooking() {
       <h1 className="text-3xl font-bold mb-8 text-gray-800">My Bookings</h1>
 
       <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        {bookings.map((booking, index) => (
+        {bookings.map((booking) => (
           <div key={booking?.id}>
             <Card
               hoverable

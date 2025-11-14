@@ -1,8 +1,13 @@
-import React from "react";
-import MyBooking from "./_components";
+import dynamic from "next/dynamic";
+import React, { Suspense } from "react";
+const MyBooking = dynamic(() => import("./_components"));
 
 const MyBookingPage = () => {
-  return <MyBooking />;
+  return (
+    <Suspense fallback={null}>
+      <MyBooking />
+    </Suspense>
+  );
 };
 
 export default MyBookingPage;

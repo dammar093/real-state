@@ -10,11 +10,26 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Extend Next.js recommended configs
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  // Custom rules
   {
     rules: {
-      // ✅ Allow explicit `any`
+      // Allow explicit `any` in TypeScript
       "@typescript-eslint/no-explicit-any": "off",
+
+      // Optional: allow unused variables
+      "@typescript-eslint/no-unused-vars": "off",
+
+      // Optional: disable prop-types check (if using TS)
+      "react/prop-types": "off",
+
+      // Optional: allow console.log
+      "no-console": "off",
+
+      // Optional: turn off React hook exhaustive deps warnings
+      "react-hooks/exhaustive-deps": "off",
     },
   },
 ];

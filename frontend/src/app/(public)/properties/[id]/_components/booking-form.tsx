@@ -3,8 +3,15 @@ import React from "react";
 import { PropertyItem } from "@/types/property";
 import createSignature from "@/utils/create-signature";
 import { uuid } from "uuidv4";
+import useAuthUser from "@/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
 const BookingForm = ({ property }: { property: PropertyItem }) => {
+  const { user } = useAuthUser();
+  const router = useRouter();
+  if (!user) {
+    router.push("/sign-in");
+  }
   const id = uuid();
 
   const signature = createSignature(property.price, property.id + "=" + id);

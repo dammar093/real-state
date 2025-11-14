@@ -36,20 +36,6 @@ const Search = () => {
   return (
     <div className="p-4">
       <Row gutter={[23, 23]}>
-        <Col xs={24} className="mb-4">
-          <Flex wrap justify="space-between" gap={4}>
-            <h2 className="text-sm md:text-lg lg:text-2xl font-semibold text-gray-800">
-              Explore Properties
-            </h2>
-            <Link
-              href="/properties"
-              className="px-3 py-1 rounded bg-[#800000] text-white hover:bg-[#a00000]"
-            >
-              View All
-            </Link>
-          </Flex>
-        </Col>
-
         {/* Loading State */}
         {loading && (
           <Col xs={24} className="text-center py-10 text-gray-500">

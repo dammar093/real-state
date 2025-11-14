@@ -214,7 +214,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <Dropdown menu={{ items }} trigger={["click", "hover"]}>
               <Avatar
                 size="large"
-                src={user?.userDetail?.profilePic || undefined}
+                src={user?.userDetail?.profile?.image || undefined}
                 className="cursor-pointer"
               >
                 <span className="text-2xl">

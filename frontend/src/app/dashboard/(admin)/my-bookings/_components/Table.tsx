@@ -6,7 +6,6 @@ import type { TableProps } from "antd";
 import { EyeOutlined } from "@ant-design/icons";
 import { dateFormatter } from "@/utils/utils";
 import { api } from "@/api/api";
-import { useRouter } from "next/navigation";
 
 interface Property {
   id: number;

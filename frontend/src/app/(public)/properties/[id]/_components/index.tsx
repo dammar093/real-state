@@ -13,7 +13,6 @@ import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import BookingForm from "./booking-form";
 import { api } from "@/api/api";
 import { BookingItem } from "@/types/booking";
-import { calc } from "antd/es/theme/internal";
 import { getBookingAvailability } from "@/utils/calculateBookingDate";
 
 const PropertyDetail = () => {
